@@ -17,8 +17,14 @@
   </tr>
   {% endif %}
   </table>
-  
-  <a href="{% url 'index_view' %}"><input type="submit" name="Confirm" value="Confirm Your Party"></a>
+
+  {% if object.creator == request.user %}
   <a href="{% url 'party_update_view' object.id %}"><input type="submit" name="Edit" value="Edit Your Party"></a>
+{% endif %}
+<br>
+<h4>Song Queue</h4>
+{% for song in song_list.all %}
+<div>{{ song.user }}, {{ song.song_name }}</div>
+{% endfor %}
 
 {% endblock %}

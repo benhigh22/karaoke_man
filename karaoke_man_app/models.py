@@ -15,7 +15,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     email_address = models.EmailField(max_length=250)
     score = models.IntegerField(default=0)
-    preferred_city = models.ForeignKey(City)
 
 
 class Party(models.Model):
@@ -23,6 +22,7 @@ class Party(models.Model):
     city = models.ForeignKey(City)
     street_address = models.CharField(max_length=200)
     theme = models.CharField(max_length=100, blank=True)
+    creator = models.ForeignKey(User)
 
     def __str__(self):
         return self.location_name
@@ -30,7 +30,8 @@ class Party(models.Model):
 
 class Song(models.Model):
     song_name = models.CharField(max_length=100)
-    user = models.ManyToManyField(User)
+    user = models.ForeignKey(User)
+    party = models.ForeignKey(Party)
 
 
 @receiver(post_save, sender=User)

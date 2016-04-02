@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^create/party/$', views.PartyCreateView.as_view(), name='party_create_view'),
     url(r'^party/(?P<pk>\d+)/$', views.PartyDetailView.as_view(), name='party_detail_view'),
     url(r'^partyupdate/(?P<pk>\d+)/$', views.PartyUpdateView.as_view(), name='party_update_view'),
+    url(r'^party/(?P<pk>\d+)/addsong/$', views.SongCreateView.as_view(), name='song_create_view'),
 ]
