@@ -32,7 +32,7 @@ class CityDetailView(DetailView):
 
 class PartyCreateView(CreateView):
     model = Party
-    fields = ('location_name', 'city', 'street_address', 'theme')
+    fields = ('location_name', 'date_of_party', 'time_of_party', 'city', 'street_address', 'theme')
 
     def get_success_url(self):
         return reverse("party_detail_view", kwargs={'pk': self.object.pk})

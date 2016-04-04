@@ -23,6 +23,8 @@ class Party(models.Model):
     street_address = models.CharField(max_length=200)
     theme = models.CharField(max_length=100, blank=True)
     creator = models.ForeignKey(User)
+    date_of_party = models.DateField()
+    time_of_party = models.TimeField()
 
     def __str__(self):
         return self.location_name
