@@ -3,14 +3,14 @@ var ReactDOM = require('react-dom');
 var Backbone = require('backbone');
 
 var Home = require('./components/homepage.jsx');
-var Header = require('./components/UserReg.jsx');
+var UserReg = require('./components/userReg.jsx');
 
 
 var Router = Backbone.Router.extend({
 
 routes:{
-'':'home',
-'userLanding':''
+'':'renderHome',
+'register':'renderUserRegistration'
 },
 
 renderHome:function(){

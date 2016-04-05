@@ -3,6 +3,6 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Backbone = require('backbone');
 var Home = require('./components/homepage.jsx');
+var Router = require('./router.js');
 
-ReactDOM.render(React.createElement(Home),
-document.getElementById('app'));
+Backbone.history.start();

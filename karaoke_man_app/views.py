@@ -93,7 +93,6 @@ class SongCreateView(CreateView):
 """Beginning of API Views"""
 
 class UserCreateAPIView(generics.CreateAPIView):
-    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
