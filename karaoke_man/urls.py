@@ -1,5 +1,5 @@
 
-from django.conf.urls import url
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from karaoke_man_app import views
@@ -7,8 +7,10 @@ from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^signup', views.UserCreateView.as_view(), name='signup'),
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('django.contrib.auth.urls', namespace='auth')),
     url(r'^login', auth_views.login, name='login'),
     url(r'^logout', auth_views.logout_then_login, name='logout'),
     url(r'^$', views.IndexView.as_view(), name='index_view'),

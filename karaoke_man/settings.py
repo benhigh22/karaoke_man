@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'karaoke_man_app'
+    'karaoke_man_app',
+    'social.apps.django_app.default',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -60,6 +61,13 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
+                'django.core.context_processors.tz',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -68,6 +76,19 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+   'social.backends.facebook.FacebookOAuth2',
+   'social.backends.twitter.TwitterOAuth',
+   'django.contrib.auth.backends.ModelBackend',
+)
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1008500842547949'
+SOCIAL_AUTH_FACEBOOK_SECRET = '882106039089f34e9ae82386c920a1e2'
+SOCIAL_AUTH_TWITTER_KEY = '1YlFE041OtKAkGvNa9C1hnKDu'
+SOCIAL_AUTH_TWITTER_SECRET = 'Y2p75EgO6wMttYfiqJb74VOFZIWzH9FAjNAacdODtuwp7Wc8QY'
+
 
 WSGI_APPLICATION = 'karaoke_man.wsgi.application'
 

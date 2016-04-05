@@ -6,6 +6,24 @@ from karaoke_man_app.forms import NewUserCreationForm
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from karaoke_man_app.serializers import UserSerializer, UserProfileSerializer, CitySerializer, PartySerializer, SongSerializer
+from django.views.generic import TemplateView
+from django.shortcuts import render_to_response, redirect
+from django.contrib.auth import logout as auth_logout
+from django.template.context import RequestContext
+
+
+def login(request):
+    return render_to_response('login.html', context=RequestContext(request))
+
+
+def home(request):
+    context = RequestContext(request, {'request': request, 'user': request.user})
+    return render_to_response('home.html', context_instance=context)
+
+
+def logout(request):
+    auth_logout(request)
+    return redirect('/')
 
 
 class UserCreateView(CreateView):
