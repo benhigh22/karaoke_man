@@ -24,7 +24,7 @@ img {
   text-decoration: none;
   list-style: none;
   float:left;
-  padding-top: 75px;
+  padding-top: 50px;
   li{
     padding:15px;
     margin:10px;
@@ -33,4 +33,21 @@ img {
 }
 header{
   margin-top: 20px;
+}
+.header-comp{
+  border-bottom:solid 1px black;
+}
+.sidebar{
+  border-left: solid 1px black;
+  padding:10px;
+}
+.user-formwrapper{
+  padding:10px;
+  margin-bottom:30px;
+  border:solid 1px black;
+  height:400px;
+  input{
+    width:100%;
+    margin:5px;
+  }
 }
