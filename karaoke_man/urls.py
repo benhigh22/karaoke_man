@@ -3,6 +3,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from karaoke_man_app import views
+from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
@@ -13,9 +14,9 @@ urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index_view'),
     url(r'^city/$', views.CityListView.as_view(), name='city_list_view'),
     url(r'^city/(?P<pk>\d+)/$', views.CityDetailView.as_view(), name='city_detail_view'),
-    url(r'^create/party/$', views.PartyCreateView.as_view(), name='party_create_view'),
+    url(r'^create/party/$', login_required(views.PartyCreateView.as_view()), name='party_create_view'),
     url(r'^party/(?P<pk>\d+)/$', views.PartyDetailView.as_view(), name='party_detail_view'),
-    url(r'^partyupdate/(?P<pk>\d+)/$', views.PartyUpdateView.as_view(), name='party_update_view'),
+    url(r'^partyupdate/(?P<pk>\d+)/$', login_required(views.PartyUpdateView.as_view()), name='party_update_view'),
     url(r'^party/(?P<pk>\d+)/addsong/$', views.SongCreateView.as_view(), name='song_create_view'),
      # Begin API List/Create URLs
     url(r'^api/users/$', views.UserListCreateAPIView.as_view(), name='user_list_create'),
