@@ -14,7 +14,7 @@ class City(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     email_address = models.EmailField(max_length=250)
-    score = models.IntegerField(default=0)
+    profile_picture = models.ImageField(upload_to='uploads', null=True, blank=True)
 
 
 class Party(models.Model):
