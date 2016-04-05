@@ -1,11 +1,15 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Karoke Man</title>
+    <link rel="stylesheet" href="{% static 'dist/css/app.css' %}">
   </head>
   <body>
     {% block content %}
     {% endblock %}
+    <script src="{% static 'dist/js/bundle.js' %}"></script>
   </body>
 </html>
