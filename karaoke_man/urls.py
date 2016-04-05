@@ -1,4 +1,4 @@
-
+from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
@@ -20,8 +20,9 @@ urlpatterns = [
     url(r'^party/(?P<pk>\d+)/$', views.PartyDetailView.as_view(), name='party_detail_view'),
     url(r'^partyupdate/(?P<pk>\d+)/$', login_required(views.PartyUpdateView.as_view()), name='party_update_view'),
     url(r'^party/(?P<pk>\d+)/addsong/$', views.SongCreateView.as_view(), name='song_create_view'),
+    url(r'^media/(?P<path>.*)', "django.views.static.serve", {"document_root": settings.MEDIA_ROOT}),
      # Begin API List/Create URLs
-    url(r'^api/users/$', views.UserListCreateAPIView.as_view(), name='user_list_create'),
+    url(r'^api/users/$', views.UserCreateAPIView.as_view(), name='user_create'),
     url(r'^api/userprofiles/$', views.UserProfileListCreateAPIView.as_view(), name='userprofile_list_create'),
     url(r'^api/cities/$', views.CityListCreateAPIView.as_view(), name='city_list_create'),
     url(r'^api/parties/$', views.PartyListCreateAPIView.as_view(), name='party_list_create'),
