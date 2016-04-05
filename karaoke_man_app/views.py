@@ -130,6 +130,6 @@ class SongListCreateAPIView(generics.ListCreateAPIView):
         return super().create(request, *args, **kwargs)
 
 
-class AnswerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+class SongRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
