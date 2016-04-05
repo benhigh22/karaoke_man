@@ -1,8 +1,11 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, TemplateView, ListView, DetailView, UpdateView
-from karaoke_man_app.models import City, Party, Song
+from karaoke_man_app.models import City, Party, Song, UserProfile
 from karaoke_man_app.forms import NewUserCreationForm
+from rest_framework import generics
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
+from karaoke_man_app.serializers import UserSerializer, UserProfileSerializer, CitySerializer, PartySerializer, SongSerializer
 
 
 class UserCreateView(CreateView):
@@ -68,3 +71,65 @@ class SongCreateView(CreateView):
 
     def get_success_url(self):
         return reverse("index_view")
+
+"""Beginning of API Views"""
+
+class UserListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
+
+
+class UserProfileListCreateAPIView(generics.ListCreateAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def create(self, request, *args, **kwargs):
+        request.data['user'] = request.user.pk
+        return super().create(request, *args, **kwargs)
+
+
+class UserProfileRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+
+
+class CityListCreateAPIView(generics.ListCreateAPIView):
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+
+class CityRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+
+
+class PartyListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Party.objects.all()
+    serializer_class = PartySerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def create(self, request, *args, **kwargs):
+        request.data['creator'] = request.user.pk
+        return super().create(request, *args, **kwargs)
+
+
+class PartyRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Party.objects.all()
+    serializer_class = PartySerializer
+
+
+class SongListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def create(self, request, *args, **kwargs):
+        request.data['user'] = request.user.pk
+        return super().create(request, *args, **kwargs)
+
+
+class AnswerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
