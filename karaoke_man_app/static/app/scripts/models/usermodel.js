@@ -9,7 +9,7 @@ var User = Backbone.Model.extend({
 });
 var UserCollection =Backbone.Collection.extend({
   model:User,
-  url:'http://127.0.0.1:8000/api/users/'
+  url:'/api/users/'
 
 });
 

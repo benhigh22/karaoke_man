@@ -10,6 +10,7 @@
   <body>
     {% block content %}
     {% endblock %}
+    {% csrf_token %}
     <script src="{% static 'dist/js/bundle.js' %}"></script>
   </body>
 </html>

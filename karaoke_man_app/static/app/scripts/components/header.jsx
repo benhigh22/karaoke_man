@@ -4,16 +4,18 @@ var Backbone = require('backbone');
 
 var Header = React.createClass({
 
+
 render:function(){
   return(
-  <header class="row header-comp">
-    <div class="col-md-2">
-      <img src="https://unsplash.it/g/100/100" alt="">
+  <header className="row header-comp">
+    <div className="col-md-2">
+      <img src="https://unsplash.it/g/100/100" alt=""/>
     </div>
-    <div class="col-md-3">
-      <ul class="nav">
-        <li>Home</li>
+    <div className="col-md-5">
+      <ul className="nav">
+        <a href=""><li>Home</li></a>
         <li>About Us</li>
+        <a href="#user"><li>Profile</li></a>
       </ul>
     </div>
   </header>
