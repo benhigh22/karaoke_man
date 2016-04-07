@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
 from karaoke_man_app import views
 from django.contrib.auth.decorators import login_required
 

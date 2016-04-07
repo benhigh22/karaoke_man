@@ -14,7 +14,7 @@ from django.contrib.auth import logout as auth_logout
 from django.template.context import RequestContext
 
 
-def login(request):
+def login_view(request):
     return render_to_response('login.html', context=RequestContext(request))
 
 
@@ -23,7 +23,7 @@ def index(request):
     return render_to_response('index.html', context_instance=context)
 
 
-def logout(request):
+def logout_view(request):
     auth_logout(request)
     return redirect('/')
 
