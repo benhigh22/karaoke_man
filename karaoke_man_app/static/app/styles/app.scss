@@ -40,6 +40,15 @@ header{
 .header-comp{
   border-bottom:solid 1px black;
 }
+.login-wrapper{
+  padding:10px;
+  background-color: black;
+  border-radius: 10px;
+  input{
+    margin:5px auto;
+  }
+
+}
 .sidebar{
   border-left: solid 1px black;
   padding:10px;

@@ -2,8 +2,12 @@ var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
 
-var Home = React.createClass({
+var Login = require('./login.jsx');
 
+var Home = React.createClass({
+    openModal:function(){
+      
+    },
     render:function(){
       return(
         <div className="container">
@@ -18,6 +22,7 @@ var Home = React.createClass({
               </ul>
             </div>
           </header>
+          <Login />
           <div className="row">
             <div className="col-md-7">
               <h1> Karaoke Now! </h1>
@@ -32,7 +37,7 @@ var Home = React.createClass({
             <div className="col-md-6">
               <div className="row">
                 <div className="col-md-6">
-                  <a href="#">
+                  <a onClick={this.openModal}>
                     <img src="/static/dist/images/LoginGroup.svg" alt=""/>
                   </a>
                 </div>
