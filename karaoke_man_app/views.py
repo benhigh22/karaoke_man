@@ -106,16 +106,16 @@ def login_api_view(request):
     username = request.data.get('username')
     password = request.data.get('password')
     user = authenticate(username=username, password=password)
-    user_validation = {}
+    response_content = {}
     if user is not None:
         serializer = UserSerializer(user)
         if user.is_active:
             login(request, user)
-            user_validation = {'user': serializer.data, 'success': user.is_authenticated()}
-            return JsonResponse(user_validation)
+            response_content = {'user': serializer.data, 'success': user.is_authenticated()}
+            return JsonResponse(response_content)
     else:
-        user_validation = {'user': None, 'success': False}
-        return JsonResponse(user_validation)
+        response_content = {'user': None, 'success': False}
+        return JsonResponse(response_content)
 
 
 @api_view()
