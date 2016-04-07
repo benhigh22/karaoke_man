@@ -1,3 +1,6 @@
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, TemplateView, ListView, DetailView, UpdateView
@@ -6,7 +9,6 @@ from karaoke_man_app.forms import NewUserCreationForm
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from karaoke_man_app.serializers import UserSerializer, UserProfileSerializer, CitySerializer, PartySerializer, SongSerializer
-from django.views.generic import TemplateView
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import logout as auth_logout
 from django.template.context import RequestContext
@@ -16,9 +18,9 @@ def login(request):
     return render_to_response('login.html', context=RequestContext(request))
 
 
-def home(request):
+def index(request):
     context = RequestContext(request, {'request': request, 'user': request.user})
-    return render_to_response('home.html', context_instance=context)
+    return render_to_response('index.html', context_instance=context)
 
 
 def logout(request):
@@ -90,11 +92,37 @@ class SongCreateView(CreateView):
     def get_success_url(self):
         return reverse("index_view")
 
+
 """Beginning of API Views"""
+
 
 class UserCreateAPIView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
+
+
+@api_view(['POST'])
+def login_api_view(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    user = authenticate(username=username, password=password)
+    user_validation = {}
+    if user is not None:
+        serializer = UserSerializer(user)
+        if user.is_active:
+            login(request, user)
+            user_validation = {'user': serializer.data, 'success': user.is_authenticated()}
+            return JsonResponse(user_validation)
+    else:
+        user_validation = {'user': None, 'success': False}
+        return JsonResponse(user_validation)
+
+
+@api_view()
+def logout_api_view(request):
+    serializer = UserSerializer(request.user)
+    logout(request)
+    return JsonResponse({'user': serializer.data, 'logged_out': True})
 
 
 class UserProfileListCreateAPIView(generics.ListCreateAPIView):
