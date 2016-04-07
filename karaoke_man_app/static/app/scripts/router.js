@@ -7,6 +7,7 @@ var RegistrationFormPage = require('./components/userReg.jsx');
 var ProfilePage = require('./components/profilepage.jsx');
 var PartyFinder = require('./components/partyfinder.jsx');
 var QueueViewPage = require('./components/queueview.jsx');
+var Login = require('./components/login.jsx');
 
 
 var Router = Backbone.Router.extend({
@@ -44,6 +45,7 @@ renderQueueViewPage:function(){
   ReactDOM.render(React.createElement(QueueViewPage),
   document.getElementById('app'));
 },
+
 });
 
 module.exports = new Router();

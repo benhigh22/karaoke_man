@@ -15,7 +15,9 @@ $icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 img {
   max-width: 100%;
 }
-
+.modal-backdrop{
+  z-index: -1000;
+}
 .bottom-btns{
   margin: 20px 0px 20px 0px;
 }

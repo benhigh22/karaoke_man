@@ -1,12 +1,14 @@
 var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
-
+var $ = require('jquery');
+window.jQuery = $ = require('jquery');
 var Login = require('./login.jsx');
 
 var Home = React.createClass({
     openModal:function(){
-      
+      ReactDom.render(React.createElement(Login),
+      document.getElementById('login'));
     },
     render:function(){
       return(
@@ -37,7 +39,7 @@ var Home = React.createClass({
             <div className="col-md-6">
               <div className="row">
                 <div className="col-md-6">
-                  <a onClick={this.openModal}>
+                  <a href="" onClick={this.openModal} data-toggle="modal" data-target="#myModal">
                     <img src="/static/dist/images/LoginGroup.svg" alt=""/>
                   </a>
                 </div>

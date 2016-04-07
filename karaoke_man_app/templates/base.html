@@ -11,8 +11,8 @@
     {% block content %}
     {% endblock %}
     {% csrf_token %}
+    <script src="{% static 'dist/js/bundle.js' %}"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//fb.me/react-with-addons-0.12.0.js"></script>
-    <script src="{% static 'dist/js/bundle.js' %}"></script>
   </body>
 </html>

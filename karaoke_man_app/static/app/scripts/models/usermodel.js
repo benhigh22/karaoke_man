@@ -12,8 +12,12 @@ var UserCollection =Backbone.Collection.extend({
   url:'/api/users/'
 
 });
+var LoggedInUser =Backbone.Model.extend({
+  urlRoot:'/api/login/'
 
+});
 module.exports={
   'User':User,
+  'LoggedInUser':LoggedInUser,
   'UserCollection':UserCollection
 };

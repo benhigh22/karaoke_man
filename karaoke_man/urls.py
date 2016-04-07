@@ -10,8 +10,8 @@ urlpatterns = [
     # API Signup and Login views
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/users/$', views.UserCreateAPIView.as_view(), name='user_create'),
-    url(r'^api/login/$', views.api_login_view, name='api_login'),
-    url(r'^api/logout/$', views.api_logout_view, name='api_logout'),
+    url(r'^api/login/$', views.login_api_view, name='login_api'),
+    url(r'^api/logout/$', views.logout_api_view, name='logout_api'),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
     url(r'^media/(?P<path>.*)', "django.views.static.serve", {"document_root": settings.MEDIA_ROOT}),
