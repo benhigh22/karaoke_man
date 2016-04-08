@@ -195,3 +195,19 @@ class QueueRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Queue.objects.filter(party_id=self.kwargs.get('party'), id=self.kwargs.get('pk'))
+
+
+class UserQueueListAPIView(generics.ListAPIView):
+    serializer_class = QueueSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        return Queue.objects.filter(user_id=self.kwargs.get('user'))
+
+
+class UserQueueRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = QueueSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        return Queue.objects.filter(user_id=self.kwargs.get('user'), id=self.kwargs.get('pk'))
