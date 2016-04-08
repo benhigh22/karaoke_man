@@ -17,22 +17,31 @@ class UserProfile(models.Model):
     profile_picture = models.ImageField(upload_to='uploads', null=True, blank=True)
 
 
-class Party(models.Model):
-    location_name = models.CharField(max_length=100)
+class Location(models.Model):
     city = models.ForeignKey(City)
     street_address = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+class Party(models.Model):
+    location = models.ForeignKey(Location)
     creator = models.ForeignKey(User)
     date_of_party = models.DateField()
     time_of_party = models.TimeField()
 
-    def __str__(self):
-        return self.location_name
-
 
 class Queue(models.Model):
+    singer_name = models.CharField(max_length=100)
     song_name = models.CharField(max_length=100)
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party)
+    time_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.song_name
 
 
 @receiver(post_save, sender=User)

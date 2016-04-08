@@ -4,11 +4,11 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, TemplateView, ListView, DetailView, UpdateView
-from karaoke_man_app.models import City, Party, Queue, UserProfile
+from karaoke_man_app.models import City, Party, Queue, UserProfile, Location
 from karaoke_man_app.forms import NewUserCreationForm
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
-from karaoke_man_app.serializers import UserSerializer, UserProfileSerializer, CitySerializer, PartySerializer, QueueSerializer
+from karaoke_man_app.serializers import UserSerializer, UserProfileSerializer, LocationSerializer, CitySerializer, PartySerializer, QueueSerializer
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import logout as auth_logout
 from django.template.context import RequestContext
@@ -125,10 +125,12 @@ def logout_api_view(request):
     return JsonResponse({'user': serializer.data, 'logged_out': True})
 
 
-class UserProfileListCreateAPIView(generics.ListCreateAPIView):
-    queryset = UserProfile.objects.all()
+class UserProfileCreateAPIView(generics.ListCreateAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        return UserProfile.objects.filter(user_id=self.kwargs.get('user'))
 
     def create(self, request, *args, **kwargs):
         request.data['user'] = request.user.pk
@@ -136,8 +138,10 @@ class UserProfileListCreateAPIView(generics.ListCreateAPIView):
 
 
 class UserProfileRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+
+    def get_queryset(self):
+        return UserProfile.objects.filter(user_id=self.kwargs.get('user'), id=self.kwargs.get('pk'))
 
 
 class CityListCreateAPIView(generics.ListCreateAPIView):
@@ -149,6 +153,26 @@ class CityListCreateAPIView(generics.ListCreateAPIView):
 class CityRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = City.objects.all()
     serializer_class = CitySerializer
+
+
+class LocationListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = LocationSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        return Location.objects.filter(city_id=self.kwargs.get('city'))
+
+    def create(self, request, *args, **kwargs):
+        request.data['creator'] = request.user.pk
+        return super().create(request, *args, **kwargs)
+
+
+class LocationRetrieveUpdateDestroyAPIView(generics.ListCreateAPIView):
+    serializer_class = LocationSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        return Location.objects.filter(city_id=self.kwargs.get('city'), id=self.kwargs.get('pk'))
 
 
 class UserListAPIView(generics.ListCreateAPIView):
@@ -164,7 +188,7 @@ class PartyListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return Party.objects.filter(city_id=self.kwargs.get('city'))
+        return Party.objects.filter(location_id=self.kwargs.get('location'))
 
     def create(self, request, *args, **kwargs):
         request.data['creator'] = request.user.pk
@@ -175,7 +199,7 @@ class PartyRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PartySerializer
 
     def get_queryset(self):
-        return Party.objects.filter(city_id=self.kwargs.get('city'), id=self.kwargs.get('pk'))
+        return Party.objects.filter(location_id=self.kwargs.get('location'), id=self.kwargs.get('pk'))
 
 
 class QueueListCreateAPIView(generics.ListCreateAPIView):
