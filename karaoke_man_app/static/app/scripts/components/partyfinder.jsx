@@ -44,11 +44,11 @@ var CitySelect = React.createClass({
       console.log('fetched!!');
     },
     renderResults:function(){
-      partyCollection.initialize();
+      partyCollection.fetch();
       console.log(partyCollection);
+      console.log('parties fetched!!');
     },
     render:function(){
-      console.log(this.props.collection);
       var cities = this.props.collection.map(function(model){
         return(
           <CityItems model={model} key={model.get('id')} />
@@ -79,17 +79,24 @@ var CityItems = React.createClass({
 
 
 var PartySelect = React.createClass({
+      mixins:[Backbone.React.Component.mixin],
       render:function(){
+        console.log(this.props.collection);
+        var parties = this.props.collection.map(function(model){
+              return(
+                <div>
+                  <h4>{model.get('location_name')}</h4>
+                  <button> See Details </button>
+                  <span className="event-date">{model.get('date_of_party')}</span>
+                  <span className="event-time">{model.get('time_of_party')}</span>
+                </div>
+              );
+            });
         return(
           <div className="panel-wrapper">
             <h3> Available Parties</h3>
             <div className="panel">
-              <div>
-                <h4>Bens Bar</h4>
-                <button> See Details </button>
-                <span className="event-date">Saturday April 10</span>
-                <span className="event-time">7:30–8:30</span>
-              </div>
+              {parties}
             </div>
           </div>
         );

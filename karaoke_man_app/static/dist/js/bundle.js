@@ -113,6 +113,13 @@ var Login = React.createClass({displayName: "Login",
       logInUser:function(){
         loggedInUser.save({'username':$('#login-username').val(),'password':$('#login-password').val()}).then(function(response){
           console.log(response);
+          if(response.success===true){
+            console.log('sucessfully logged in')
+            Backbone.history.navigate('user',{trigger:true, replace: true});
+            }
+          else{
+            alert('Incorrect Username and Password')
+            }
           }
         );
       },
@@ -135,7 +142,7 @@ var Login = React.createClass({displayName: "Login",
                     ), 
                     React.createElement("div", {className: "modal-footer"}, 
                       React.createElement("button", {type: "button", className: "btn btn-default", "data-dismiss": "modal"}, "Close"), 
-                      React.createElement("button", {type: "button", className: "btn btn-primary", onClick: this.logInUser}, "Login")
+                      React.createElement("button", {type: "button", className: "btn btn-primary", onClick: this.logInUser, "data-dismiss": "modal"}, "Login")
                     )
                   )
                 )
@@ -196,11 +203,11 @@ var CitySelect = React.createClass({displayName: "CitySelect",
       console.log('fetched!!');
     },
     renderResults:function(){
-      partyCollection.initialize();
+      partyCollection.fetch();
       console.log(partyCollection);
+      console.log('parties fetched!!');
     },
     render:function(){
-      console.log(this.props.collection);
       var cities = this.props.collection.map(function(model){
         return(
           React.createElement(CityItems, {model: model, key: model.get('id')})
@@ -231,17 +238,24 @@ var CityItems = React.createClass({displayName: "CityItems",
 
 
 var PartySelect = React.createClass({displayName: "PartySelect",
+      mixins:[Backbone.React.Component.mixin],
       render:function(){
+        console.log(this.props.collection);
+        var parties = this.props.collection.map(function(model){
+              return(
+                React.createElement("div", null, 
+                  React.createElement("h4", null, model.get('location_name')), 
+                  React.createElement("button", null, " See Details "), 
+                  React.createElement("span", {className: "event-date"}, model.get('date_of_party')), 
+                  React.createElement("span", {className: "event-time"}, model.get('time_of_party'))
+                )
+              );
+            });
         return(
           React.createElement("div", {className: "panel-wrapper"}, 
             React.createElement("h3", null, " Available Parties"), 
             React.createElement("div", {className: "panel"}, 
-              React.createElement("div", null, 
-                React.createElement("h4", null, "Bens Bar"), 
-                React.createElement("button", null, " See Details "), 
-                React.createElement("span", {className: "event-date"}, "Saturday April 10"), 
-                React.createElement("span", {className: "event-time"}, "7:30–8:30")
-              )
+              parties
             )
           )
         );
@@ -606,6 +620,7 @@ module.exports={'CityCollection':CityCollection,
 var Backbone = require('backbone');
 var $ = require('jquery');
 var cityPartiesUrl;
+
 var Party = Backbone.Model.extend({
 
 
@@ -613,12 +628,12 @@ var Party = Backbone.Model.extend({
 
 var PartyCollection = Backbone.Collection.extend({
     model:Party,
-    initialize:function(){
+
+    url:function(){
       var city = $('#cities').val();
-      console.log(city);
-      var cityPartiesUrl = '/api/' + city + '/parties'
-    },
-    url:cityPartiesUrl
+      cityPartiesUrl = '/api/cities/' + city + '/parties/';
+      return(cityPartiesUrl);
+      }
     });
 
 module.exports={'PartyCollection':PartyCollection,

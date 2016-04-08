@@ -12,6 +12,13 @@ var Login = React.createClass({
       logInUser:function(){
         loggedInUser.save({'username':$('#login-username').val(),'password':$('#login-password').val()}).then(function(response){
           console.log(response);
+          if(response.success===true){
+            console.log('sucessfully logged in')
+            Backbone.history.navigate('user',{trigger:true, replace: true});
+            }
+          else{
+            alert('Incorrect Username and Password')
+            }
           }
         );
       },
@@ -34,7 +41,7 @@ var Login = React.createClass({
                     </div>
                     <div className="modal-footer">
                       <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                      <button type="button" className="btn btn-primary" onClick={this.logInUser}>Login</button>
+                      <button type="button" className="btn btn-primary" onClick={this.logInUser} data-dismiss="modal">Login</button>
                     </div>
                   </div>
                 </div>
