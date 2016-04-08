@@ -125,10 +125,12 @@ def logout_api_view(request):
     return JsonResponse({'user': serializer.data, 'logged_out': True})
 
 
-class UserProfileListCreateAPIView(generics.ListCreateAPIView):
-    queryset = UserProfile.objects.all()
+class UserProfileCreateAPIView(generics.ListCreateAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        return UserProfile.objects.filter(user_id=self.kwargs.get('user'))
 
     def create(self, request, *args, **kwargs):
         request.data['user'] = request.user.pk
@@ -136,8 +138,10 @@ class UserProfileListCreateAPIView(generics.ListCreateAPIView):
 
 
 class UserProfileRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
+
+    def get_queryset(self):
+        return UserProfile.objects.filter(user_id=self.kwargs.get('user'), id=self.kwargs.get('pk'))
 
 
 class CityListCreateAPIView(generics.ListCreateAPIView):
