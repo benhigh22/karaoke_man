@@ -34,6 +34,7 @@ class Queue(models.Model):
     song_name = models.CharField(max_length=100)
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party)
+    time_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.song_name
