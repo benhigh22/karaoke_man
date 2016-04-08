@@ -21,7 +21,6 @@ class Party(models.Model):
     location_name = models.CharField(max_length=100)
     city = models.ForeignKey(City)
     street_address = models.CharField(max_length=200)
-    theme = models.CharField(max_length=100, blank=True)
     creator = models.ForeignKey(User)
     date_of_party = models.DateField()
     time_of_party = models.TimeField()
@@ -30,7 +29,7 @@ class Party(models.Model):
         return self.location_name
 
 
-class Song(models.Model):
+class Queue(models.Model):
     song_name = models.CharField(max_length=100)
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party)
