@@ -18,13 +18,15 @@ urlpatterns = [
     url(r'^api/users/(?P<user>\d+)/userprofiles/$', views.UserProfileCreateAPIView.as_view(), name='userprofile_create'),
     url(r'^api/cities/$', views.CityListCreateAPIView.as_view(), name='city_list_create'),
     url(r'^api/users/(?P<pk>\d+)/parties/$', views.UserListAPIView.as_view(), name='user_list'),
-    url(r'^api/cities/(?P<city>\d+)/parties/$', views.PartyListCreateAPIView.as_view(), name='party_list_create'),
+    url(r'^api/cities/(?P<city>\d+)/locations/$', views.LocationListCreateAPIView.as_view(), name='location_list_create'),
+    url(r'^api/locations/(?P<location>\d+)/parties/$', views.PartyListCreateAPIView.as_view(), name='party_list_create'),
     url(r'^api/parties/(?P<party>\d+)/queue/$', views.QueueListCreateAPIView.as_view(), name='queue_list_create'),
     url(r'^api/users/(?P<user>\d+)/queue/$', views.UserQueueListAPIView.as_view(), name='user_queue_list'),
     # Retrieve/Update/Destroy API Views
     url(r'^api/users/(?P<user>\d+)/userprofiles/(?P<pk>\d+)/$', views.UserProfileRetrieveUpdateDestroyAPIView.as_view(), name='userprofile_retrieve_update_destroy'),
     url(r'^api/cities/(?P<city>\d+)/$', views.CityRetrieveUpdateDestroyAPIView.as_view(), name='city_retrieve_update_destroy'),
-    url(r'^api/cities/(?P<city>\d+)/parties/(?P<pk>\d+)/$', views.PartyRetrieveUpdateDestroyAPIView.as_view(), name='party_retrieve_update_destroy'),
+    url(r'^api/cities/(?P<city>\d+)/locations/(?P<pk>\d+)/$', views.LocationRetrieveUpdateDestroyAPIView.as_view(), name='location_retrieve_update_destroy'),
+    url(r'^api/locations/(?P<location>\d+)/parties/(?P<pk>\d+)/$', views.PartyRetrieveUpdateDestroyAPIView.as_view(), name='party_retrieve_update_destroy'),
     url(r'^api/parties/(?P<party>\d+)/queue/(?P<pk>\d+)/$', views.QueueRetrieveUpdateDestroyAPIView.as_view(), name='queue_retrieve_update_destroy'),
     url(r'^api/users/(?P<user>\d+)/queue/(?P<pk>\d+)/$', views.UserQueueRetrieveUpdateDestroyAPIView.as_view(), name='user_queue_retrieve_update_destroy'),
     # Django template URLs

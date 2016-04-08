@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from karaoke_man_app.models import UserProfile, City, Party, Queue
+from karaoke_man_app.models import UserProfile, City, Party, Queue, Location
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -31,6 +31,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
+
+
+class LocationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Location
 
 
 class CitySerializer(serializers.ModelSerializer):
