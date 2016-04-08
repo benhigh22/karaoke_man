@@ -17,7 +17,7 @@ urlpatterns = [
      # API List/Create URLs
     url(r'^api/userprofiles/$', views.UserProfileListCreateAPIView.as_view(), name='userprofile_list_create'),
     url(r'^api/cities/$', views.CityListCreateAPIView.as_view(), name='city_list_create'),
-    url(r'^api/parties/$', views.PartyListCreateAPIView.as_view(), name='party_list_create'),
+    url(r'^api/cities/(?P<pk>\d+)/parties/$', views.PartyListCreateAPIView.as_view(), name='party_list_create'),
     url(r'^api/songs/$', views.SongListCreateAPIView.as_view(), name='song_list_create'),
     # Retrieve/Update/Destroy API Views
     url(r'^api/userprofiles/(?P<pk>\d+)/$', views.UserProfileRetrieveUpdateDestroyAPIView.as_view(), name='userprofile_retrieve_update_destroy'),

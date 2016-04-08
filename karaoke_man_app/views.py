@@ -152,10 +152,12 @@ class CityRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PartyListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Party.objects.all()
     serializer_class = PartySerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
+    def get_queryset(self):
+        return Party.objects.filter(city_id=self.kwargs.get('pk'))
+        
     def create(self, request, *args, **kwargs):
         request.data['creator'] = request.user.pk
         return super().create(request, *args, **kwargs)
