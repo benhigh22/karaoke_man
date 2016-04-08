@@ -30,9 +30,13 @@ class Party(models.Model):
 
 
 class Queue(models.Model):
+    singer_name = models.CharField(max_length=100)
     song_name = models.CharField(max_length=100)
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party)
+
+    def __str__(self):
+        return self.song_name
 
 
 @receiver(post_save, sender=User)
