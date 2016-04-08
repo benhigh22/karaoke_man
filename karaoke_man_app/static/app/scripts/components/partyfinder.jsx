@@ -5,8 +5,10 @@ var backboneMixin = require('backbone-react-component');
 
 var Header = require('./header.jsx');
 var CityCollection = require('../models/citymodel').CityCollection;
+var PartyCollection = require('../models/parties').PartyCollection;
 
 var cityCollection = new CityCollection();
+var partyCollection = new PartyCollection();
 
 var PartyFinder = React.createClass({
       render:function(){
@@ -23,7 +25,7 @@ var PartyFinder = React.createClass({
             </div>
             <div className="row">
               <div className="col-md-8">
-                <PartySelect />
+                <PartySelect collection={partyCollection} />
               </div>
               <div className="col-md-4">
                 <SongSelect />
@@ -41,6 +43,10 @@ var CitySelect = React.createClass({
       this.props.collection.fetch();
       console.log('fetched!!');
     },
+    renderResults:function(){
+      partyCollection.initialize();
+      console.log(partyCollection);
+    },
     render:function(){
       console.log(this.props.collection);
       var cities = this.props.collection.map(function(model){
@@ -50,9 +56,10 @@ var CitySelect = React.createClass({
       });
       return(
         <div className="selection-wrapper">
-          <select name="" id="">
+          <select name="cities" id="cities">
             {cities}
           </select>
+          <button onClick={this.renderResults}>Search</button>
         </div>
         );
       }
@@ -63,7 +70,7 @@ var CityItems = React.createClass({
     render:function(){
       var model = this.props.model;
       return(
-        <option>{model.get('name')}</option>
+        <option value={model.get('id')}>{model.get('name')}</option>
       );
     }
 });
