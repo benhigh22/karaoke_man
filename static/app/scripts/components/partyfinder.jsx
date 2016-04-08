@@ -1,20 +1,24 @@
 var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
+var backboneMixin = require('backbone-react-component');
 
 var Header = require('./header.jsx');
+var CityCollection = require('../models/citymodel').CityCollection;
+
+var cityCollection = new CityCollection();
 
 var PartyFinder = React.createClass({
       render:function(){
         return(
           <div className="container">
-            <Header />  
+            <Header />
             <div className="row">
               <div className="col-md-6">
                 <h1> Party Finder </h1>
               </div>
               <div className="col-md-6">
-                <CitySelect />
+                <CitySelect collection={cityCollection} />
               </div>
             </div>
             <div className="row">
@@ -31,18 +35,41 @@ var PartyFinder = React.createClass({
     });
 
 var CitySelect = React.createClass({
-      render:function(){
+  mixins:[Backbone.React.Component.mixin],
+
+    componentWillMount:function(){
+      this.props.collection.fetch();
+      console.log('fetched!!');
+    },
+    render:function(){
+      console.log(this.props.collection);
+      var cities = this.props.collection.map(function(model){
         return(
-          <div className="selection-wrapper">
-            <select name="" id="">
-              <option value="Greenville,SC">Greenville,SC</option>
-              <option value="Chicago,IL">Chicago,IL</option>
-              <option value="Charlotte,NC">Charlotte,NC</option>
-            </select>
-          </div>
+          <CityItems model={model} key={model.get('id')} />
+        );
+      });
+      return(
+        <div className="selection-wrapper">
+          <select name="" id="">
+            {cities}
+          </select>
+        </div>
         );
       }
     });
+
+
+var CityItems = React.createClass({
+    render:function(){
+      var model = this.props.model;
+      return(
+        <option>{model.get('name')}</option>
+      );
+    }
+});
+
+
+
 
 var PartySelect = React.createClass({
       render:function(){
