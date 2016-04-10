@@ -49,7 +49,8 @@ class PartySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Party
-
+        depth = 1
+        
 
 class QueueSerializer(serializers.ModelSerializer):
 

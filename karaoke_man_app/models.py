@@ -27,6 +27,7 @@ class Location(models.Model):
 
 
 class Party(models.Model):
+    city = models.ForeignKey(City)
     location = models.ForeignKey(Location)
     creator = models.ForeignKey(User)
     date_of_party = models.DateField()

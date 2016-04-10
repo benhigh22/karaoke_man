@@ -188,7 +188,7 @@ class PartyListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return Party.objects.filter(location_id=self.kwargs.get('location'))
+        return Party.objects.filter(city_id=self.kwargs.get('city'))
 
     def create(self, request, *args, **kwargs):
         request.data['creator'] = request.user.pk
@@ -199,7 +199,7 @@ class PartyRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PartySerializer
 
     def get_queryset(self):
-        return Party.objects.filter(location_id=self.kwargs.get('location'), id=self.kwargs.get('pk'))
+        return Party.objects.filter(city_id=self.kwargs.get('city'), id=self.kwargs.get('pk'))
 
 
 class QueueListCreateAPIView(generics.ListCreateAPIView):

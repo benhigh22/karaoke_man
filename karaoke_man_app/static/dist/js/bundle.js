@@ -169,35 +169,12 @@ var PartyCollection = require('../models/parties').PartyCollection;
 var cityCollection = new CityCollection();
 var partyCollection = new PartyCollection();
 
-var PartyFinder = React.createClass({displayName: "PartyFinder",
-      render:function(){
-        return(
-          React.createElement("div", {className: "container"}, 
-            React.createElement(Header, null), 
-            React.createElement("div", {className: "row"}, 
-              React.createElement("div", {className: "col-md-6"}, 
-                React.createElement("h1", null, " Party Finder ")
-              ), 
-              React.createElement("div", {className: "col-md-6"}, 
-                React.createElement(CitySelect, {collection: cityCollection})
-              )
-            ), 
-            React.createElement("div", {className: "row"}, 
-              React.createElement("div", {className: "col-md-8"}, 
-                React.createElement(PartySelect, {collection: partyCollection})
-              ), 
-              React.createElement("div", {className: "col-md-4"}, 
-                React.createElement(SongSelect, null)
-              )
-            )
-          )
-        );
-      }
-    });
+//////////////////////////////////////////
+/////City Selection Components
+/////////////////////////////////////////
 
 var CitySelect = React.createClass({displayName: "CitySelect",
   mixins:[Backbone.React.Component.mixin],
-
     componentWillMount:function(){
       this.props.collection.fetch();
       console.log('fetched!!');
@@ -224,7 +201,6 @@ var CitySelect = React.createClass({displayName: "CitySelect",
       }
     });
 
-
 var CityItems = React.createClass({displayName: "CityItems",
     render:function(){
       var model = this.props.model;
@@ -234,23 +210,21 @@ var CityItems = React.createClass({displayName: "CityItems",
     }
 });
 
-
-
+//////////////////////////////////////////
+/////Party Selection and Details Components
+/////////////////////////////////////////
 
 var PartySelect = React.createClass({displayName: "PartySelect",
       mixins:[Backbone.React.Component.mixin],
+
       render:function(){
-        console.log(this.props.collection);
+        var that=this;
         var parties = this.props.collection.map(function(model){
-              return(
-                React.createElement("div", null, 
-                  React.createElement("h4", null, model.get('location_name')), 
-                  React.createElement("button", null, " See Details "), 
-                  React.createElement("span", {className: "event-date"}, model.get('date_of_party')), 
-                  React.createElement("span", {className: "event-time"}, model.get('time_of_party'))
-                )
-              );
-            });
+            return(
+              React.createElement(Party, {model: model, key: model.get('id'), handleChange: that.props.handleChange})
+            )
+          })
+
         return(
           React.createElement("div", {className: "panel-wrapper"}, 
             React.createElement("h3", null, " Available Parties"), 
@@ -261,11 +235,56 @@ var PartySelect = React.createClass({displayName: "PartySelect",
         );
       }
     });
+var Party = React.createClass({displayName: "Party",
+      getInitialState:function(){
+        return({'showPartyDetails':false});
+      },
+      handleClick:function(){
+        if(this.state.showPartyDetails===false){
+        this.setState({'showPartyDetails':true});
+        }
+        else{
+        this.setState({'showPartyDetails':false});
+        }
+      },
+      render:function(){
+        var model=this.props.model;
+        return(
+          React.createElement("div", null, 
+            React.createElement("div", {key: model.get('id')}, 
+              React.createElement("h4", null, model.get('location').name), 
+              React.createElement("button", {type: "button", onClick: this.handleClick}, " See Details "), 
+              React.createElement("span", {className: "event-date"}, model.get('date_of_party')), 
+              React.createElement("span", {className: "event-time"}, model.get('time_of_party'))
+            ), 
+             this.state.showPartyDetails ? React.createElement(PartyDetails, {handleChange: this.props.handleChange}) : null
+          )
+        )
+      }
+    });
+var PartyDetails = React.createClass({displayName: "PartyDetails",
+      render:function(){
+        return(
+          React.createElement("div", null, 
+            React.createElement("h5", null, "Party Title"), 
+            React.createElement("p", null, " Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles," + ' ' +
+              "weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah" + ' ' +
+              "plickers sifteo edmodo ifttt zimbra."
+            ), 
+            React.createElement("button", {className: "btn btn-primary", onClick: this.props.handleChange}, "Join This Party")
+          )
+        )
+      }
+    });
 
+//////////////////////////////////////////
+/////Components for Containing Page Elements
+/////////////////////////////////////////
 var SongSelect = React.createClass({displayName: "SongSelect",
       render:function(){
         return(
           React.createElement("div", {className: "panel-wrapper"}, 
+            React.createElement("div", null, React.createElement("span", null, "X")), 
             React.createElement("h4", null, "You Have Selected Bens Bar"), 
             React.createElement("div", null, 
               React.createElement("form", {action: ""}, 
@@ -280,6 +299,42 @@ var SongSelect = React.createClass({displayName: "SongSelect",
         );
       }
     });
+var PartyFinder = React.createClass({displayName: "PartyFinder",
+  getInitialState:function(){
+      return {'showSongAdd':false};
+  },
+  handleChange:function(){
+    if(this.state.showSongAdd===false){
+    this.setState({'showSongAdd':true});
+    }
+    else{
+    this.setState({'showSongAdd':false});
+    }
+  },
+  render:function(){
+      return(
+        React.createElement("div", {className: "container"}, 
+          React.createElement(Header, null), 
+          React.createElement("div", {className: "row"}, 
+            React.createElement("div", {className: "col-md-6"}, 
+              React.createElement("h1", null, " Party Finder ")
+            ), 
+            React.createElement("div", {className: "col-md-6"}, 
+              React.createElement(CitySelect, {collection: cityCollection})
+            )
+          ), 
+          React.createElement("div", {className: "row"}, 
+            React.createElement("div", {className: "col-md-8"}, 
+              React.createElement(PartySelect, {collection: partyCollection, handleChange: this.handleChange})
+            ), 
+            React.createElement("div", {className: "col-md-4"}, 
+               this.state.showSongAdd ? React.createElement(SongSelect, null) : null
+            )
+          )
+        )
+      );
+    }
+  });
 
 module.exports=PartyFinder;
 
