@@ -32,6 +32,8 @@ class Party(models.Model):
     creator = models.ForeignKey(User)
     date_of_party = models.DateField()
     time_of_party = models.TimeField()
+    party_name = models.CharField(max_length=75)
+    desription = models.TextField(null=True, blank=True)
 
 
 class Queue(models.Model):
