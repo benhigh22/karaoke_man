@@ -13,7 +13,7 @@ urlpatterns = [
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
     url(r'^media/(?P<path>.*)', "django.views.static.serve", {"document_root": settings.MEDIA_ROOT}),
-     # API List/Create URLs
+    # API List/Create URLs
     url(r'^api/users/(?P<user>\d+)/userprofiles/$', views.UserProfileCreateAPIView.as_view(), name='userprofile_create'),
     url(r'^api/cities/$', views.CityListCreateAPIView.as_view(), name='city_list_create'),
     url(r'^api/users/(?P<pk>\d+)/parties/$', views.UserListAPIView.as_view(), name='user_list'),
