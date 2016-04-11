@@ -15,7 +15,7 @@ var AttendeeCollection = Backbone.Collection.extend({
       model:Attendee,
 
       url:function(){
-        var attendeeUrl = 'api/parties/' + curId.partyId + '/attendees/';
+        var attendeeUrl = '/api/parties/' + curId.partyId + '/attendees/';
         return(attendeeUrl);
        }
     });

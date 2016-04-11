@@ -40,7 +40,7 @@ class Party(models.Model):
 
 
 class Attendee(models.Model):
-    user = models.ManyToManyField(User)
+    user = models.ForeignKey(User)
     party = models.ForeignKey(Party)
 
 

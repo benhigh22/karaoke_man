@@ -113,7 +113,7 @@ var PartyDetails = React.createClass({
           console.log(partyId);
 
           attendeeCollection.create({
-            'user':localStorage.getItem('user'),
+            'user':Number(localStorage.getItem('user')),
             'party':partyId
           });
 

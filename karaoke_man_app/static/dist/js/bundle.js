@@ -273,7 +273,7 @@ var PartyDetails = React.createClass({displayName: "PartyDetails",
           console.log(partyId);
 
           attendeeCollection.create({
-            'user':localStorage.getItem('user'),
+            'user':Number(localStorage.getItem('user')),
             'party':partyId
           });
 
@@ -691,7 +691,7 @@ var AttendeeCollection = Backbone.Collection.extend({
       model:Attendee,
 
       url:function(){
-        var attendeeUrl = 'api/parties/' + curId.partyId + '/attendees/';
+        var attendeeUrl = '/api/parties/' + curId.partyId + '/attendees/';
         return(attendeeUrl);
        }
     });
