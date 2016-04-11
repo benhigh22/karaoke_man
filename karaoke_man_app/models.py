@@ -18,6 +18,7 @@ class UserProfile(models.Model):
 
 
 class Location(models.Model):
+    user = models.ForeignKey(User)
     city = models.ForeignKey(City)
     street_address = models.CharField(max_length=200)
     name = models.CharField(max_length=200)

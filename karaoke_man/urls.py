@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^api/users/(?P<user>\d+)/userprofiles/$', views.UserProfileCreateAPIView.as_view(), name='userprofile_create'),
     url(r'^api/cities/$', views.CityListCreateAPIView.as_view(), name='city_list_create'),
     url(r'^api/users/(?P<pk>\d+)/parties/$', views.UserListAPIView.as_view(), name='user_list'),
+    url(r'^api/users/(?P<pk>\d+)/locations/$', views.UserLocationListAPIView.as_view(), name='user_location_list'),
     url(r'^api/cities/(?P<city>\d+)/locations/$', views.LocationListCreateAPIView.as_view(), name='location_list_create'),
     url(r'^api/cities/(?P<city>\d+)/parties/$', views.PartyListCreateAPIView.as_view(), name='party_list_create'),
     url(r'^api/parties/(?P<party>\d+)/queue/$', views.QueueListCreateAPIView.as_view(), name='queue_list_create'),
