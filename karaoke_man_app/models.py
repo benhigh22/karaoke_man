@@ -45,11 +45,12 @@ class Attendee(models.Model):
 
 
 class SongQueue(models.Model):
-    attendee = models.ForeignKey(Attendee)
+    party = models.ForeignKey(Party)
+    attendees = models.ForeignKey(Attendee)
     singer_name = models.CharField(max_length=100)
     song_name = models.CharField(max_length=100)
     time_created = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self):
         return self.song_name
 
