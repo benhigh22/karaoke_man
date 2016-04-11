@@ -2,13 +2,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
-from django.views.generic import CreateView, TemplateView, ListView, DetailView, UpdateView
-from karaoke_man_app.models import City, Party, Queue, UserProfile, Location
-from karaoke_man_app.forms import NewUserCreationForm
+from django.views.generic import TemplateView
+from karaoke_man_app.models import City, Party, Attendee, SongQueue, UserProfile, Location
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
-from karaoke_man_app.serializers import UserSerializer, UserProfileSerializer, LocationSerializer, CitySerializer, PartySerializer, QueueSerializer
+from karaoke_man_app.serializers import UserSerializer, UserProfileSerializer, LocationSerializer, CitySerializer, PartySerializer, AttendeeSerializer, SongQueueSerializer
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import logout as auth_logout
 from django.template.context import RequestContext
@@ -28,69 +26,8 @@ def logout_view(request):
     return redirect('/')
 
 
-class UserCreateView(CreateView):
-    model = User
-    form_class = NewUserCreationForm
-
-    def get_success_url(self):
-        return reverse("login")
-
-
 class IndexView(TemplateView):
     template_name = 'index.html'
-
-
-class CityListView(ListView):
-    model = City
-
-
-class CityDetailView(DetailView):
-    model = City
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['parties'] = Party.objects.filter(city=self.kwargs.get('pk'))
-        return context
-
-
-class PartyCreateView(CreateView):
-    model = Party
-    fields = ('location_name', 'date_of_party', 'time_of_party', 'city', 'street_address')
-
-    def get_success_url(self):
-        return reverse("party_detail_view", kwargs={'pk': self.object.pk})
-
-
-class PartyDetailView(DetailView):
-    model = Party
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['queue_list'] = Queue.objects.filter(party=self.kwargs.get('pk'))
-        return context
-
-
-class PartyUpdateView(UpdateView):
-    model = Party
-    template_name = 'karaoke_man_app/party_update.html'
-    fields = ('location_name', 'city', 'street_address')
-
-    def get_success_url(self):
-        return reverse("index_view")
-
-
-class QueueCreateView(CreateView):
-    model = Queue
-    fields = ('song_name',)
-
-    def form_valid(self, form):
-        queue_object = form.save(commit=False)
-        queue_object.user = self.request.user
-        queue_object.party = Party.objects.get(pk=self.kwargs.get('pk'))
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse("index_view")
 
 
 """Beginning of API Views"""
@@ -210,36 +147,52 @@ class PartyRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         return Party.objects.filter(location__city_id=self.kwargs.get('city'), id=self.kwargs.get('pk'))
 
 
-class QueueListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = QueueSerializer
+class AttendeeListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = AttendeeSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return Queue.objects.filter(party_id=self.kwargs.get('party'))
+        return Attendee.objects.filter(party_id=self.kwargs.get('party'))
 
     def create(self, request, *args, **kwargs):
         request.data['user'] = request.user.pk
         return super().create(request, *args, **kwargs)
 
 
-class QueueRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = QueueSerializer
+class AttendeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AttendeeSerializer
 
     def get_queryset(self):
-        return Queue.objects.filter(party_id=self.kwargs.get('party'), id=self.kwargs.get('pk'))
+        return Attendee.objects.filter(party_id=self.kwargs.get('party'), id=self.kwargs.get('pk'))
 
 
-class UserQueueListAPIView(generics.ListAPIView):
-    serializer_class = QueueSerializer
+class UserAttendeeListAPIView(generics.ListAPIView):
+    serializer_class = AttendeeSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return Queue.objects.filter(user_id=self.kwargs.get('user'))
+        return Attendee.objects.filter(user_id=self.kwargs.get('user'))
 
 
-class UserQueueRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = QueueSerializer
+class UserAttendeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AttendeeSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return Queue.objects.filter(user_id=self.kwargs.get('user'), id=self.kwargs.get('pk'))
+        return Attendee.objects.filter(user_id=self.kwargs.get('user'), id=self.kwargs.get('pk'))
+
+
+class SongQueueListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = SongQueueSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        return SongQueue.objects.filter(attendee__party_id=self.kwargs.get('party'))
+
+
+class SongQueueRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = SongQueueSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        return SongQueue.objects.filter(attendee__party_id=self.kwargs.get('party'), id=self.kwargs.get('pk'))
