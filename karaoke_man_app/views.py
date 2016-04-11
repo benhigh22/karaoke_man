@@ -198,7 +198,6 @@ class PartyListCreateAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Party.objects.filter(location__city_id=self.kwargs.get('city'))
 
-
     def create(self, request, *args, **kwargs):
         request.data['creator'] = request.user.pk
         return super().create(request, *args, **kwargs)
