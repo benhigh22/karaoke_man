@@ -6,6 +6,7 @@ var backboneMixin = require('backbone-react-component');
 var Header = require('./header.jsx');
 var CityCollection = require('../models/citymodel').CityCollection;
 var PartyCollection = require('../models/parties').PartyCollection;
+var AttendeeCollection = require('../models/attendee').AttendeeCollection;
 
 var cityCollection = new CityCollection();
 var partyCollection = new PartyCollection();
@@ -90,6 +91,7 @@ var Party = React.createClass({
       },
       render:function(){
         var model=this.props.model;
+        var that = this;
         return(
           <div>
             <div key={model.get('id')}>
@@ -98,13 +100,29 @@ var Party = React.createClass({
               <span className="event-date">{model.get('date_of_party')}</span>
               <span className="event-time">{model.get('time_of_party')}</span>
             </div>
-            { this.state.showPartyDetails ? <PartyDetails handleChange={this.props.handleChange}/> : null}
+            { this.state.showPartyDetails ? <PartyDetails handleChange={this.props.handleChange} PartyModel={model}/> : null}
           </div>
         )
       }
     });
 var PartyDetails = React.createClass({
+      addAttendee:function(){
+
+          var partyId = this.props.PartyModel.get('id');
+          var attendeeCollection = new AttendeeCollection({'partyId':partyId});
+          console.log(partyId);
+
+          attendeeCollection.create({
+            'user':localStorage.getItem('user'),
+            'party':partyId
+          });
+
+          console.log('Attendee Added');
+          this.props.handleChange();
+      },
       render:function(){
+        var PartyModel = this.props.PartyModel;
+        var that=this;
         return(
           <div>
             <h5>Party Title</h5>
@@ -112,7 +130,7 @@ var PartyDetails = React.createClass({
               weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah
               plickers sifteo edmodo ifttt zimbra.
             </p>
-            <button className="btn btn-primary" onClick={this.props.handleChange}>Join This Party</button>
+            <button className="btn btn-primary" onClick={this.addAttendee}>Join This Party</button>
           </div>
         )
       }
@@ -145,6 +163,7 @@ var PartyFinder = React.createClass({
       return {'showSongAdd':false};
   },
   handleChange:function(){
+    console.log('Add Song Displayed');
     if(this.state.showSongAdd===false){
     this.setState({'showSongAdd':true});
     }

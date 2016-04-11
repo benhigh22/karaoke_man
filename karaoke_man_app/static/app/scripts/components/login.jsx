@@ -14,6 +14,7 @@ var Login = React.createClass({
           console.log(response);
           if(response.success===true){
             console.log('sucessfully logged in')
+            localStorage.setItem('user',response.user.id);
             Backbone.history.navigate('user',{trigger:true, replace: true});
             }
           else{
