@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from karaoke_man_app.models import UserProfile, City, Party, Queue, Location
+from karaoke_man_app.models import UserProfile, City, Party, Attendee, SongQueue, Location
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -50,9 +50,15 @@ class PartySerializer(serializers.ModelSerializer):
     class Meta:
         model = Party
         depth = 1
-        
 
-class QueueSerializer(serializers.ModelSerializer):
+
+class AttendeeSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Queue
+        model = Attendee
+
+
+class SongQueueSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SongQueue

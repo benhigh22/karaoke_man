@@ -37,15 +37,19 @@ class Party(models.Model):
 
     def __str__(self):
         return self.party_name
-    
 
-class Queue(models.Model):
+
+class Attendee(models.Model):
+    user = models.ManyToManyField(User)
+    party = models.ForeignKey(Party)
+
+
+class SongQueue(models.Model):
+    attendee = models.ForeignKey(Attendee)
     singer_name = models.CharField(max_length=100)
     song_name = models.CharField(max_length=100)
-    user = models.ForeignKey(User)
-    party = models.ForeignKey(Party)
     time_created = models.DateTimeField(auto_now_add=True)
-
+    
     def __str__(self):
         return self.song_name
 
