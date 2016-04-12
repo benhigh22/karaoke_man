@@ -10,6 +10,11 @@ from karaoke_man_app.serializers import UserSerializer, UserProfileSerializer, L
 from django.shortcuts import render_to_response, redirect
 from django.contrib.auth import logout as auth_logout
 from django.template.context import RequestContext
+from rest_framework.views import APIView
+from rest_framework.response import Response
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import parse_qs
 
 
 def login_view(request):
@@ -196,3 +201,16 @@ class SongQueueRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
 
     def get_queryset(self):
         return SongQueue.objects.filter(attendee__party_id=self.kwargs.get('party'), id=self.kwargs.get('pk'))
+
+
+class SongLookupAPIView(APIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def get(self, request, format=None):
+        song_name = self.request.GET.get('song_name')
+        scraped_content = requests.get("https://www.youtube.com/results?search_query={}+karaoke+version".format(song_name)).content
+        clean_data = BeautifulSoup(scraped_content).find_all(class_="yt-lockup-title")
+        song_link = [(song.find("a").get("title"), song.find("a").get("href")) for song in clean_data if not "*" in song.find("a").get("title")][:1]
+        url = song_link[0][1]
+        ending = parse_qs(url[6:]).get("?v")[0]
+        return Response({'body': '<iframe width="896" height="625" src="https://www.youtube.com/embed/{}?autoplay=1" frameborder="0"></iframe>'.format(ending)})
