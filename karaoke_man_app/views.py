@@ -193,7 +193,7 @@ class SongQueueListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return SongQueue.objects.filter(attendee__party_id=self.kwargs.get('party'), attendee_id=self.kwargs.get('attendee'))
+        return SongQueue.objects.filter(attendees__party_id=self.kwargs.get('party'))
 
 
 class SongQueueRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -201,7 +201,7 @@ class SongQueueRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return SongQueue.objects.filter(attendee__party_id=self.kwargs.get('party'), attendee_id=self.kwargs.get('attendee'), id=self.kwargs.get('pk'))
+        return SongQueue.objects.filter(attendees__party_id=self.kwargs.get('party'), id=self.kwargs.get('pk'))
 
 
 class SongLookupAPIView(APIView):
