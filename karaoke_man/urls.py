@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^api/cities/(?P<city>\d+)/parties/$', views.PartyListCreateAPIView.as_view(), name='party_list_create'),
     url(r'^api/parties/(?P<party>\d+)/attendees/$', views.AttendeeListCreateAPIView.as_view(), name='attendee_list_create'),
     url(r'^api/users/(?P<user>\d+)/attendees/$', views.UserAttendeeListAPIView.as_view(), name='user_attendee_list'),
-    url(r'^api/parties/(?P<party>\d+)/songqueues/$', views.SongQueueListCreateAPIView.as_view(), name='song_queue_list_create'),
+    url(r'^api/parties/(?P<party>\d+)/attendees/(?P<attendee>\d+)/songqueues/$', views.SongQueueListCreateAPIView.as_view(), name='song_queue_list_create'),
     # Retrieve/Update/Destroy API Views
     url(r'^api/users/(?P<user>\d+)/userprofiles/(?P<pk>\d+)/$', views.UserProfileRetrieveUpdateDestroyAPIView.as_view(), name='userprofile_retrieve_update_destroy'),
     url(r'^api/cities/(?P<city>\d+)/$', views.CityRetrieveUpdateDestroyAPIView.as_view(), name='city_retrieve_update_destroy'),
@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^api/cities/(?P<city>\d+)/parties/(?P<pk>\d+)/$', views.PartyRetrieveUpdateDestroyAPIView.as_view(), name='party_retrieve_update_destroy'),
     url(r'^api/parties/(?P<party>\d+)/attendees/(?P<pk>\d+)/$', views.AttendeeRetrieveUpdateDestroyAPIView.as_view(), name='attendee_retrieve_update_destroy'),
     url(r'^api/users/(?P<user>\d+)/attendees/(?P<pk>\d+)/$', views.UserAttendeeRetrieveUpdateDestroyAPIView.as_view(), name='user_attendee_retrieve_update_destroy'),
-    url(r'^api/parties/(?P<party>\d+)/songqueues/(?P<pk>\d+)/$', views.SongQueueRetrieveUpdateDestroyAPIView.as_view(), name='song_queue_retrieve_update_destroy'),
+    url(r'^api/parties/(?P<party>\d+)/attendees/(?P<attendee>\d+)/songqueues/(?P<pk>\d+)/$', views.SongQueueRetrieveUpdateDestroyAPIView.as_view(), name='song_queue_retrieve_update_destroy'),
     url(r'^api/songlookup/$', views.SongLookupAPIView.as_view(), name='song_lookup'),
     # Django template URLs
     url(r'^$', views.IndexView.as_view(), name='index_view'),
