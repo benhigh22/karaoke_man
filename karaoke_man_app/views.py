@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from karaoke_man_app.models import City, Party, Attendee, SongQueue, UserProfile, Location
@@ -44,6 +44,7 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 
 @api_view(['POST'])
+@permission_classes((AllowAny, ))
 def login_api_view(request):
     username = request.data.get('username')
     password = request.data.get('password')

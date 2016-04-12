@@ -1,16 +1,32 @@
 var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
+var $ = require('jquery');
 var backboneMixin = require('backbone-react-component');
 
 var Header = require('./header.jsx');
 var CityCollection = require('../models/citymodel').CityCollection;
 var PartyCollection = require('../models/parties').PartyCollection;
 var AttendeeCollection = require('../models/attendee').AttendeeCollection;
-
+var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
 var cityCollection = new CityCollection();
 var partyCollection = new PartyCollection();
+var partyId;
+var attendee;
+var attendeeId;
 
+var csrftoken = $("input[name='csrfmiddlewaretoken']").val();
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
 //////////////////////////////////////////
 /////City Selection Components
 /////////////////////////////////////////
@@ -63,7 +79,7 @@ var PartySelect = React.createClass({
         var that=this;
         var parties = this.props.collection.map(function(model){
             return(
-              <Party model={model} key={model.get('id')} handleChange={that.props.handleChange} />
+              <Party model={model} key={model.get('id')} showQueue={that.props.showQueue} />
             )
           })
 
@@ -100,7 +116,7 @@ var Party = React.createClass({
               <span className="event-date">{model.get('date_of_party')}</span>
               <span className="event-time">{model.get('time_of_party')}</span>
             </div>
-            { this.state.showPartyDetails ? <PartyDetails handleChange={this.props.handleChange} PartyModel={model}/> : null}
+            { this.state.showPartyDetails ? <PartyDetails showQueue={this.props.showQueue} PartyModel={model}/> : null}
           </div>
         )
       }
@@ -108,18 +124,18 @@ var Party = React.createClass({
 var PartyDetails = React.createClass({
       addAttendee:function(){
 
-          var partyId = this.props.PartyModel.get('id');
-          var attendeeCollection = new AttendeeCollection({'partyId':partyId});
-          console.log(partyId);
+        partyId = this.props.PartyModel.get('id');
+        var attendeeCollection = new AttendeeCollection({'partyId':partyId});
+        console.log(partyId);
 
-          attendeeCollection.create({
-            'user':Number(localStorage.getItem('user')),
-            'party':partyId
-          });
+        attendee = attendeeCollection.create({
+          'user':Number(localStorage.getItem('user')),
+          'party':partyId
+        });
 
-          console.log('Attendee Added');
-          this.props.handleChange();
+        this.props.showQueue();
       },
+
       render:function(){
         var PartyModel = this.props.PartyModel;
         var that=this;
@@ -146,12 +162,12 @@ var SongSelect = React.createClass({
             <div><span>X</span></div>
             <h4>You Have Selected Bens Bar</h4>
             <div>
-              <form action="">
+              <form>
                 <div className="form-group">
-                  <input type="text" placeholder="Singer's Name"/>
-                  <input type="text" placeholder="Song Name"/>
+                  <input type="text" id="singer" className="form-control" placeholder="Singer's Name"/>
+                  <input type="text" id="song" className="form-control"  placeholder="Song Name"/>
                 </div>
-                <button type="submit" className="btn btn-primary"> Add to the que </button>
+                <button type="button" className="btn btn-primary" onClick={this.props.addToQueue}> Add to the que </button>
               </form>
             </div>
           </div>
@@ -162,14 +178,32 @@ var PartyFinder = React.createClass({
   getInitialState:function(){
       return {'showSongAdd':false};
   },
-  handleChange:function(){
-    console.log('Add Song Displayed');
-    if(this.state.showSongAdd===false){
-    this.setState({'showSongAdd':true});
-    }
-    else{
-    this.setState({'showSongAdd':false});
-    }
+  showQueue:function(){
+      console.log('Add Song Displayed');
+      if(this.state.showSongAdd===false){
+      this.setState({'showSongAdd':true});
+      }
+      else{
+      this.setState({'showSongAdd':false});
+      }
+  },
+  addToQueue:function(){
+
+    var setAttendeeId = function(){
+          console.log(attendee);
+          attendeeId = attendee.get('id');
+          console.log(attendeeId);
+        }
+        setAttendeeId();
+     var selectedQueue = new QueueItemCollection({'partyId':partyId});
+         selectedQueue.create({
+           'singer_name':$('#singer').val(),
+           'song_name':$('#song').val(),
+           'party':partyId,
+           'id':attendeeId
+         });
+         console.log(selectedQueue);
+
   },
   render:function(){
       return(
@@ -185,10 +219,10 @@ var PartyFinder = React.createClass({
           </div>
           <div className="row">
             <div className="col-md-8">
-              <PartySelect collection={partyCollection}  handleChange={this.handleChange} />
+              <PartySelect collection={partyCollection}  showQueue={this.showQueue} />
             </div>
             <div className="col-md-4">
-              { this.state.showSongAdd ? <SongSelect /> : null}
+              { this.state.showSongAdd ? <SongSelect addToQueue={this.addToQueue} /> : null}
             </div>
           </div>
         </div>
