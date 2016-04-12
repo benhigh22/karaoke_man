@@ -45,7 +45,6 @@ class Attendee(models.Model):
 
 
 class SongQueue(models.Model):
-    party = models.ForeignKey(Party)
     attendees = models.ForeignKey(Attendee)
     singer_name = models.CharField(max_length=100)
     song_name = models.CharField(max_length=100)
