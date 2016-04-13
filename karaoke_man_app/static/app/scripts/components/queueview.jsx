@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
-
+var $ = require('jquery');
 var Header = require('./header.jsx');
 
 var QueueViewPage = React.createClass({
@@ -17,15 +17,17 @@ var QueueViewPage = React.createClass({
         );
       }
     });
-    
+
 var QueueView = React.createClass({
       render:function(){
         return(
           <div className="col-md-3">
             <div className="panel-wrapper">
               <div className="panel">
-                <h5>Song Name</h5>
-                <span>Singer Name</span>
+                <div>
+                  <h5>Song Name</h5>
+                  <span>Singer Name</span>
+                </div>
               </div>
             </div>
           </div>
