@@ -5894,9 +5894,15 @@ header {
 
 .joined-panel {
   margin: 0 auto;
+  padding-top: 10px;
   background-color: white;
   width: 90%;
   height: 400px; }
+  .joined-panel .party-info {
+    padding: 5px;
+    margin: 5px;
+    color: black;
+    border: solid 1px black; }
 
 .videoplayer {
   background-color: white;

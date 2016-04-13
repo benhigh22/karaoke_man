@@ -43,7 +43,7 @@ var PlayerView = React.createClass({
               <div className="col-md-10 col-md-offset-1">
                 <div className="player-wrapper">
                   <div className="videoplayer">
-
+                    
                   </div>
                 </div>
                 <h3>Results From You-Tube</h3>
