@@ -209,9 +209,10 @@ class SongLookupAPIView(APIView):
 
     def get(self, request, format=None):
         song_name = self.request.GET.get('song_name')
-        scraped_content = requests.get("https://www.youtube.com/results?search_query={}+karaoke+version".format(song_name)).content
-        clean_data = BeautifulSoup(scraped_content).find_all(class_="yt-lockup-title")
-        song_link = [(song.find("a").get("title"), song.find("a").get("href")) for song in clean_data if not "*" in song.find("a").get("title")][:1]
-        url = song_link[0][1]
-        ending = parse_qs(url[6:]).get("?v")[0]
-        return Response({'body': '<iframe width="896" height="625" src="https://www.youtube.com/embed/{}?autoplay=1" frameborder="0"></iframe>'.format(ending)})
+        if song_name:
+            scraped_content = requests.get("https://www.youtube.com/results?search_query={}+karaoke+version".format(song_name)).content
+            clean_data = BeautifulSoup(scraped_content).find_all(class_="yt-lockup-title")
+            song_link = [(song.find("a").get("title"), song.find("a").get("href")) for song in clean_data if not "*" in song.find("a").get("title")][:1]
+            url = song_link[0][1]
+            ending = parse_qs(url[6:]).get("?v")[0]
+            return Response({'body': '<iframe width="896" height="625" src="https://www.youtube.com/embed/{}?autoplay=1" frameborder="0"></iframe>'.format(ending)})
