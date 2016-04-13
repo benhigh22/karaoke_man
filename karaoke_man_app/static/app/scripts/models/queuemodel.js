@@ -9,6 +9,7 @@ var QueueItemCollection = Backbone.Collection.extend({
       initialize: function(id){
         console.log(id);
         curId=id;
+        
       },
       model:QueueItem,
 

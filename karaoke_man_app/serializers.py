@@ -53,11 +53,22 @@ class PartySerializer(serializers.ModelSerializer):
 
 
 class AttendeeSerializer(serializers.ModelSerializer):
+    party_name = serializers.SerializerMethodField()
+    party_date = serializers.SerializerMethodField()
+    party_time = serializers.SerializerMethodField()
+
+    def get_party_name(self, obj):
+        return obj.party.party_name
+
+    def get_party_date(self, obj):
+        return obj.party.date_of_party
+
+    def get_party_time(self, obj):
+        return obj.party.time_of_party
 
     class Meta:
         model = Attendee
-        depth = 1
-        
+
 
 class SongQueueSerializer(serializers.ModelSerializer):
 

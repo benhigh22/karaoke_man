@@ -703,9 +703,14 @@ var CreatedParties = React.createClass({displayName: "CreatedParties",
     });
 
 var CreatedParty = React.createClass({displayName: "CreatedParty",
+      showPartyQueue:function(){
+        var currentParty = this.props.model.get('id');
+        localStorage.setItem('currentParty',currentParty);
+        Backbone.history.navigate('queue',{trigger:true, replace: true});
+      },
       render:function(){
         return(
-          React.createElement("div", {className: "party-info", id: "party"}, 
+          React.createElement("div", {className: "party-info", id: "party", onClick: this.showPartyQueue}, 
             React.createElement("h4", null, this.props.model.get('party_name')), 
             React.createElement("span", null, this.props.model.get('date_of_party')), 
             React.createElement("span", null, this.props.model.get('time_of_party'))
@@ -732,7 +737,7 @@ var JoinedParties = React.createClass({displayName: "JoinedParties",
           React.createElement("div", {className: "col-md-6"}, 
             React.createElement("div", {className: "panel-wrapper"}, 
               React.createElement("h3", null, "Joined Parties"), 
-              React.createElement("div", {className: "events-panel"}, 
+              React.createElement("div", {className: "joined-panel"}, 
                 joinedParties
               )
             )
@@ -741,12 +746,16 @@ var JoinedParties = React.createClass({displayName: "JoinedParties",
       }
     });
 var JoinedParty = React.createClass({displayName: "JoinedParty",
+      showPartyQueue:function(){
+      console.log(this.props.model.get('id'));
+
+      },
       render:function(){
         return(
-          React.createElement("div", {className: "party-info", id: "party"}, 
+          React.createElement("div", {className: "party-info", id: "party", onClick: this.showPartyQueue}, 
             React.createElement("h4", null, this.props.model.get('party_name')), 
-            React.createElement("span", null, this.props.model.get('date_of_party')), 
-            React.createElement("span", null, this.props.model.get('time_of_party'))
+            React.createElement("span", null, this.props.model.get('party_date')), 
+            React.createElement("span", null, this.props.model.get('party_time'))
           )
         )
       }
@@ -761,14 +770,24 @@ var ReactDom = require('react-dom');
 var Backbone = require('backbone');
 var $ = require('jquery');
 var Header = require('./header.jsx');
+var backboneMixin = require('backbone-react-component');
+
+var partyId = Number(localStorage.getItem('currentParty'));
+var sourceUrl;
+var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
+var queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+console.log(partyId);
 
 var QueueViewPage = React.createClass({displayName: "QueueViewPage",
+    componentWillMount:function(){
+      queueItemCollection.fetch();
+    },
       render:function(){
         return(
           React.createElement("div", {className: "container"}, 
             React.createElement(Header, null), 
               React.createElement("div", {className: "row"}, 
-                React.createElement(QueueView, null), 
+                React.createElement(QueueItems, {collection: queueItemCollection}), 
                 React.createElement(PlayerView, null)
               )
           )
@@ -776,32 +795,61 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
       }
     });
 
-var QueueView = React.createClass({displayName: "QueueView",
+var QueueItems = React.createClass({displayName: "QueueItems",
+    mixins:[Backbone.React.Component.mixin],
       render:function(){
+        var queueitems = this.props.collection.map(function(model){
+          console.log(model);
+          console.log(model.get('id'));
+          return(
+            React.createElement(QueueItem, {key: model.get('id'), model: model})
+          );
+        });
         return(
           React.createElement("div", {className: "col-md-3"}, 
             React.createElement("div", {className: "panel-wrapper"}, 
               React.createElement("div", {className: "panel"}, 
-                React.createElement("div", null, 
-                  React.createElement("h5", null, "Song Name"), 
-                  React.createElement("span", null, "Singer Name")
-                )
+                queueitems
               )
             )
           )
         );
       }
     });
-
+var QueueItem = React.createClass({displayName: "QueueItem",
+      showVideo:function(){
+        var query = this.props.model.get('song_name');
+        sourceUrl = $.get('/api/songlookup/?song_name='+ query);
+      },
+      render:function(){
+        return(
+          React.createElement("div", {className: "que-item", onClick: this.showVideo}, 
+            React.createElement("h5", null, this.props.model.get('song_name')), 
+            React.createElement("span", null, this.props.model.get('singer_name'))
+          )
+        );
+      }
+    });
 var PlayerView = React.createClass({displayName: "PlayerView",
       render:function(){
+        var frameStyles = {
+            overflow: 'hidden',
+            height:'100%',
+            width:'100%'
+        };
         return(
           React.createElement("div", {className: "col-md-9"}, 
             React.createElement("div", {className: "row"}, 
               React.createElement("div", {className: "col-md-10 col-md-offset-1"}, 
                 React.createElement("div", {className: "player-wrapper"}, 
-                  React.createElement("div", {className: "videoplayer"}
-                    
+                  React.createElement("div", {className: "videoplayer"}, 
+                    React.createElement("iframe", {style: frameStyles, 
+                            width: "100%", 
+                            height: "100%", 
+                            src: sourceUrl, 
+                            frameBorder: "0", 
+                            allowFullScreen: true}
+                    )
                   )
                 ), 
                 React.createElement("h3", null, "Results From You-Tube"), 
@@ -820,7 +868,7 @@ var PlayerView = React.createClass({displayName: "PlayerView",
 
     module.exports=QueueViewPage;
 
-},{"./header.jsx":1,"backbone":21,"jquery":49,"react":180,"react-dom":51}],8:[function(require,module,exports){
+},{"../models/queuemodel.js":17,"./header.jsx":1,"backbone":21,"backbone-react-component":20,"jquery":49,"react":180,"react-dom":51}],8:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var ReactDom = require('react-dom');
@@ -1139,6 +1187,7 @@ var QueueItemCollection = Backbone.Collection.extend({
       initialize: function(id){
         console.log(id);
         curId=id;
+        
       },
       model:QueueItem,
 

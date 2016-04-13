@@ -5897,7 +5897,8 @@ header {
   padding-top: 10px;
   background-color: white;
   width: 90%;
-  height: 400px; }
+  height: 400px;
+  overflow: scroll; }
   .joined-panel .party-info {
     padding: 5px;
     margin: 5px;
@@ -5913,5 +5914,12 @@ header {
   padding: 10px;
   background-color: black;
   height: 500px; }
+
+.que-item {
+  padding: 5px;
+  margin: 5px;
+  color: black;
+  border: solid 1px black;
+  border-radius: 10px; }
 
 /*# sourceMappingURL=app.css.map */

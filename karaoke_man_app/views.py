@@ -162,6 +162,7 @@ class AttendeeListCreateAPIView(generics.ListCreateAPIView):
         return Attendee.objects.filter(party_id=self.kwargs.get('party'))
 
     def create(self, request, *args, **kwargs):
+        print(request.data)
         request.data['user'] = request.user.pk
         return super().create(request, *args, **kwargs)
 

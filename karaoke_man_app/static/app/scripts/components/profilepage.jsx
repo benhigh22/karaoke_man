@@ -110,9 +110,14 @@ var CreatedParties = React.createClass({
     });
 
 var CreatedParty = React.createClass({
+      showPartyQueue:function(){
+        var currentParty = this.props.model.get('id');
+        localStorage.setItem('currentParty',currentParty);
+        Backbone.history.navigate('queue',{trigger:true, replace: true});
+      },
       render:function(){
         return(
-          <div className="party-info" id='party'>
+          <div className="party-info" id='party' onClick={this.showPartyQueue}>
             <h4>{this.props.model.get('party_name')}</h4>
             <span>{this.props.model.get('date_of_party')}</span>
             <span>{this.props.model.get('time_of_party')}</span>
@@ -139,7 +144,7 @@ var JoinedParties = React.createClass({
           <div className="col-md-6">
             <div className="panel-wrapper">
               <h3>Joined Parties</h3>
-              <div className="events-panel">
+              <div className="joined-panel">
                 {joinedParties}
               </div>
             </div>
@@ -148,12 +153,16 @@ var JoinedParties = React.createClass({
       }
     });
 var JoinedParty = React.createClass({
+      showPartyQueue:function(){
+      console.log(this.props.model.get('id'));
+
+      },
       render:function(){
         return(
-          <div className="party-info" id='party'>
+          <div className="party-info" id='party' onClick={this.showPartyQueue}>
             <h4>{this.props.model.get('party_name')}</h4>
-            <span>{this.props.model.get('date_of_party')}</span>
-            <span>{this.props.model.get('time_of_party')}</span>
+            <span>{this.props.model.get('party_date')}</span>
+            <span>{this.props.model.get('party_time')}</span>
           </div>
         )
       }
