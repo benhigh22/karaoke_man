@@ -56,7 +56,8 @@ class AttendeeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Attendee
-
+        depth = 1
+        
 
 class SongQueueSerializer(serializers.ModelSerializer):
 
