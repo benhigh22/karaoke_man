@@ -6,7 +6,8 @@ var Header = require('./header.jsx');
 var backboneMixin = require('backbone-react-component');
 
 var partyId = Number(localStorage.getItem('currentParty'));
-var sourceUrl;
+var query;
+
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
 var queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
 console.log(partyId);
@@ -15,13 +16,22 @@ var QueueViewPage = React.createClass({
     componentWillMount:function(){
       queueItemCollection.fetch();
     },
+    getInitialState(){
+      return {"sourceUrl": ""}
+    },
+    showVideo:function(){
+      var that = this;
+      var sourceUrl = $.getJSON('/api/songlookup/?song_name='+ query, function(response){
+        that.setState({"sourceUrl":response})
+      });
+    },
       render:function(){
         return(
           <div className="container">
             <Header/>
               <div className="row">
-                <QueueItems collection={queueItemCollection} />
-                <PlayerView />
+                <QueueItems collection={queueItemCollection} showVideo={this.showVideo} />
+                <PlayerView sourceUrl={this.state.sourceUrl}/>
               </div>
           </div>
         );
@@ -31,11 +41,12 @@ var QueueViewPage = React.createClass({
 var QueueItems = React.createClass({
     mixins:[Backbone.React.Component.mixin],
       render:function(){
+        var that = this;
         var queueitems = this.props.collection.map(function(model){
           console.log(model);
           console.log(model.get('id'));
           return(
-            <QueueItem key={model.get('id')} model={model}/>
+            <QueueItem key={model.get('id')} model={model} showVideo={that.props.showVideo}/>
           );
         });
         return(
@@ -50,26 +61,29 @@ var QueueItems = React.createClass({
       }
     });
 var QueueItem = React.createClass({
-      showVideo:function(){
-        var query = this.props.model.get('song_name');
-        sourceUrl = $.get('/api/songlookup/?song_name='+ query);
+      handleSelect:function(){
+        query = this.props.model.get('song_name');
+        this.props.showVideo()
       },
       render:function(){
         return(
-          <div className="que-item" onClick={this.showVideo}>
+          <div className="que-item" onClick={this.handleSelect}>
             <h5>{this.props.model.get('song_name')}</h5>
             <span>{this.props.model.get('singer_name')}</span>
           </div>
         );
       }
     });
+
 var PlayerView = React.createClass({
+
       render:function(){
         var frameStyles = {
             overflow: 'hidden',
             height:'100%',
             width:'100%'
         };
+        var sourceUrl = this.props.sourceUrl;
         return(
           <div className="col-md-9">
             <div className="row">
@@ -79,7 +93,7 @@ var PlayerView = React.createClass({
                     <iframe style={frameStyles}
                             width="100%"
                             height="100%"
-                            src={sourceUrl}
+                            src={sourceUrl.body}
                             frameBorder="0"
                             allowFullScreen>
                     </iframe>
