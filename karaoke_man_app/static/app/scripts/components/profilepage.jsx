@@ -41,9 +41,11 @@ var ProfileNav = React.createClass({
         return(
           <div className="row">
             <div className="col-md-4">
-              <div className="profile-button">
-                <h3> Create A Party </h3>
-              </div>
+              <a href="#create">
+                <div className="profile-button">
+                  <h3> Create A Party </h3>
+                </div>
+              </a>
             </div>
             <div className="col-md-4">
               <a href="#queue">

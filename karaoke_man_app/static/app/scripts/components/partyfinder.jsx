@@ -9,6 +9,9 @@ var CityCollection = require('../models/citymodel').CityCollection;
 var PartyCollection = require('../models/parties').PartyCollection;
 var AttendeeCollection = require('../models/attendee').AttendeeCollection;
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
+//////////////////////////////////////////
+/////Global Variables and Utility Functions
+/////////////////////////////////////////
 var cityCollection = new CityCollection();
 var partyCollection = new PartyCollection();
 var partyId;
@@ -196,13 +199,14 @@ var PartyFinder = React.createClass({
         }
         setAttendeeId();
      var selectedQueue = new QueueItemCollection({'partyId':partyId});
+      console.log(selectedQueue);
          selectedQueue.create({
            'singer_name':$('#singer').val(),
            'song_name':$('#song').val(),
            'party':partyId,
-           'id':attendeeId
+           'attendees':attendeeId,
          });
-         console.log(selectedQueue);
+
 
   },
   render:function(){

@@ -1,10 +1,8 @@
 var Backbone = require('backbone');
 var curId;
 var QueueItem = Backbone.Model.extend({
-      defaults:{
-        singer_name:'singer',
-        song_name:'song'
-      }
+
+
     });
 
 var QueueItemCollection = Backbone.Collection.extend({
