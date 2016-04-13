@@ -17,6 +17,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import parse_qs
 
 
+
 def login_view(request):
     return render_to_response('login.html', context=RequestContext(request))
 
@@ -215,4 +216,4 @@ class SongLookupAPIView(APIView):
             song_link = [(song.find("a").get("title"), song.find("a").get("href")) for song in clean_data if not "*" in song.find("a").get("title")][:1]
             url = song_link[0][1]
             ending = parse_qs(url[6:]).get("?v")[0]
-            return Response({'body': '<iframe width="896" height="625" src="https://www.youtube.com/embed/{}?autoplay=1" frameborder="0"></iframe>'.format(ending)})
+            return Response({'body': 'https://www.youtube.com/embed/{}?autoplay=1'.format(ending)})
