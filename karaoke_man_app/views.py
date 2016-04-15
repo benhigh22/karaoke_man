@@ -140,11 +140,7 @@ class PartyListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return Party.objects.filter(location__city_id=self.kwargs.get('city'))
-
-    def create(self, request, *args, **kwargs):
-        request.data['creator'] = request.user.pk
-        return super().create(request, *args, **kwargs)
+        return Party.objects.filter(location_id=self.kwargs.get('location'))
 
 
 class PartyRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -218,3 +214,14 @@ class SongLookupAPIView(APIView):
             url = song_link[0][1]
             ending = parse_qs(url[6:]).get("?v")[0]
             return Response({'body': 'https://www.youtube.com/embed/{}?autoplay=1'.format(ending)})
+
+# Joes API View
+class AllCitiesPartiesListAPIView(generics.ListCreateAPIView):
+    serializer_class = PartySerializer
+
+    def get_queryset(self):
+        return Party.objects.filter(city=self.kwargs.get('city'))
+
+    def create(self, request, *args, **kwargs):
+        request.data['city'] = self.kwargs.get('city')
+        return super().create(request, *args, **kwargs)

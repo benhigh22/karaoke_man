@@ -28,12 +28,13 @@ class Location(models.Model):
 
 
 class Party(models.Model):
+    city = models.ForeignKey(City)
     location = models.ForeignKey(Location)
     creator = models.ForeignKey(User)
     date_of_party = models.DateField()
-    time_of_party = models.TimeField()
+    time_of_party = models.CharField(max_length=30)
     party_name = models.CharField(max_length=75)
-    desription = models.TextField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.party_name

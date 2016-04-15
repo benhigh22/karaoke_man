@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^api/users/(?P<pk>\d+)/parties/$', views.UserListAPIView.as_view(), name='user_list'),
     url(r'^api/users/(?P<pk>\d+)/locations/$', views.UserLocationListAPIView.as_view(), name='user_location_list'),
     url(r'^api/cities/(?P<city>\d+)/locations/$', views.LocationListCreateAPIView.as_view(), name='location_list_create'),
-    url(r'^api/cities/(?P<city>\d+)/parties/$', views.PartyListCreateAPIView.as_view(), name='party_list_create'),
+    url(r'^api/locations/(?P<location>\d+)/parties/$', views.PartyListCreateAPIView.as_view(), name='party_list_create'),
     url(r'^api/parties/(?P<party>\d+)/attendees/$', views.AttendeeListCreateAPIView.as_view(), name='attendee_list_create'),
     url(r'^api/users/(?P<user>\d+)/attendees/$', views.UserAttendeeListAPIView.as_view(), name='user_attendee_list'),
     url(r'^api/parties/(?P<party>\d+)/songqueues/$', views.SongQueueListCreateAPIView.as_view(), name='song_queue_list_create'),
@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^api/cities/(?P<city>\d+)/$', views.CityRetrieveUpdateDestroyAPIView.as_view(), name='city_retrieve_update_destroy'),
     url(r'^api/cities/(?P<city>\d+)/locations/(?P<pk>\d+)/$', views.LocationRetrieveUpdateDestroyAPIView.as_view(), name='location_retrieve_update_destroy'),
     url(r'^api/cities/(?P<city>\d+)/parties/(?P<pk>\d+)/$', views.PartyRetrieveUpdateDestroyAPIView.as_view(), name='party_retrieve_update_destroy'),
+    # Joes url below
+    url(r'^api/cities/(?P<city>\d+)/parties/$', views.AllCitiesPartiesListAPIView.as_view(), name='list_all_parties_api_view'),
     url(r'^api/parties/(?P<party>\d+)/attendees/(?P<pk>\d+)/$', views.AttendeeRetrieveUpdateDestroyAPIView.as_view(), name='attendee_retrieve_update_destroy'),
     url(r'^api/users/(?P<user>\d+)/attendees/(?P<pk>\d+)/$', views.UserAttendeeRetrieveUpdateDestroyAPIView.as_view(), name='user_attendee_retrieve_update_destroy'),
     url(r'^api/parties/(?P<party>\d+)/songqueues/(?P<pk>\d+)/$', views.SongQueueRetrieveUpdateDestroyAPIView.as_view(), name='song_queue_retrieve_update_destroy'),

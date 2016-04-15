@@ -114,7 +114,7 @@ var Party = React.createClass({
         return(
           <div>
             <div key={model.get('id')}>
-              <h4>{model.get('location').name}</h4>
+              <h4>{model.get('location_name')}</h4>
               <button type="button" onClick={this.handleClick}> See Details </button>
               <span className="event-date">{model.get('date_of_party')}</span>
               <span className="event-time">{model.get('time_of_party')}</span>

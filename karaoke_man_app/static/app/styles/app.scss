@@ -127,3 +127,14 @@ header{
   border:solid 1px black;
   border-radius: 10px;
 }
+.ui-datepicker{
+  background-color: white;
+  border-radius: 5px;
+  border:solid 1px gray;
+  padding:10px;
+  width:175px;
+  td{
+    padding:0 2px;
+  }
+
+}

@@ -46,10 +46,14 @@ class CitySerializer(serializers.ModelSerializer):
 
 
 class PartySerializer(serializers.ModelSerializer):
+    location_name = serializers.SerializerMethodField()
+
+    def get_location_name(self, obj):
+        return obj.location.name
 
     class Meta:
         model = Party
-        depth = 1
+
 
 
 class AttendeeSerializer(serializers.ModelSerializer):
