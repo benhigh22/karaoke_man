@@ -7,6 +7,7 @@ var RegistrationFormPage = require('./components/userReg.jsx');
 var ProfilePage = require('./components/profilepage.jsx');
 var PartyFinder = require('./components/partyfinder.jsx');
 var QueueViewPage = require('./components/queueview.jsx');
+var PartyCreator = require('./components/partycreator.jsx');
 var Login = require('./components/login.jsx');
 
 
@@ -17,7 +18,8 @@ routes:{
 'register':'renderUserRegistration',
 'user':'renderProfilePage',
 'find':'renderPartyFinder',
-'queue':'renderQueueViewPage'
+'queue':'renderQueueViewPage',
+'create':'renderCreatePage'
 },
 
 renderHome:function(){
@@ -45,7 +47,11 @@ renderQueueViewPage:function(){
   ReactDOM.render(React.createElement(QueueViewPage),
   document.getElementById('app'));
 },
-
+renderCreatePage:function(){
+  ReactDOM.unmountComponentAtNode(document.getElementById('app'));
+  ReactDOM.render(React.createElement(PartyCreator),
+  document.getElementById('app'));
+}
 });
 
 module.exports = new Router();

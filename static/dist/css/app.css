@@ -5894,9 +5894,16 @@ header {
 
 .joined-panel {
   margin: 0 auto;
+  padding-top: 10px;
   background-color: white;
   width: 90%;
-  height: 400px; }
+  height: 400px;
+  overflow: scroll; }
+  .joined-panel .party-info {
+    padding: 5px;
+    margin: 5px;
+    color: black;
+    border: solid 1px black; }
 
 .videoplayer {
   background-color: white;
@@ -5907,5 +5914,21 @@ header {
   padding: 10px;
   background-color: black;
   height: 500px; }
+
+.que-item {
+  padding: 5px;
+  margin: 5px;
+  color: black;
+  border: solid 1px black;
+  border-radius: 10px; }
+
+.ui-datepicker {
+  background-color: white;
+  border-radius: 5px;
+  border: solid 1px gray;
+  padding: 10px;
+  width: 175px; }
+  .ui-datepicker td {
+    padding: 0 2px; }
 
 /*# sourceMappingURL=app.css.map */

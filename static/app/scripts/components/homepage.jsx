@@ -21,13 +21,15 @@ var Home = React.createClass({
               <ul className="nav">
                 <li>Home</li>
                 <li>About Us</li>
+                <a href="#user"><li>Profile</li></a>
               </ul>
             </div>
           </header>
           <Login />
           <div className="row">
-            <div className="col-md-7">
-              <h1> Karaoke Now! </h1>
+            <div className="col-md-10">
+              <h1> Welcome To Karaoke Man, Your Free Karaoke Management Application!
+              </h1>
             </div>
           </div>
           <div className="row">
@@ -51,11 +53,13 @@ var Home = React.createClass({
               </div>
             </div>
             <div className="col-md-5">
-              <h3>Karaoke Subheading!</h3>
-              <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Fuga eum, quos magni, esse repellendus facilis magnam dolores dignissimos
-                 consequuntur quasi sunt iusto, quas!
-                Aperiam corrupti architecto error, sed minima hic?</p>
+              <h3>Why Karaoke Man is Awesome:</h3>
+              <p> Love to Karaoke but never know where in your area
+                is having events? Want to have your own parties but can’t
+                afford that expensive Karaoke software? Hate showing up a
+                few minutes late to the party and having to wait all night to
+                sing? These problems are all solved with this free app!
+                Interested? Signup or Login now!!!</p>
             </div>
           </div>
         </div>
