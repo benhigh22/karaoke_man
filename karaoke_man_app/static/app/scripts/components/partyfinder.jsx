@@ -144,11 +144,8 @@ var PartyDetails = React.createClass({
         var that=this;
         return(
           <div>
-            <h5>Party Title</h5>
-            <p> Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-              weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah
-              plickers sifteo edmodo ifttt zimbra.
-            </p>
+            <h5>{PartyModel.get('party_name')}</h5>
+            <p> {PartyModel.get('description')}</p>
             <button className="btn btn-primary" onClick={this.addAttendee}>Join This Party</button>
           </div>
         )

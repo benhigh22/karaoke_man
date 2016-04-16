@@ -17,11 +17,12 @@ var ProfilePage = React.createClass({
             <Header/>
             <div className="row">
               <div className="col-md-6 col-md-offset-3">
-                <h1> Headline </h1>
-                <p><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Officia vero consectetur cum corporis iure quo nulla, dolor
-                  aliquam quam facilis ipsam delectus unde qui magni commodi
-                  adipisci voluptate ea sint.</span></p>
+                <h1> Welcome To Your Profile! </h1>
+                <p><span>This is your one stop shop for all of your Karaoke
+                  needs! Want to create a party? Do so here! Need to keep up
+                  with upcoming parties? Also here! Curious about future parties
+                  in your city that you may want to attend? You guessed it,
+                  right here!</span></p>
               </div>
             </div>
             <ProfileNav/>
@@ -30,11 +31,10 @@ var ProfilePage = React.createClass({
                 <img src="https://unsplash.it/g/400/200" alt=""/>
               </div>
               <div className="col-md-6 sidebar">
-                <h3>Sub Headline</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                   Voluptatum eaque, iste quis alias ipsum exercitationem,
-                   ab architecto at qui porro praesentium corporis reiciendis fugiat!
-                   Nemo minima sapiente, quos praesentium nisi.</p>
+                <h3>Past and Future Events</h3>
+                <p>See below for all Parties you have created or joined at any
+                  time, past or future. Thinking back nostalgically about past
+                  events?? Create a new party and experience it again!</p>
               </div>
             </div>
             <EventInfo/>

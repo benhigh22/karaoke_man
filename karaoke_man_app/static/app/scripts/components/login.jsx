@@ -16,6 +16,7 @@ var Login = React.createClass({
             console.log('sucessfully logged in')
             localStorage.setItem('user',response.user.id);
             Backbone.history.navigate('user',{trigger:true, replace: true});
+            location.reload();
             }
           else{
             alert('Incorrect Username and Password')

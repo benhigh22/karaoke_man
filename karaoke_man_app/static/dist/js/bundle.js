@@ -52,14 +52,16 @@ var Home = React.createClass({displayName: "Home",
             React.createElement("div", {className: "col-md-6"}, 
               React.createElement("ul", {className: "nav"}, 
                 React.createElement("li", null, "Home"), 
-                React.createElement("li", null, "About Us")
+                React.createElement("li", null, "About Us"), 
+                React.createElement("a", {href: "#user"}, React.createElement("li", null, "Profile"))
               )
             )
           ), 
           React.createElement(Login, null), 
           React.createElement("div", {className: "row"}, 
-            React.createElement("div", {className: "col-md-7"}, 
-              React.createElement("h1", null, " Karaoke Now! ")
+            React.createElement("div", {className: "col-md-10"}, 
+              React.createElement("h1", null, " Welcome To Karaoke Man, Your Free Karaoke Management Application!"
+              )
             )
           ), 
           React.createElement("div", {className: "row"}, 
@@ -83,11 +85,13 @@ var Home = React.createClass({displayName: "Home",
               )
             ), 
             React.createElement("div", {className: "col-md-5"}, 
-              React.createElement("h3", null, "Karaoke Subheading!"), 
-              React.createElement("p", null, " Lorem ipsum dolor sit amet, consectetur adipisicing elit." + ' ' +
-                "Fuga eum, quos magni, esse repellendus facilis magnam dolores dignissimos" + ' ' +
-                 "consequuntur quasi sunt iusto, quas!" + ' ' +
-                "Aperiam corrupti architecto error, sed minima hic?")
+              React.createElement("h3", null, "Why Karaoke Man is Awesome:"), 
+              React.createElement("p", null, " Love to Karaoke but never know where in your area" + ' ' +
+                "is having events? Want to have your own parties but can’t" + ' ' +
+                "afford that expensive Karaoke software? Hate showing up a" + ' ' +
+                "few minutes late to the party and having to wait all night to" + ' ' +
+                "sing? These problems are all solved with this free app!" + ' ' +
+                "Interested? Signup or Login now!!!")
             )
           )
         )
@@ -117,6 +121,7 @@ var Login = React.createClass({displayName: "Login",
             console.log('sucessfully logged in')
             localStorage.setItem('user',response.user.id);
             Backbone.history.navigate('user',{trigger:true, replace: true});
+            location.reload();
             }
           else{
             alert('Incorrect Username and Password')
@@ -325,7 +330,8 @@ var CreatePartyForm = React.createClass({displayName: "CreatePartyForm",
           "city": splitValues[1],
           "creator": Number(localStorage.getItem('user'))
         },function(){
-          console.log('successfully posted');
+          alert('successfully posted');
+          Backbone.history.navigate('user',{trigger:true, replace: true});
           },"json");
       },
       render:function(){
@@ -546,11 +552,8 @@ var PartyDetails = React.createClass({displayName: "PartyDetails",
         var that=this;
         return(
           React.createElement("div", null, 
-            React.createElement("h5", null, "Party Title"), 
-            React.createElement("p", null, " Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles," + ' ' +
-              "weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah" + ' ' +
-              "plickers sifteo edmodo ifttt zimbra."
-            ), 
+            React.createElement("h5", null, PartyModel.get('party_name')), 
+            React.createElement("p", null, " ", PartyModel.get('description')), 
             React.createElement("button", {className: "btn btn-primary", onClick: this.addAttendee}, "Join This Party")
           )
         )
@@ -659,11 +662,12 @@ var ProfilePage = React.createClass({displayName: "ProfilePage",
             React.createElement(Header, null), 
             React.createElement("div", {className: "row"}, 
               React.createElement("div", {className: "col-md-6 col-md-offset-3"}, 
-                React.createElement("h1", null, " Headline "), 
-                React.createElement("p", null, React.createElement("span", null, "Lorem ipsum dolor sit amet, consectetur adipisicing elit." + ' ' +
-                  "Officia vero consectetur cum corporis iure quo nulla, dolor" + ' ' +
-                  "aliquam quam facilis ipsam delectus unde qui magni commodi" + ' ' +
-                  "adipisci voluptate ea sint."))
+                React.createElement("h1", null, " Welcome To Your Profile! "), 
+                React.createElement("p", null, React.createElement("span", null, "This is your one stop shop for all of your Karaoke" + ' ' +
+                  "needs! Want to create a party? Do so here! Need to keep up" + ' ' +
+                  "with upcoming parties? Also here! Curious about future parties" + ' ' +
+                  "in your city that you may want to attend? You guessed it," + ' ' +
+                  "right here!"))
               )
             ), 
             React.createElement(ProfileNav, null), 
@@ -672,11 +676,10 @@ var ProfilePage = React.createClass({displayName: "ProfilePage",
                 React.createElement("img", {src: "https://unsplash.it/g/400/200", alt: ""})
               ), 
               React.createElement("div", {className: "col-md-6 sidebar"}, 
-                React.createElement("h3", null, "Sub Headline"), 
-                React.createElement("p", null, "Lorem ipsum dolor sit amet, consectetur adipisicing elit." + ' ' +
-                   "Voluptatum eaque, iste quis alias ipsum exercitationem," + ' ' +
-                   "ab architecto at qui porro praesentium corporis reiciendis fugiat!" + ' ' +
-                   "Nemo minima sapiente, quos praesentium nisi.")
+                React.createElement("h3", null, "Past and Future Events"), 
+                React.createElement("p", null, "See below for all Parties you have created or joined at any" + ' ' +
+                  "time, past or future. Thinking back nostalgically about past" + ' ' +
+                  "events?? Create a new party and experience it again!")
               )
             ), 
             React.createElement(EventInfo, null)

@@ -165,7 +165,8 @@ var CreatePartyForm = React.createClass({
           "city": splitValues[1],
           "creator": Number(localStorage.getItem('user'))
         },function(){
-          console.log('successfully posted');
+          alert('successfully posted');
+          Backbone.history.navigate('user',{trigger:true, replace: true});
           },"json");
       },
       render:function(){
