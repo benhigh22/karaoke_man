@@ -1,4 +1,4 @@
-from karaoke_man.secrets import secret_password, secret_num2, facebook_key, facebook_secret, twitter_key, twitter_secret
+from karaoke_man import secrets
 
 import os
 
@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret_num2
+SECRET_KEY = secrets.secret_num2
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -75,10 +75,10 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-SOCIAL_AUTH_FACEBOOK_KEY = facebook_key
-SOCIAL_AUTH_FACEBOOK_SECRET = facebook_secret
-SOCIAL_AUTH_TWITTER_KEY = twitter_key
-SOCIAL_AUTH_TWITTER_SECRET = twitter_secret
+SOCIAL_AUTH_FACEBOOK_KEY = secrets.facebook_key
+SOCIAL_AUTH_FACEBOOK_SECRET = secrets.facebook_secret
+SOCIAL_AUTH_TWITTER_KEY = secrets.twitter_key
+SOCIAL_AUTH_TWITTER_SECRET = secrets.twitter_secret
 
 
 WSGI_APPLICATION = 'karaoke_man.wsgi.application'
@@ -99,7 +99,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'karaoke_man_db',
         'USER': 'karaoke_man',
-        'PASSWORD': secret_password,
+        'PASSWORD': secrets.secret_password,
         'HOST': 'karaoke-man-instance.cmfwugvhycub.us-east-1.rds.amazonaws.com',
     }
 }
