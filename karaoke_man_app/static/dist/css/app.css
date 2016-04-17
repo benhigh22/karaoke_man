@@ -5817,11 +5817,19 @@ button.close {
 img {
   max-width: 100%; }
 
+a:hover {
+  text-decoration: none; }
+
+a:selected {
+  text-decoration: none; }
+
 .modal-backdrop {
   z-index: -1000; }
 
 .bottom-btns {
   margin: 20px 0px 20px 0px; }
+  .bottom-btns h3 {
+    margin-top: 0px; }
 
 .nav {
   text-decoration: none;
@@ -5829,12 +5837,37 @@ img {
   float: left;
   padding-top: 50px; }
   .nav li {
+    font-family: "Avenir Next";
     padding: 5px 10px;
     margin: 10px;
     color: white;
+    border: solid 1px #CC66FF;
     border-radius: 10px;
     display: inline-block;
-    background-image: radial-gradient(50% 146%, #700DEF 47%, #AF4EDB 100%); }
+    background: #CC66FF; }
+  .nav li:hover {
+    color: black;
+    background-color: white;
+    border: solid 1px #331940; }
+
+#logo {
+  height: 150px; }
+
+#infograph {
+  margin: 45px auto;
+  padding: 15px;
+  border-bottom: solid 1px black;
+  border-top: solid 1px black; }
+
+.homepage-btn {
+  height: 125px;
+  padding: 20px;
+  border: solid 3px #CC66FF;
+  border-radius: 10px;
+  color: #331940;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold; }
 
 header {
   margin-top: 20px; }

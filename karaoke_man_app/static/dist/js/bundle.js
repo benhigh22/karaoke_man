@@ -47,7 +47,7 @@ var Home = React.createClass({displayName: "Home",
         React.createElement("div", {className: "container"}, 
           React.createElement("header", {className: "row"}, 
             React.createElement("div", {className: "col-md-3"}, 
-              React.createElement("img", {src: "https://unsplash.it/g/200/200", alt: ""})
+              React.createElement("img", {id: "logo", src: "/static/dist/images/logo.svgz", alt: ""})
             ), 
             React.createElement("div", {className: "col-md-6"}, 
               React.createElement("ul", {className: "nav"}, 
@@ -66,7 +66,7 @@ var Home = React.createClass({displayName: "Home",
           ), 
           React.createElement("div", {className: "row"}, 
             React.createElement("div", {className: "col-md-12"}, 
-              React.createElement("img", {src: "https://unsplash.it/g/1000/200", alt: ""})
+              React.createElement("img", {id: "infograph", src: "/static/dist/images/infograph.svgz", alt: ""})
             )
           ), 
           React.createElement("div", {className: "row bottom-btns"}, 
@@ -74,12 +74,16 @@ var Home = React.createClass({displayName: "Home",
               React.createElement("div", {className: "row"}, 
                 React.createElement("div", {className: "col-md-6"}, 
                   React.createElement("a", {href: "", onClick: this.openModal, "data-toggle": "modal", "data-target": "#myModal"}, 
-                    React.createElement("img", {src: "/static/dist/images/LoginGroup.svg", alt: ""})
+                    React.createElement("div", {className: "homepage-btn"}, 
+                      "Login To Your Account"
+                    )
                   )
                 ), 
                 React.createElement("div", {className: "col-md-6"}, 
                   React.createElement("a", {href: "#register"}, 
-                    React.createElement("img", {src: "/static/dist/images/Group.svg", alt: ""})
+                    React.createElement("div", {className: "homepage-btn"}, 
+                      "SignUp For A New Account!"
+                    )
                   )
                 )
               )
