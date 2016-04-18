@@ -26,7 +26,7 @@ var Home = React.createClass({
             </div>
           </header>
           <Login />
-          <div className="row">
+          <div className="row headline">
             <div className="col-md-10">
               <h1> Welcome To Karaoke Man, Your Free Karaoke Management Application!
               </h1>

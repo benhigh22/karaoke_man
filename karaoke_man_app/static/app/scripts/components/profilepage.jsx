@@ -15,8 +15,11 @@ var ProfilePage = React.createClass({
         return(
           <div className="container">
             <Header/>
-            <div className="row">
-              <div className="col-md-6 col-md-offset-3">
+            <div className="prof-headline row">
+              <div className="col-md-2 col-md-offset-2">
+                <img id="k-man" className="pull-left" src="/static/dist/images/karaokeman.svgz"/>
+              </div>
+              <div className="col-md-7">
                 <h1> Welcome To Your Profile! </h1>
                 <p><span>This is your one stop shop for all of your Karaoke
                   needs! Want to create a party? Do so here! Need to keep up
@@ -28,7 +31,7 @@ var ProfilePage = React.createClass({
             <ProfileNav/>
             <div className="row">
               <div className="col-md-6">
-                <img src="https://unsplash.it/g/400/200" alt=""/>
+                <img src="https://images.unsplash.com/46/unsplash_52c319226cefb_1.JPG?crop=entropy&dpr=2&fit=crop&fm=jpg&h=650&ixjsv=2.1.0&ixlib=rb-0.3.5&q=50&w=1200" alt=""/>
               </div>
               <div className="col-md-6 sidebar">
                 <h3>Past and Future Events</h3>
