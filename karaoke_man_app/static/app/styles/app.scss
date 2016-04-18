@@ -122,6 +122,8 @@ header{
   border-left: solid 1px black;
   padding:10px;
 }
+//User Registration Page//
+
 .user-reg-form{
   margin-top: 30px;
 }
@@ -135,6 +137,25 @@ header{
     margin:5px;
   }
 }
+
+.signup_button{
+  font-family: "Avenir Next";
+  padding:5px 10px;
+  margin:10px;
+  color:white;
+  border:solid 1px #CC66FF;
+  border-radius: 10px;
+  background:#CC66FF;
+}
+.signup_button:hover{
+  color:black;
+  background-color: white;
+  border:solid 1px #331940;
+}
+
+/////////////////////////
+
+
 .profile-button{
   width:100%;
   height:100px;

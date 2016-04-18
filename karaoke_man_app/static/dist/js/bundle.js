@@ -1011,7 +1011,7 @@ var UserRegForm = React.createClass({displayName: "UserRegForm",
           React.createElement("div", {className: "col-md-10"}, 
             React.createElement("div", {className: "user-formwrapper"}, 
               React.createElement("div", {className: "row"}, 
-                React.createElement("div", {className: "col-md-4"}, 
+                React.createElement("div", {className: "col-md-4 test"}, 
                   React.createElement("div", {className: "prof-pic-upload"}, 
                     React.createElement("img", {src: "static/dist/images/UPLOADPLACEHOLDER.svg", alt: ""})
                   )
@@ -1020,7 +1020,7 @@ var UserRegForm = React.createClass({displayName: "UserRegForm",
                   React.createElement("form", {action: "", id: "user-form", onSubmit: this.addUser}, 
                     React.createElement("input", {type: "text", placeholder: "username", name: "username", id: "username"}), 
                     React.createElement("input", {type: "text", placeholder: "password", name: "password", id: "password"}), 
-                    React.createElement("button", {className: "btn btn-primary", type: "submit"}, " Submit User Test")
+                    React.createElement("button", {className: "signup_button", type: "submit"}, " Sign Up!")
                   )
                 )
               ), 
@@ -1031,11 +1031,10 @@ var UserRegForm = React.createClass({displayName: "UserRegForm",
           ), 
           React.createElement("div", {className: "col-md-2"}, 
             React.createElement("div", {className: "sidebar"}, 
-              React.createElement("h3", null, " Subheading in sidebar"), 
-              React.createElement("p", null, "Lorem ipsum dolor sit amet, consectetur adipisicing elit." + ' ' +
-                "Vel, dicta, consectetur. Aut vel libero itaque earum quam quia labore iure." + ' ' +
-                "Et minima quam saepe ratione accusamus." + ' ' +
-                "Ipsam dignissimos doloremque, deleniti.")
+              React.createElement("h3", null, "Your Profile"), 
+              React.createElement("p", null, "Thanks for joining The Karaoke Man! After completing this step, you will be ready to see parties" + ' ' +
+              "in your City, or start your own! You can also use your profile to keep up with your upcoming" + ' ' +
+              "parties and see past ones you've thrown or attended!")
             )
           )
         )
@@ -1048,20 +1047,8 @@ var UserProfForm = React.createClass({displayName: "UserProfForm",
       return(
         React.createElement("div", {className: "row"}, 
           React.createElement("form", {id: "profile-form"}, 
-            React.createElement("div", {className: "col-md-6"}, 
-              React.createElement("select", {name: "user-type"}, 
-                React.createElement("option", {value: "Business"}, "Business"), 
-                React.createElement("option", {value: "Singer"}, "Individual")
-              ), 
-              React.createElement("input", {type: "text", name: "address", placeholder: "address"}), 
-              React.createElement("input", {type: "text", name: "city", placeholder: "city"}), 
-              React.createElement("input", {type: "text", name: "state", placeholder: "state"}), 
-              React.createElement("input", {type: "text", name: "zip", placeholder: "zip"})
-            ), 
-            React.createElement("div", {className: "col-md-6"}, 
-              React.createElement("input", {type: "email", placeholder: "email", name: "email"}), 
-              React.createElement("input", {type: "text", placeholder: "extra-1", name: "extra-1"}), 
-              React.createElement("input", {type: "text", placeholder: "extra-2", name: "extra-2"})
+            React.createElement("div", {className: "col-md-8"}, 
+              React.createElement("input", {type: "email", placeholder: "email", name: "email"})
             )
           )
         )
@@ -1797,7 +1784,7 @@ module.exports = new Router();
 
 },{"backbone":22,"react":183,"react-dom":54,"underscore":184}],22:[function(require,module,exports){
 (function (global){
-//     Backbone.js 1.3.2
+//     Backbone.js 1.3.3
 
 //     (c) 2010-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Backbone may be freely distributed under the MIT license.
@@ -1843,7 +1830,7 @@ module.exports = new Router();
   var slice = Array.prototype.slice;
 
   // Current version of the library. Keep in sync with `package.json`.
-  Backbone.VERSION = '1.3.2';
+  Backbone.VERSION = '1.3.3';
 
   // For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
   // the `$` variable.
@@ -19995,7 +19982,7 @@ $.widget( "ui.tooltip", {
 
 },{"jquery":51}],51:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.2
+ * jQuery JavaScript Library v2.2.3
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -20005,7 +19992,7 @@ $.widget( "ui.tooltip", {
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-03-17T17:51Z
+ * Date: 2016-04-05T19:26Z
  */
 
 (function( global, factory ) {
@@ -20061,7 +20048,7 @@ var support = {};
 
 
 var
-	version = "2.2.2",
+	version = "2.2.3",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -29471,7 +29458,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		// If it fails, this function gets "jqXHR", "status", "error"
 		} ).always( callback && function( jqXHR, status ) {
 			self.each( function() {
-				callback.apply( self, response || [ jqXHR.responseText, status, jqXHR ] );
+				callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
 			} );
 		} );
 	}

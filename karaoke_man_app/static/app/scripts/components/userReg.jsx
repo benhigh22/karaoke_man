@@ -66,7 +66,7 @@ var UserRegForm = React.createClass({
           <div className="col-md-10">
             <div className="user-formwrapper">
               <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-4 test">
                   <div className="prof-pic-upload">
                     <img src="static/dist/images/UPLOADPLACEHOLDER.svg" alt=""/>
                   </div>
@@ -75,7 +75,7 @@ var UserRegForm = React.createClass({
                   <form action="" id="user-form" onSubmit={this.addUser}>
                     <input type="text" placeholder="username" name="username" id="username"/>
                     <input type="text" placeholder="password" name="password" id="password"/>
-                    <button className="btn btn-primary" type="submit"> Submit User Test</button>
+                    <button className="signup_button" type="submit"> Sign Up!</button>
                   </form>
                 </div>
               </div>
@@ -86,11 +86,10 @@ var UserRegForm = React.createClass({
           </div>
           <div className="col-md-2">
             <div className="sidebar">
-              <h3> Subheading in sidebar</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Vel, dicta, consectetur. Aut vel libero itaque earum quam quia labore iure.
-                Et minima quam saepe ratione accusamus.
-                Ipsam dignissimos doloremque, deleniti.</p>
+              <h3>Your Profile</h3>
+              <p>Thanks for joining The Karaoke Man! After completing this step, you will be ready to see parties
+              in your City, or start your own! You can also use your profile to keep up with your upcoming
+              parties and see past ones you've thrown or attended!</p>
             </div>
           </div>
         </div>
@@ -103,20 +102,8 @@ var UserProfForm = React.createClass({
       return(
         <div className="row">
           <form id="profile-form">
-            <div className="col-md-6">
-              <select name="user-type">
-                <option value="Business">Business</option>
-                <option value="Singer">Individual</option>
-              </select>
-              <input type="text" name="address" placeholder="address"/>
-              <input type="text" name="city" placeholder="city"/>
-              <input type="text" name="state" placeholder="state"/>
-              <input type="text" name="zip" placeholder="zip"/>
-            </div>
-            <div className="col-md-6">
+            <div className="col-md-8">
               <input type="email" placeholder="email" name="email"/>
-              <input type="text" placeholder="extra-1" name="extra-1"/>
-              <input type="text" placeholder="extra-2" name="extra-2"/>
             </div>
           </form>
         </div>
