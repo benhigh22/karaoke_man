@@ -17,7 +17,7 @@ var Home = React.createClass({
           <div className="container">
             <header className="row">
               <div className="col-md-3">
-                <img id="logo" src="/static/dist/images/logo.svgz" alt=""/>
+                <img id="logo" src="/static/dist/images/logo.png" alt=""/>
               </div>
               <div className="col-md-6">
                 <ul className="nav">
@@ -36,7 +36,7 @@ var Home = React.createClass({
             </div>
             <div className="row">
               <div className="col-md-12">
-                <img id="infograph" src="/static/dist/images/infograph.svgz" alt=""/>
+                <img id="infograph" src="/static/dist/images/infograph.png" alt=""/>
               </div>
             </div>
             <div className="row bottom-btns">

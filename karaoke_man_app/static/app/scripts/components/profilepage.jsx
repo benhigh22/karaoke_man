@@ -20,7 +20,7 @@ var ProfilePage = React.createClass({
               <Header/>
               <div className="prof-headline row">
                 <div className="col-md-2 col-md-offset-2">
-                  <img id="k-man" className="pull-left" src="/static/dist/images/karaokeman.svgz"/>
+                  <img id="k-man" className="pull-left" src="/static/dist/images/karaokeman.png"/>
                 </div>
                 <div className="col-md-7">
                   <h1> Welcome To Your Profile! </h1>

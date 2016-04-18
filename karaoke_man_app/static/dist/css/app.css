@@ -5880,9 +5880,6 @@ a:hover, a::selection, a:visited, a:focus, a:active {
     background-color: white;
     border: solid 1px #331940; }
 
-#logo {
-  height: 150px; }
-
 #infograph {
   margin: 45px auto;
   padding: 15px;
