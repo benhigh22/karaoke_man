@@ -24,6 +24,11 @@ h3{
   font-family: "Avenir Next";
   font-weight: bold;
 }
+footer{
+  height:100px;
+  background-color: #CC66FF;
+  margin-top: 20px;
+}
 a:hover, a::selection, a:visited, a:focus, a:active{
   text-decoration: none;
   outline: none;
@@ -80,7 +85,6 @@ a:hover, a::selection, a:visited, a:focus, a:active{
   }
 }
 #logo{
-  height:150px;
 }
 #infograph{
   margin:45px auto;
@@ -122,6 +126,8 @@ header{
   border-left: solid 1px black;
   padding:10px;
 }
+//User Registration Page//
+
 .user-reg-form{
   margin-top: 30px;
 }
@@ -135,6 +141,25 @@ header{
     margin:5px;
   }
 }
+
+.signup_button{
+  font-family: "Avenir Next";
+  padding:5px 10px;
+  margin:10px;
+  color:white;
+  border:solid 1px #CC66FF;
+  border-radius: 10px;
+  background:#CC66FF;
+}
+.signup_button:hover{
+  color:black;
+  background-color: white;
+  border:solid 1px #331940;
+}
+
+/////////////////////////
+
+
 .profile-button{
   width:100%;
   height:100px;
@@ -155,6 +180,7 @@ header{
   height:150px;
 }
 .prof-headline{
+  padding-top: 10px;
   h1{
     font-family: "Avenir Next";
     font-weight: bold;

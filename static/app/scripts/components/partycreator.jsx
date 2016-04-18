@@ -2,15 +2,18 @@ var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
 var $ = require('jquery');
+
 require('jquery-ui');
 var moment = require('moment');
 var backboneMixin = require('backbone-react-component');
+
 
 var CityCollection = require('../models/citymodel').CityCollection;
 var LocationCollection = require('../models/locations').LocationCollection;
 var CreatedLocationCollection = require('../models/createlocations').CreatedLocationCollection;
 var UserPartyCollection = require('../models/createdParties').UserPartyCollection;
 var Header = require('./header.jsx');
+var Footer = require('./footer.jsx');
 
 //////////////////////////////////////////
 /////Global Variables and Utility Functions
@@ -119,7 +122,7 @@ var NewLocationForm = React.createClass({
         }
       );
       this.props.showForm();
-
+      locationCollection.fetch();
     },
     render:function(){
       return(
@@ -144,13 +147,15 @@ var CreatePartyForm = React.createClass({
           changeMonth: true,//this option for allowing user to select month
           changeYear: true //this option for allowing user to select from year range
         });
+      },
+      componentWillMount(){
 
       },
       handleSubmit:function(e){
         e.preventDefault();
         var date = ($("#datepicker").val());
         var newDate = moment(date).format('YYYY-MM-DD');
-        var time = ($("#time").val());
+        var time = $("#hours").val() + ":" + $("#minutes").val() + " " + $("#AoP").val();
         console.log($("#locations").val());
         var splitValues= $('#locations').val().split(' ');
         console.log(splitValues);
@@ -177,9 +182,21 @@ var CreatePartyForm = React.createClass({
                 <label htmlFor="">Date of Party</label>
                 <input type="text" name="date_of_party" className="form-control" id="datepicker"/>
               </div>
-              <div className="form-group">
-                <label htmlFor="">Time of Party</label>
-                <input type="text" name="time_of_party"id="time" className="form-control"/>
+              <label htmlFor="">Time of Party</label>
+              <div className="form-group row">
+                <div className="col-md-2">
+                  <input type="number" name="hours" id="hours" max="12" min="0" className="form-control"/>  <span>:</span>
+
+                </div>
+                <div className="col-md-2">
+                  <input type="number" name="minutes" id="minutes" max="59" min="0" className="form-control"/>
+                </div>
+                <div className="col-md-2">
+                  <select type="text" name="AoP" id="AoP" className="form-control col-md-1">
+                    <option>AM</option>
+                    <option>PM</option>
+                  </select>
+              </div>
               </div>
               <div className="form-group">
                 <label htmlFor="">Party Name</label>
