@@ -147,7 +147,7 @@ class PartyRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PartySerializer
 
     def get_queryset(self):
-        return Party.objects.filter(location__city_id=self.kwargs.get('city'), id=self.kwargs.get('pk'))
+        return Party.objects.filter(location_id=self.kwargs.get('location'), id=self.kwargs.get('pk'))
 
 
 class AttendeeListCreateAPIView(generics.ListCreateAPIView):
