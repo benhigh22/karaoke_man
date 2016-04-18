@@ -28,7 +28,6 @@ class Location(models.Model):
 
 
 class Party(models.Model):
-    city = models.ForeignKey(City)
     location = models.ForeignKey(Location)
     creator = models.ForeignKey(User)
     date_of_party = models.DateField()
@@ -49,6 +48,7 @@ class SongQueue(models.Model):
     attendees = models.ForeignKey(Attendee)
     singer_name = models.CharField(max_length=100)
     song_name = models.CharField(max_length=100)
+    complete = models.BooleanField(default=False)
     time_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

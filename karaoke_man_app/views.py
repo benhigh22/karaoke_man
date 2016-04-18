@@ -221,7 +221,7 @@ class AllCitiesPartiesListAPIView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         todays_date = datetime.date.today()
-        return Party.objects.filter(city=self.kwargs.get('city'), date_of_party__gte=todays_date)
+        return Party.objects.filter(location__city_id=self.kwargs.get('city'), date_of_party__gte=todays_date)
 
     def create(self, request, *args, **kwargs):
         request.data['city'] = self.kwargs.get('city')
