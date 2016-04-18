@@ -6016,6 +6016,30 @@ header {
   border: solid 1px black;
   border-radius: 10px; }
 
+.queue-panel {
+  color: black;
+  background-color: white;
+  height: 400px;
+  overflow: scroll;
+  font-family: "Avenir Next"; }
+  .queue-panel h5 {
+    display: inline-block;
+    float: right;
+    margin-right: 5px;
+    cursor: pointer;
+    color: #C6A2FF; }
+  .queue-panel h4 {
+    text-transform: uppercase;
+    font-family: "Avenir Next"; }
+  .queue-panel button {
+    display: block;
+    margin: 10px auto;
+    border: none; }
+  .queue-panel button:hover {
+    background: #cc66ff;
+    color: white;
+    border: none; }
+
 .ui-datepicker {
   background-color: white;
   border-radius: 5px;

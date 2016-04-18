@@ -63,7 +63,7 @@ var QueueItems = React.createClass({
         return(
           <div className="col-md-3">
             <div className="panel-wrapper">
-              <div className="panel">
+              <div className="queue-panel">
                 {queueitems}
               </div>
             </div>
@@ -77,14 +77,13 @@ var QueueItem = React.createClass({
         this.props.showVideo()
       },
       removeItem:function(){
-        // this.props.model.set('complete',true);
         this.props.model.save('complete',true);
       },
       render:function(){
         return(
           <div className="que-item">
             <a onClick={this.removeItem}><h5>X</h5></a>
-            <h5>{this.props.model.get('song_name')}</h5>
+            <h4>{this.props.model.get('song_name')}</h4>
             <span>{this.props.model.get('singer_name')}</span>
             <button onClick={this.handleSelect}>Play Song</button>
           </div>

@@ -943,7 +943,7 @@ var QueueItems = React.createClass({displayName: "QueueItems",
         return(
           React.createElement("div", {className: "col-md-3"}, 
             React.createElement("div", {className: "panel-wrapper"}, 
-              React.createElement("div", {className: "panel"}, 
+              React.createElement("div", {className: "queue-panel"}, 
                 queueitems
               )
             )
@@ -957,14 +957,13 @@ var QueueItem = React.createClass({displayName: "QueueItem",
         this.props.showVideo()
       },
       removeItem:function(){
-        // this.props.model.set('complete',true);
         this.props.model.save('complete',true);
       },
       render:function(){
         return(
           React.createElement("div", {className: "que-item"}, 
             React.createElement("a", {onClick: this.removeItem}, React.createElement("h5", null, "X")), 
-            React.createElement("h5", null, this.props.model.get('song_name')), 
+            React.createElement("h4", null, this.props.model.get('song_name')), 
             React.createElement("span", null, this.props.model.get('singer_name')), 
             React.createElement("button", {onClick: this.handleSelect}, "Play Song")
           )
@@ -1855,7 +1854,7 @@ module.exports = new Router();
 
 },{"backbone":23,"react":184,"react-dom":55,"underscore":185}],23:[function(require,module,exports){
 (function (global){
-//     Backbone.js 1.3.3
+//     Backbone.js 1.3.2
 
 //     (c) 2010-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Backbone may be freely distributed under the MIT license.
@@ -1901,7 +1900,7 @@ module.exports = new Router();
   var slice = Array.prototype.slice;
 
   // Current version of the library. Keep in sync with `package.json`.
-  Backbone.VERSION = '1.3.3';
+  Backbone.VERSION = '1.3.2';
 
   // For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
   // the `$` variable.
@@ -20053,7 +20052,7 @@ $.widget( "ui.tooltip", {
 
 },{"jquery":52}],52:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.3
+ * jQuery JavaScript Library v2.2.2
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -20063,7 +20062,7 @@ $.widget( "ui.tooltip", {
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-04-05T19:26Z
+ * Date: 2016-03-17T17:51Z
  */
 
 (function( global, factory ) {
@@ -20119,7 +20118,7 @@ var support = {};
 
 
 var
-	version = "2.2.3",
+	version = "2.2.2",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -29529,7 +29528,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		// If it fails, this function gets "jqXHR", "status", "error"
 		} ).always( callback && function( jqXHR, status ) {
 			self.each( function() {
-				callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
+				callback.apply( self, response || [ jqXHR.responseText, status, jqXHR ] );
 			} );
 		} );
 	}
