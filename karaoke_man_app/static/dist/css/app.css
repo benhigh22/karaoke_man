@@ -5827,6 +5827,11 @@ h3 {
   font-family: "Avenir Next";
   font-weight: bold; }
 
+footer {
+  height: 100px;
+  background-color: #CC66FF;
+  margin-top: 20px; }
+
 a:hover, a::selection, a:visited, a:focus, a:active {
   text-decoration: none;
   outline: none; }
@@ -5960,10 +5965,12 @@ header {
 #k-man {
   height: 150px; }
 
-.prof-headline h1 {
-  font-family: "Avenir Next";
-  font-weight: bold;
-  display: inline-block; }
+.prof-headline {
+  padding-top: 10px; }
+  .prof-headline h1 {
+    font-family: "Avenir Next";
+    font-weight: bold;
+    display: inline-block; }
 
 .panel-wrapper {
   background-color: black;

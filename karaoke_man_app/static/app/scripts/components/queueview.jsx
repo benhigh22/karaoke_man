@@ -4,16 +4,15 @@ var Backbone = require('backbone');
 var $ = require('jquery');
 var Header = require('./header.jsx');
 var backboneMixin = require('backbone-react-component');
-
-var partyId = Number(localStorage.getItem('currentParty'));
+var queueItemCollection;
 var query;
 
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
-var queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
-console.log(partyId);
 
 var QueueViewPage = React.createClass({
     componentWillMount:function(){
+      var partyId = Number(localStorage.getItem('currentParty'));
+      queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
       queueItemCollection.fetch();
     },
     getInitialState(){
@@ -25,12 +24,15 @@ var QueueViewPage = React.createClass({
         that.setState({"sourceUrl":response})
       });
     },
+    refreshQueue:function(){
+      setInterval(function(){queueItemCollection.fetch()}, 240000);
+    },
       render:function(){
         return(
           <div className="container">
             <Header/>
               <div className="row">
-                <QueueItems collection={queueItemCollection} showVideo={this.showVideo} />
+                <QueueItems collection={queueItemCollection} showVideo={this.showVideo} refresh={this.refreshQueue()} />
                 <PlayerView sourceUrl={this.state.sourceUrl}/>
               </div>
           </div>

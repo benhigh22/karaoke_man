@@ -5,6 +5,8 @@ var $ = require('jquery');
 var backboneMixin = require('backbone-react-component');
 
 var Header = require('./header.jsx');
+var Footer = require('./footer.jsx');
+
 var CityCollection = require('../models/citymodel').CityCollection;
 var PartyCollection = require('../models/parties').PartyCollection;
 var AttendeeCollection = require('../models/attendee').AttendeeCollection;
@@ -77,6 +79,9 @@ var CityItems = React.createClass({
 
 var PartySelect = React.createClass({
       mixins:[Backbone.React.Component.mixin],
+      componentWillMount(){
+
+      },
 
       render:function(){
         var that=this;
@@ -90,7 +95,7 @@ var PartySelect = React.createClass({
           <div className="panel-wrapper">
             <h3> Available Parties</h3>
             <div className="panel">
-              {parties}
+              {this.props.collection.length>0 ? parties:<h3>Select Your City to Find Available Parties</h3>}
             </div>
           </div>
         );
@@ -208,24 +213,27 @@ var PartyFinder = React.createClass({
   },
   render:function(){
       return(
-        <div className="container">
-          <Header />
-          <div className="row">
-            <div className="col-md-6">
-              <h1> Party Finder </h1>
+        <div>
+          <div className="container">
+            <Header />
+            <div className="row">
+              <div className="col-md-6">
+                <h1> Party Finder </h1>
+              </div>
+              <div className="col-md-6">
+                <CitySelect collection={cityCollection} />
+              </div>
             </div>
-            <div className="col-md-6">
-              <CitySelect collection={cityCollection} />
+            <div className="row">
+              <div className="col-md-8">
+                <PartySelect collection={partyCollection}  showQueue={this.showQueue} />
+              </div>
+              <div className="col-md-4">
+                { this.state.showSongAdd ? <SongSelect addToQueue={this.addToQueue} /> : null}
+              </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-8">
-              <PartySelect collection={partyCollection}  showQueue={this.showQueue} />
-            </div>
-            <div className="col-md-4">
-              { this.state.showSongAdd ? <SongSelect addToQueue={this.addToQueue} /> : null}
-            </div>
-          </div>
+          <Footer />
         </div>
       );
     }
