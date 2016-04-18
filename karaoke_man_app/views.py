@@ -15,6 +15,7 @@ from rest_framework.response import Response
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import parse_qs
+import datetime
 
 
 
@@ -158,8 +159,7 @@ class AttendeeListCreateAPIView(generics.ListCreateAPIView):
         return Attendee.objects.filter(party_id=self.kwargs.get('party'))
 
     def create(self, request, *args, **kwargs):
-        print(request.data)
-        request.data['user'] = request.user.pk
+        request.data['user'] = request.user
         return super().create(request, *args, **kwargs)
 
 
@@ -215,12 +215,13 @@ class SongLookupAPIView(APIView):
             ending = parse_qs(url[6:]).get("?v")[0]
             return Response({'body': 'https://www.youtube.com/embed/{}?autoplay=1'.format(ending)})
 
-# Joes API View
+
 class AllCitiesPartiesListAPIView(generics.ListCreateAPIView):
     serializer_class = PartySerializer
 
     def get_queryset(self):
-        return Party.objects.filter(city=self.kwargs.get('city'))
+        todays_date = datetime.date.today()
+        return Party.objects.filter(city=self.kwargs.get('city'), date_of_party__gte=todays_date)
 
     def create(self, request, *args, **kwargs):
         request.data['city'] = self.kwargs.get('city')
