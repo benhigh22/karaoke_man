@@ -11,7 +11,7 @@ render:function(){
   return(
   React.createElement("header", {className: "row header-comp"}, 
     React.createElement("div", {className: "col-md-2"}, 
-      React.createElement("img", {src: "https://unsplash.it/g/100/100", alt: ""})
+      React.createElement("img", {id: "logo", src: "/static/dist/images/logo.svgz", alt: ""})
     ), 
     React.createElement("div", {className: "col-md-5"}, 
       React.createElement("ul", {className: "nav"}, 
@@ -47,7 +47,7 @@ var Home = React.createClass({displayName: "Home",
         React.createElement("div", {className: "container"}, 
           React.createElement("header", {className: "row"}, 
             React.createElement("div", {className: "col-md-3"}, 
-              React.createElement("img", {src: "https://unsplash.it/g/200/200", alt: ""})
+              React.createElement("img", {id: "logo", src: "/static/dist/images/logo.svgz", alt: ""})
             ), 
             React.createElement("div", {className: "col-md-6"}, 
               React.createElement("ul", {className: "nav"}, 
@@ -58,7 +58,7 @@ var Home = React.createClass({displayName: "Home",
             )
           ), 
           React.createElement(Login, null), 
-          React.createElement("div", {className: "row"}, 
+          React.createElement("div", {className: "row headline"}, 
             React.createElement("div", {className: "col-md-10"}, 
               React.createElement("h1", null, " Welcome To Karaoke Man, Your Free Karaoke Management Application!"
               )
@@ -66,7 +66,7 @@ var Home = React.createClass({displayName: "Home",
           ), 
           React.createElement("div", {className: "row"}, 
             React.createElement("div", {className: "col-md-12"}, 
-              React.createElement("img", {src: "https://unsplash.it/g/1000/200", alt: ""})
+              React.createElement("img", {id: "infograph", src: "/static/dist/images/infograph.svgz", alt: ""})
             )
           ), 
           React.createElement("div", {className: "row bottom-btns"}, 
@@ -74,12 +74,16 @@ var Home = React.createClass({displayName: "Home",
               React.createElement("div", {className: "row"}, 
                 React.createElement("div", {className: "col-md-6"}, 
                   React.createElement("a", {href: "", onClick: this.openModal, "data-toggle": "modal", "data-target": "#myModal"}, 
-                    React.createElement("img", {src: "/static/dist/images/LoginGroup.svg", alt: ""})
+                    React.createElement("div", {className: "homepage-btn"}, 
+                      "Login To Your Account"
+                    )
                   )
                 ), 
                 React.createElement("div", {className: "col-md-6"}, 
                   React.createElement("a", {href: "#register"}, 
-                    React.createElement("img", {src: "/static/dist/images/Group.svg", alt: ""})
+                    React.createElement("div", {className: "homepage-btn"}, 
+                      "SignUp For A New Account!"
+                    )
                   )
                 )
               )
@@ -143,12 +147,12 @@ var Login = React.createClass({displayName: "Login",
                     React.createElement("div", {className: "modal-body"}, 
                       React.createElement("div", {className: "login-wrapper"}, 
                         React.createElement("input", {className: "form-control", id: "login-username", type: "text", placeholder: "username", name: "username"}), 
-                        React.createElement("input", {className: "form-control", id: "login-password", type: "text", placeholder: "password", name: "password"})
+                        React.createElement("input", {className: "form-control", id: "login-password", type: "password", placeholder: "password", name: "password"})
                       )
                     ), 
                     React.createElement("div", {className: "modal-footer"}, 
                       React.createElement("button", {type: "button", className: "btn btn-default", "data-dismiss": "modal"}, "Close"), 
-                      React.createElement("button", {type: "button", className: "btn btn-primary", onClick: this.logInUser, "data-dismiss": "modal"}, "Login")
+                      React.createElement("button", {type: "button", className: "btn btn-primary modal-button", onClick: this.logInUser, "data-dismiss": "modal"}, "Login")
                     )
                   )
                 )
@@ -660,8 +664,11 @@ var ProfilePage = React.createClass({displayName: "ProfilePage",
         return(
           React.createElement("div", {className: "container"}, 
             React.createElement(Header, null), 
-            React.createElement("div", {className: "row"}, 
-              React.createElement("div", {className: "col-md-6 col-md-offset-3"}, 
+            React.createElement("div", {className: "prof-headline row"}, 
+              React.createElement("div", {className: "col-md-2 col-md-offset-2"}, 
+                React.createElement("img", {id: "k-man", className: "pull-left", src: "/static/dist/images/karaokeman.svgz"})
+              ), 
+              React.createElement("div", {className: "col-md-7"}, 
                 React.createElement("h1", null, " Welcome To Your Profile! "), 
                 React.createElement("p", null, React.createElement("span", null, "This is your one stop shop for all of your Karaoke" + ' ' +
                   "needs! Want to create a party? Do so here! Need to keep up" + ' ' +
@@ -673,7 +680,7 @@ var ProfilePage = React.createClass({displayName: "ProfilePage",
             React.createElement(ProfileNav, null), 
             React.createElement("div", {className: "row"}, 
               React.createElement("div", {className: "col-md-6"}, 
-                React.createElement("img", {src: "https://unsplash.it/g/400/200", alt: ""})
+                React.createElement("img", {src: "https://images.unsplash.com/46/unsplash_52c319226cefb_1.JPG?crop=entropy&dpr=2&fit=crop&fm=jpg&h=650&ixjsv=2.1.0&ixlib=rb-0.3.5&q=50&w=1200", alt: ""})
               ), 
               React.createElement("div", {className: "col-md-6 sidebar"}, 
                 React.createElement("h3", null, "Past and Future Events"), 

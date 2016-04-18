@@ -15,7 +15,7 @@ var Home = React.createClass({
         <div className="container">
           <header className="row">
             <div className="col-md-3">
-              <img src="https://unsplash.it/g/200/200" alt=""/>
+              <img id="logo" src="/static/dist/images/logo.svgz" alt=""/>
             </div>
             <div className="col-md-6">
               <ul className="nav">
@@ -26,7 +26,7 @@ var Home = React.createClass({
             </div>
           </header>
           <Login />
-          <div className="row">
+          <div className="row headline">
             <div className="col-md-10">
               <h1> Welcome To Karaoke Man, Your Free Karaoke Management Application!
               </h1>
@@ -34,7 +34,7 @@ var Home = React.createClass({
           </div>
           <div className="row">
             <div className="col-md-12">
-              <img src="https://unsplash.it/g/1000/200" alt=""/>
+              <img id="infograph" src="/static/dist/images/infograph.svgz" alt=""/>
             </div>
           </div>
           <div className="row bottom-btns">
@@ -42,12 +42,16 @@ var Home = React.createClass({
               <div className="row">
                 <div className="col-md-6">
                   <a href="" onClick={this.openModal} data-toggle="modal" data-target="#myModal">
-                    <img src="/static/dist/images/LoginGroup.svg" alt=""/>
+                    <div className="homepage-btn">
+                      Login To Your Account
+                    </div>
                   </a>
                 </div>
                 <div className="col-md-6">
                   <a href="#register">
-                    <img src="/static/dist/images/Group.svg" alt=""/>
+                    <div className="homepage-btn">
+                      SignUp For A New Account!
+                    </div>
                   </a>
                 </div>
               </div>

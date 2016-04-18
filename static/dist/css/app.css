@@ -5814,14 +5814,47 @@ button.close {
 *::after {
   box-sizing: border-box; }
 
+#app {
+  background: url("static/dist/images/lined_paper.png"); }
+
 img {
   max-width: 100%; }
+
+p {
+  font-family: "Avenir Next"; }
+
+h3 {
+  font-family: "Avenir Next";
+  font-weight: bold; }
+
+a:hover, a::selection, a:visited, a:focus, a:active {
+  text-decoration: none;
+  outline: none; }
+
+.headline h1 {
+  font-family: "Avenir Next";
+  font-weight: bold; }
 
 .modal-backdrop {
   z-index: -1000; }
 
+.modal-title {
+  font-family: "Avenir Next"; }
+
+.modal-button {
+  background-color: #CC66FF;
+  border: solid 1px #CC66FF; }
+
+.modal-button:hover {
+  color: black;
+  background-color: white;
+  border: solid 1px #331940; }
+
 .bottom-btns {
   margin: 20px 0px 20px 0px; }
+  .bottom-btns h3 {
+    font-family: "Avenir Next";
+    margin-top: 0px; }
 
 .nav {
   text-decoration: none;
@@ -5829,12 +5862,41 @@ img {
   float: left;
   padding-top: 50px; }
   .nav li {
+    font-family: "Avenir Next";
     padding: 5px 10px;
     margin: 10px;
     color: white;
+    border: solid 1px #CC66FF;
     border-radius: 10px;
     display: inline-block;
-    background-image: radial-gradient(50% 146%, #700DEF 47%, #AF4EDB 100%); }
+    background: #CC66FF; }
+  .nav li:hover {
+    color: black;
+    background-color: white;
+    border: solid 1px #331940; }
+
+#logo {
+  height: 150px; }
+
+#infograph {
+  margin: 45px auto;
+  padding: 15px;
+  border-bottom: solid 1px black;
+  border-top: solid 1px black; }
+
+.homepage-btn {
+  height: 125px;
+  padding: 30px 20px 20px 20px;
+  border: solid 3px #CC66FF;
+  border-radius: 10px;
+  color: #331940;
+  font-family: "Avenir Next";
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold; }
+
+.homepage-btn:hover {
+  transform: scale(1.1, 1.1); }
 
 header {
   margin-top: 20px; }
@@ -5869,11 +5931,25 @@ header {
   width: 100%;
   height: 100px;
   margin: 30px 0px;
+  padding-top: 15px;
   color: white;
   text-align: center;
   border-radius: 15px;
-  background-image: radial-gradient(50% 146%, #700DEF 47%, #AF4EDB 100%);
-  border: 1px solid #979797; }
+  background-color: #CC66FF;
+  border: solid 1px #CC66FF; }
+
+.profile-button:hover {
+  color: black;
+  background-color: white;
+  border: solid 1px #331940; }
+
+#k-man {
+  height: 150px; }
+
+.prof-headline h1 {
+  font-family: "Avenir Next";
+  font-weight: bold;
+  display: inline-block; }
 
 .panel-wrapper {
   background-color: black;
@@ -5927,7 +6003,8 @@ header {
   border-radius: 5px;
   border: solid 1px gray;
   padding: 10px;
-  width: 175px; }
+  width: 175px;
+  display: none; }
   .ui-datepicker td {
     padding: 0 2px; }
 

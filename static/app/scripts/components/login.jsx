@@ -38,12 +38,12 @@ var Login = React.createClass({
                     <div className="modal-body">
                       <div className="login-wrapper">
                         <input className="form-control" id="login-username" type="text" placeholder="username" name="username"/>
-                        <input className="form-control" id="login-password" type="text" placeholder="password" name="password"/>
+                        <input className="form-control" id="login-password" type="password" placeholder="password" name="password"/>
                       </div>
                     </div>
                     <div className="modal-footer">
                       <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                      <button type="button" className="btn btn-primary" onClick={this.logInUser} data-dismiss="modal">Login</button>
+                      <button type="button" className="btn btn-primary modal-button" onClick={this.logInUser} data-dismiss="modal">Login</button>
                     </div>
                   </div>
                 </div>

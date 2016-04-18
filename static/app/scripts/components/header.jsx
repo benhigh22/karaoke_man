@@ -9,7 +9,7 @@ render:function(){
   return(
   <header className="row header-comp">
     <div className="col-md-2">
-      <img src="https://unsplash.it/g/100/100" alt=""/>
+      <img id="logo" src="/static/dist/images/logo.svgz" alt=""/>
     </div>
     <div className="col-md-5">
       <ul className="nav">
