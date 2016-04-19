@@ -42,19 +42,28 @@ var QueueViewPage = React.createClass({
 
 var QueueItems = React.createClass({
     mixins:[Backbone.React.Component.mixin],
+
       render:function(){
         var that = this;
         var queueitems = this.props.collection.map(function(model){
           console.log(model);
           console.log(model.get('id'));
-          return(
-            <QueueItem key={model.get('id')} model={model} showVideo={that.props.showVideo}/>
-          );
+          if(model.get('complete')===false){
+            return(
+              <QueueItem key={model.get('id')} model={model} showVideo={that.props.showVideo} />
+            )
+          }
+          else{
+            return(
+              null
+            )
+          }
+
         });
         return(
           <div className="col-md-3">
             <div className="panel-wrapper">
-              <div className="panel">
+              <div className="queue-panel">
                 {queueitems}
               </div>
             </div>
@@ -67,11 +76,16 @@ var QueueItem = React.createClass({
         query = this.props.model.get('song_name');
         this.props.showVideo()
       },
+      removeItem:function(){
+        this.props.model.save('complete',true);
+      },
       render:function(){
         return(
-          <div className="que-item" onClick={this.handleSelect}>
-            <h5>{this.props.model.get('song_name')}</h5>
+          <div className="que-item">
+            <a onClick={this.removeItem}><h5>X</h5></a>
+            <h4>{this.props.model.get('song_name')}</h4>
             <span>{this.props.model.get('singer_name')}</span>
+            <button onClick={this.handleSelect}>Play Song</button>
           </div>
         );
       }

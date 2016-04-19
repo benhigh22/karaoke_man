@@ -922,19 +922,28 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
 
 var QueueItems = React.createClass({displayName: "QueueItems",
     mixins:[Backbone.React.Component.mixin],
+
       render:function(){
         var that = this;
         var queueitems = this.props.collection.map(function(model){
           console.log(model);
           console.log(model.get('id'));
-          return(
-            React.createElement(QueueItem, {key: model.get('id'), model: model, showVideo: that.props.showVideo})
-          );
+          if(model.get('complete')===false){
+            return(
+              React.createElement(QueueItem, {key: model.get('id'), model: model, showVideo: that.props.showVideo})
+            )
+          }
+          else{
+            return(
+              null
+            )
+          }
+
         });
         return(
           React.createElement("div", {className: "col-md-3"}, 
             React.createElement("div", {className: "panel-wrapper"}, 
-              React.createElement("div", {className: "panel"}, 
+              React.createElement("div", {className: "queue-panel"}, 
                 queueitems
               )
             )
@@ -947,11 +956,16 @@ var QueueItem = React.createClass({displayName: "QueueItem",
         query = this.props.model.get('song_name');
         this.props.showVideo()
       },
+      removeItem:function(){
+        this.props.model.save('complete',true);
+      },
       render:function(){
         return(
-          React.createElement("div", {className: "que-item", onClick: this.handleSelect}, 
-            React.createElement("h5", null, this.props.model.get('song_name')), 
-            React.createElement("span", null, this.props.model.get('singer_name'))
+          React.createElement("div", {className: "que-item"}, 
+            React.createElement("a", {onClick: this.removeItem}, React.createElement("h5", null, "X")), 
+            React.createElement("h4", null, this.props.model.get('song_name')), 
+            React.createElement("span", null, this.props.model.get('singer_name')), 
+            React.createElement("button", {onClick: this.handleSelect}, "Play Song")
           )
         );
       }
