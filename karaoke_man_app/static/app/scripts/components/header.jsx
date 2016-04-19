@@ -7,6 +7,7 @@ var loggedOutUser = new LoggedOutUser();
 var Header = React.createClass({
 logoutUser:function(){
   loggedOutUser.fetch();
+  localStorage.removeItem('user');
   Backbone.history.navigate('',{trigger:true, replace: true});
 },
 render:function(){
@@ -21,7 +22,11 @@ render:function(){
         <li>About Us</li>
         <a href="#user"><li>Profile</li></a>
       </ul>
-      <span onClick={this.logoutUser}>Logout</span>
+    </div>
+    <div className="col-md-2 col-md-offset-3">
+      <div className="logout" onClick={this.logoutUser}>
+        <span>Logout</span>
+      </div>
     </div>
   </header>
 )

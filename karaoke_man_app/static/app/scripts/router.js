@@ -21,7 +21,12 @@ routes:{
 'queue':'renderQueueViewPage',
 'create':'renderCreatePage'
 },
-
+validateLogin:function(){
+  if(localStorage.getItem('user')===null){
+    alert('You are currently not logged in as a user please log in to your account to use this feature');
+    Backbone.history.navigate('',{trigger:true, replace: true});
+  }
+},
 renderHome:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(Home),
@@ -31,26 +36,31 @@ renderUserRegistration:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(RegistrationFormPage),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderProfilePage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(ProfilePage),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderPartyFinder:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(PartyFinder),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderQueueViewPage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(QueueViewPage),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderCreatePage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(PartyCreator),
   document.getElementById('app'));
+  this.validateLogin();
 }
 });
 

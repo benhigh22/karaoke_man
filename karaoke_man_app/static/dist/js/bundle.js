@@ -29,6 +29,7 @@ var loggedOutUser = new LoggedOutUser();
 var Header = React.createClass({displayName: "Header",
 logoutUser:function(){
   loggedOutUser.fetch();
+  localStorage.removeItem('user');
   Backbone.history.navigate('',{trigger:true, replace: true});
 },
 render:function(){
@@ -42,8 +43,12 @@ render:function(){
         React.createElement("a", {href: ""}, React.createElement("li", null, "Home")), 
         React.createElement("li", null, "About Us"), 
         React.createElement("a", {href: "#user"}, React.createElement("li", null, "Profile"))
-      ), 
-      React.createElement("span", {onClick: this.logoutUser}, "Logout")
+      )
+    ), 
+    React.createElement("div", {className: "col-md-2 col-md-offset-3"}, 
+      React.createElement("div", {className: "logout", onClick: this.logoutUser}, 
+        React.createElement("span", null, "Logout")
+      )
     )
   )
 )
@@ -512,11 +517,11 @@ var CitySelect = React.createClass({displayName: "CitySelect",
         );
       });
       return(
-        React.createElement("div", {className: "selection-wrapper"}, 
+        React.createElement("div", {className: "selection-wrapper search-bar"}, 
           React.createElement("select", {name: "cities", id: "cities"}, 
             cities
           ), 
-          React.createElement("button", {onClick: this.renderResults}, "Search")
+          React.createElement("button", {className: "search-button", onClick: this.renderResults}, "Search")
         )
         );
       }
@@ -578,9 +583,9 @@ var Party = React.createClass({displayName: "Party",
           React.createElement("div", null, 
             React.createElement("div", {key: model.get('id')}, 
               React.createElement("h4", null, model.get('location_name')), 
-              React.createElement("button", {type: "button", onClick: this.handleClick}, " See Details "), 
-              React.createElement("span", {className: "event-date"}, model.get('date_of_party')), 
-              React.createElement("span", {className: "event-time"}, model.get('time_of_party'))
+              React.createElement("span", {className: "event-date"}, React.createElement("span", {className: "title"}, "Date: "), model.get('date_of_party')), 
+              React.createElement("span", {className: "event-time"}, React.createElement("span", {className: "title"}, "Time: "), model.get('time_of_party')), 
+              React.createElement("button", {type: "button", onClick: this.handleClick}, " See Details ")
             ), 
              this.state.showPartyDetails ? React.createElement(PartyDetails, {showQueue: this.props.showQueue, PartyModel: model}) : null
           )
@@ -609,7 +614,7 @@ var PartyDetails = React.createClass({displayName: "PartyDetails",
           React.createElement("div", null, 
             React.createElement("h5", null, PartyModel.get('party_name')), 
             React.createElement("p", null, " ", PartyModel.get('description')), 
-            React.createElement("button", {className: "btn btn-primary", onClick: this.addAttendee}, "Join This Party")
+            React.createElement("button", {className: "btn", onClick: this.addAttendee}, "Join This Party")
           )
         )
       }
@@ -675,11 +680,11 @@ var PartyFinder = React.createClass({displayName: "PartyFinder",
           React.createElement("div", {className: "container"}, 
             React.createElement(Header, null), 
             React.createElement("div", {className: "row"}, 
-              React.createElement("div", {className: "col-md-6"}, 
-                React.createElement("h1", null, " Party Finder ")
-              ), 
-              React.createElement("div", {className: "col-md-6"}, 
+              React.createElement("div", {className: "col-md-8 party-finder"}, 
+                React.createElement("h1", null, " Party Finder "), 
                 React.createElement(CitySelect, {collection: cityCollection})
+              ), 
+              React.createElement("div", {className: "col-md-4"}
               )
             ), 
             React.createElement("div", {className: "row"}, 
@@ -830,8 +835,8 @@ var CreatedParty = React.createClass({displayName: "CreatedParty",
         return(
           React.createElement("div", {className: "party-info", id: "party", onClick: this.showPartyQueue}, 
             React.createElement("h4", null, this.props.model.get('party_name')), 
-            React.createElement("span", null, this.props.model.get('date_of_party')), 
-            React.createElement("span", null, this.props.model.get('time_of_party'))
+              React.createElement("span", {className: "event-date"}, React.createElement("span", {className: "title"}, "Date: "), this.props.model.get('date_of_party')), 
+              React.createElement("span", {className: "event-time"}, React.createElement("span", {className: "title"}, "Time: "), this.props.model.get('time_of_party'))
           )
         );
       }
@@ -872,9 +877,9 @@ var JoinedParty = React.createClass({displayName: "JoinedParty",
         return(
           React.createElement("div", {className: "party-info", id: "party", onClick: this.showPartyQueue}, 
             React.createElement("h4", null, this.props.model.get('party_name')), 
-            React.createElement("span", null, this.props.model.get('party_date')), 
-            React.createElement("span", null, this.props.model.get('party_time'))
-          )
+            React.createElement("span", {className: "event-date"}, React.createElement("span", {className: "title"}, "Date: "), this.props.model.get('party_date')), 
+            React.createElement("span", {className: "event-time"}, React.createElement("span", {className: "title"}, "Time: "), this.props.model.get('party_time'))
+        )
         )
       }
     });
@@ -1415,7 +1420,12 @@ routes:{
 'queue':'renderQueueViewPage',
 'create':'renderCreatePage'
 },
-
+validateLogin:function(){
+  if(localStorage.getItem('user')===null){
+    alert('You are currently not logged in as a user please log in to your account to use this feature');
+    Backbone.history.navigate('',{trigger:true, replace: true});
+  }
+},
 renderHome:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(Home),
@@ -1425,26 +1435,31 @@ renderUserRegistration:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(RegistrationFormPage),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderProfilePage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(ProfilePage),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderPartyFinder:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(PartyFinder),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderQueueViewPage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(QueueViewPage),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderCreatePage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(PartyCreator),
   document.getElementById('app'));
+  this.validateLogin();
 }
 });
 
@@ -1864,7 +1879,7 @@ module.exports = new Router();
 
 },{"backbone":23,"react":184,"react-dom":55,"underscore":185}],23:[function(require,module,exports){
 (function (global){
-//     Backbone.js 1.3.3
+//     Backbone.js 1.3.2
 
 //     (c) 2010-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Backbone may be freely distributed under the MIT license.
@@ -1910,7 +1925,7 @@ module.exports = new Router();
   var slice = Array.prototype.slice;
 
   // Current version of the library. Keep in sync with `package.json`.
-  Backbone.VERSION = '1.3.3';
+  Backbone.VERSION = '1.3.2';
 
   // For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
   // the `$` variable.
@@ -20062,7 +20077,7 @@ $.widget( "ui.tooltip", {
 
 },{"jquery":52}],52:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.3
+ * jQuery JavaScript Library v2.2.2
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -20072,7 +20087,7 @@ $.widget( "ui.tooltip", {
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-04-05T19:26Z
+ * Date: 2016-03-17T17:51Z
  */
 
 (function( global, factory ) {
@@ -20128,7 +20143,7 @@ var support = {};
 
 
 var
-	version = "2.2.3",
+	version = "2.2.2",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -29538,7 +29553,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		// If it fails, this function gets "jqXHR", "status", "error"
 		} ).always( callback && function( jqXHR, status ) {
 			self.each( function() {
-				callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
+				callback.apply( self, response || [ jqXHR.responseText, status, jqXHR ] );
 			} );
 		} );
 	}

@@ -5840,6 +5840,12 @@ a:hover, a::selection, a:visited, a:focus, a:active {
   text-decoration: none;
   outline: none; }
 
+button {
+  font-family: "Avenir Next";
+  background-color: #CC66FF;
+  border: solid 1px #CC66FF;
+  color: white; }
+
 .headline h1 {
   font-family: "Avenir Next";
   font-weight: bold; }
@@ -5854,7 +5860,8 @@ a:hover, a::selection, a:visited, a:focus, a:active {
   background-color: #CC66FF;
   border: solid 1px #CC66FF; }
 
-.modal-button:hover {
+.modal-button:hover, .modal-button:focus, .modal-button:active:focus {
+  outline: none;
   color: black;
   background-color: white;
   border: solid 1px #331940; }
@@ -5883,6 +5890,18 @@ a:hover, a::selection, a:visited, a:focus, a:active {
     color: black;
     background-color: white;
     border: solid 1px #331940; }
+
+.logout {
+  font-family: "Avenir Next";
+  float: right;
+  position: relative;
+  top: 25px;
+  padding: 5px 10px;
+  margin: 10px;
+  color: white;
+  border: solid 1px #CC66FF;
+  border-radius: 10px;
+  background: #CC66FF; }
 
 #infograph {
   margin: 45px auto;
@@ -5984,8 +6003,12 @@ header {
   height: 500px; }
   .panel-wrapper .panel {
     color: black;
-    height: 200px;
+    height: 400px;
     overflow: scroll; }
+  .panel-wrapper button {
+    display: block;
+    border-radius: 5px;
+    margin-top: 3px; }
 
 .events-panel {
   margin: 0 auto;
@@ -6005,6 +6028,33 @@ header {
     margin: 5px;
     color: black;
     border: solid 1px black; }
+
+.search-bar {
+  float: right;
+  margin-top: 30px; }
+  .search-bar select {
+    width: 200px;
+    line-height: 25px;
+    font-family: "Avenir Next"; }
+
+.search-button {
+  width: 100px;
+  margin-left: 2px;
+  border-radius: 5px; }
+
+.party-finder h1 {
+  float: left; }
+
+.event-date {
+  font-family: "Avenir Next";
+  margin-left: 5px; }
+
+.event-time {
+  font-family: "Avenir Next";
+  margin-left: 10px; }
+
+.title {
+  font-weight: bold; }
 
 .videoplayer {
   background-color: white;

@@ -127,8 +127,8 @@ var CreatedParty = React.createClass({
         return(
           <div className="party-info" id='party' onClick={this.showPartyQueue}>
             <h4>{this.props.model.get('party_name')}</h4>
-            <span>{this.props.model.get('date_of_party')}</span>
-            <span>{this.props.model.get('time_of_party')}</span>
+              <span className="event-date"><span className="title">Date: </span>{this.props.model.get('date_of_party')}</span>
+              <span className="event-time"><span className="title">Time: </span>{this.props.model.get('time_of_party')}</span>
           </div>
         );
       }
@@ -169,9 +169,9 @@ var JoinedParty = React.createClass({
         return(
           <div className="party-info" id='party' onClick={this.showPartyQueue}>
             <h4>{this.props.model.get('party_name')}</h4>
-            <span>{this.props.model.get('party_date')}</span>
-            <span>{this.props.model.get('party_time')}</span>
-          </div>
+            <span className="event-date"><span className="title">Date: </span>{this.props.model.get('party_date')}</span>
+            <span className="event-time"><span className="title">Time: </span>{this.props.model.get('party_time')}</span>
+        </div>
         )
       }
     });
