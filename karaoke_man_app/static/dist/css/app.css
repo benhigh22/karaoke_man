@@ -6057,4 +6057,12 @@ header {
   .ui-datepicker td {
     padding: 0 2px; }
 
+.about_us {
+  margin: 10px auto 30px auto;
+  text-align: center; }
+
+.our_names {
+  margin: 10px auto;
+  text-align: center; }
+
 /*# sourceMappingURL=app.css.map */
