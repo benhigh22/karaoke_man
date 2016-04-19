@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
@@ -210,10 +211,9 @@ class SongLookupAPIView(APIView):
         if song_name:
             scraped_content = requests.get("https://www.youtube.com/results?search_query={}+karaoke+version".format(song_name)).content
             clean_data = BeautifulSoup(scraped_content).find_all(class_="yt-lockup-title")
-            song_link = [(song.find("a").get("title"), song.find("a").get("href")) for song in clean_data if not "*" in song.find("a").get("title")][:1]
-            url = song_link[0][1]
-            ending = parse_qs(url[6:]).get("?v")[0]
-            return Response({'body': 'https://www.youtube.com/embed/{}?autoplay=1'.format(ending)})
+            song_link = [(song.find("a").get("title"), song.find("a").get("href")) for song in clean_data if not "*" in song.find("a").get("title")][:5]
+            links = [{"url": parse_qs(link[1][6:]).get("?v")[0], "title": link[0]} for link in song_link]
+            return JsonResponse({'body': links})
 
 
 class AllCitiesPartiesListAPIView(generics.ListCreateAPIView):
