@@ -23,10 +23,14 @@ module.exports=Footer;
 var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
+var LoggedOutUser = require('../models/usermodel').LoggedOutUser;
+var loggedOutUser = new LoggedOutUser();
 
 var Header = React.createClass({displayName: "Header",
-
-
+logoutUser:function(){
+  loggedOutUser.fetch();
+  Backbone.history.navigate('',{trigger:true, replace: true});
+},
 render:function(){
   return(
   React.createElement("header", {className: "row header-comp"}, 
@@ -38,7 +42,8 @@ render:function(){
         React.createElement("a", {href: ""}, React.createElement("li", null, "Home")), 
         React.createElement("li", null, "About Us"), 
         React.createElement("a", {href: "#user"}, React.createElement("li", null, "Profile"))
-      )
+      ), 
+      React.createElement("span", {onClick: this.logoutUser}, "Logout")
     )
   )
 )
@@ -48,7 +53,7 @@ render:function(){
 
 module.exports=Header;
 
-},{"backbone":23,"react":184,"react-dom":55}],3:[function(require,module,exports){
+},{"../models/usermodel":20,"backbone":23,"react":184,"react-dom":55}],3:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var ReactDom = require('react-dom');
@@ -1374,10 +1379,15 @@ var LoggedInUser =Backbone.Model.extend({
   urlRoot:'/api/login/'
 
 });
+var LoggedOutUser =Backbone.Model.extend({
+  urlRoot:'/api/logout/'
+
+});
 module.exports={
   'User':User,
   'LoggedInUser':LoggedInUser,
-  'UserCollection':UserCollection
+  'UserCollection':UserCollection,
+  'LoggedOutUser':LoggedOutUser
 };
 
 },{"backbone":23}],21:[function(require,module,exports){
