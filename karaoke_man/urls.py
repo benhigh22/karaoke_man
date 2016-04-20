@@ -33,7 +33,6 @@ urlpatterns = [
     url(r'^api/users/(?P<user>\d+)/attendees/(?P<pk>\d+)/$', views.UserAttendeeRetrieveUpdateDestroyAPIView.as_view(), name='user_attendee_retrieve_update_destroy'),
     url(r'^api/parties/(?P<party>\d+)/songqueues/(?P<pk>\d+)$', views.SongQueueRetrieveUpdateDestroyAPIView.as_view(), name='song_queue_retrieve_update_destroy'),
     url(r'^api/songlookup/$', views.SongLookupAPIView.as_view(), name='song_lookup'),
-    # Django template URLs
     url(r'^$', views.IndexView.as_view(), name='index_view'),
-
+    url(r'^api/users/(?P<user>\d+)/parties/(?P<party>\d+)/attendees/(?P<pk>\d+)/$', views.AttendeeIdRetrieveView.as_view(), name='attendee_id_retrieve_view'),
 ]

@@ -145,13 +145,13 @@ class PartyListCreateAPIView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Party.objects.filter(location_id=self.kwargs.get('location'))
 
-    def create(self, request, *args, **kwargs):
+    """def create(self, request, *args, **kwargs):
         data = request.data
         location = Location.objects.get(pk=self.kwargs.get('location'))
         new_party = Party(creator=request.user, location=location, date_of_party=data['date_of_party'], time_of_party=data['time_of_party'], party_name=data['party_name'], description=data['description'])
         new_party.save()
-        Attendee.objects.create(user=request.user, party=new_party, party_creator=True)
-        return super().create(request, *args, **kwargs)
+        Attendee.objects.create(user=request.user, party=new_party)
+        return super().create(request, *args, **kwargs)"""
 
 
 class PartyRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -235,3 +235,10 @@ class AllCitiesPartiesListAPIView(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         request.data['city'] = self.kwargs.get('city')
         return super().create(request, *args, **kwargs)
+
+
+"""class AttendeeIdRetrieveView(generics.RetrieveAPIView):
+    serializer_class = AttendeeSerializer
+
+    def get_object(self):
+        return Attendee.objects.get(user_id=self.kwargs.get('user'), party_id=self.kwargs.get('party'), id=self.kwargs.get('pk'))"""
