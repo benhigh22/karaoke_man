@@ -151,7 +151,7 @@ var PartyDetails = React.createClass({
           <div>
             <h5>{PartyModel.get('party_name')}</h5>
             <p> {PartyModel.get('description')}</p>
-            <button className="btn" onClick={this.addAttendee}>Join This Party</button>
+            <button onClick={this.addAttendee}>Join This Party</button>
           </div>
         )
       }

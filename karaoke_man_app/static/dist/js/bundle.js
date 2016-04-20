@@ -614,7 +614,7 @@ var PartyDetails = React.createClass({displayName: "PartyDetails",
           React.createElement("div", null, 
             React.createElement("h5", null, PartyModel.get('party_name')), 
             React.createElement("p", null, " ", PartyModel.get('description')), 
-            React.createElement("button", {className: "btn", onClick: this.addAttendee}, "Join This Party")
+            React.createElement("button", {onClick: this.addAttendee}, "Join This Party")
           )
         )
       }

@@ -5827,6 +5827,9 @@ h3 {
   font-family: "Avenir Next";
   font-weight: bold; }
 
+h4 {
+  font-family: "Avenir Next"; }
+
 h1 {
   font-family: "Avenir Next";
   font-weight: bold; }
@@ -5845,6 +5848,11 @@ button {
   background-color: #CC66FF;
   border: solid 1px #CC66FF;
   color: white; }
+
+button:hover {
+  border: solid 1px #CC66FF;
+  background-color: white;
+  color: #331940; }
 
 .headline h1 {
   font-family: "Avenir Next";
