@@ -894,11 +894,16 @@ var Backbone = require('backbone');
 var $ = require('jquery');
 var Header = require('./header.jsx');
 var backboneMixin = require('backbone-react-component');
+
+var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
+
 var queueItemCollection;
 var query;
 var chosenResult;
 
-var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
+//////////////////////////////////////////////////////////
+////Top Level Component Governing State
+//////////////////////////////////////////////////////////
 
 var QueueViewPage = React.createClass({displayName: "QueueViewPage",
     componentWillMount:function(){
@@ -907,7 +912,8 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
       queueItemCollection.fetch();
     },
     getInitialState(){
-      return {"sourceUrl":"",
+      return {
+              "sourceUrl":"",
               "searchResults":[]
               }
     },
@@ -917,10 +923,8 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
     showVideo:function(){
       var that = this;
       var sourceUrl = $.getJSON('/api/songlookup/?song_name='+ query, function(response){
-        console.log(response);
         that.setState({"searchResults":response.body})
         var firstResult = response.body[0];
-        console.log(firstResult.url);
         that.setState({"sourceUrl":firstResult.url})
       });
     },
@@ -939,6 +943,10 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
         );
       }
     });
+
+//////////////////////////////////////////////////////////
+////Components For the Song Queue
+//////////////////////////////////////////////////////////
 
 var QueueItems = React.createClass({displayName: "QueueItems",
     mixins:[Backbone.React.Component.mixin],
@@ -966,7 +974,8 @@ var QueueItems = React.createClass({displayName: "QueueItems",
               React.createElement("div", {className: "queue-panel"}, 
                 queueitems
               )
-            )
+            ), 
+            React.createElement(SongAdditionModule, null)
           )
         );
       }
@@ -990,9 +999,31 @@ var QueueItem = React.createClass({displayName: "QueueItem",
         );
       }
     });
+var SongAdditionModule = React.createClass({displayName: "SongAdditionModule",
+      addSong:function(){
 
+      },
+      render:function(){
+        return(
+          React.createElement("div", {className: "queueform-wrapper"}, 
+            React.createElement("h4", null, "Add A New Song"), 
+            React.createElement("div", null, 
+              React.createElement("form", null, 
+                React.createElement("div", {className: "form-group"}, 
+                  React.createElement("input", {type: "text", id: "singer", className: "form-control", placeholder: "Singer Name"}), 
+                  React.createElement("input", {type: "text", id: "song", className: "form-control", placeholder: "Song Name"})
+                ), 
+                React.createElement("button", {type: "button"}, " Add to the que ")
+              )
+            )
+          )
+        );
+      }
+    });
+//////////////////////////////////////////////////////////
+////Components For the Video Player and Results
+//////////////////////////////////////////////////////////
 var PlayerView = React.createClass({displayName: "PlayerView",
-
       render:function(){
         var that = this;
         var frameStyles = {
