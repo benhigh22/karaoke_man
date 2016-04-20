@@ -147,13 +147,10 @@ class PartyListCreateAPIView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-
-        with transaction.atomic():
-            location = Location.objects.get(pk=self.kwargs.get('location'))
-            new_party = Party(creator=request.user, location=location, date_of_party=data['date_of_party'], time_of_party=data['time_of_party'], party_name=data['party_name'], description=data['description'])
-            new_party.save()
-            Attendee.objects.create(user=request.user, party=new_party)
-
+        location = Location.objects.get(pk=self.kwargs.get('location'))
+        new_party = Party(creator=request.user, location=location, date_of_party=data['date_of_party'], time_of_party=data['time_of_party'], party_name=data['party_name'], description=data['description'])
+        new_party.save()
+        Attendee.objects.create(user=request.user, party=new_party)
         return super().create(request, *args, **kwargs)
 
 
