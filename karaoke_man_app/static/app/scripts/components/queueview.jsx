@@ -6,18 +6,18 @@ var Header = require('./header.jsx');
 var backboneMixin = require('backbone-react-component');
 
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
-
+var AttendeeCollection = require('../models/attendee.js').AttendeeCollection;
 var queueItemCollection;
 var query;
 var chosenResult;
-
+var partyId;
 //////////////////////////////////////////////////////////
 ////Top Level Component Governing State
 //////////////////////////////////////////////////////////
 
 var QueueViewPage = React.createClass({
     componentWillMount:function(){
-      var partyId = Number(localStorage.getItem('currentParty'));
+      partyId = Number(localStorage.getItem('currentParty'));
       queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
       queueItemCollection.fetch();
     },
@@ -64,8 +64,6 @@ var QueueItems = React.createClass({
       render:function(){
         var that = this;
         var queueitems = this.props.collection.map(function(model){
-          console.log(model);
-          console.log(model.get('id'));
           if(model.get('complete')===false){
             return(
               <QueueItem key={model.get('id')} model={model} showVideo={that.props.showVideo} />
@@ -85,7 +83,7 @@ var QueueItems = React.createClass({
                 {queueitems}
               </div>
             </div>
-            < SongAdditionModule />
+            < SongAdditionModule collection={this.props.collection} />
           </div>
         );
       }
@@ -110,8 +108,24 @@ var QueueItem = React.createClass({
       }
     });
 var SongAdditionModule = React.createClass({
-      addSong:function(){
 
+      addSong:function(){
+        var that = this;
+        var attendeeCollection = new AttendeeCollection({'partyId':partyId});
+        var attendee = attendeeCollection.create({
+              'user':Number(localStorage.getItem('user')),
+              'party':partyId
+            },{
+              success:function(response){
+                console.log(response);
+                var hostAttendeeId = response.get('id');
+                that.props.collection.create({
+                  "singer_name":$("#singer").val(),
+                  "song_name":$("#song").val(),
+                  "attendees":hostAttendeeId
+                });
+              }
+            });
       },
       render:function(){
         return(
@@ -123,7 +137,7 @@ var SongAdditionModule = React.createClass({
                   <input type="text" id="singer" className="form-control" placeholder="Singer Name"/>
                   <input type="text" id="song" className="form-control"  placeholder="Song Name"/>
                 </div>
-                <button type="button"> Add to the que </button>
+                <button onClick={this.addSong} type="button"> Add to the que </button>
               </form>
             </div>
           </div>
@@ -196,4 +210,7 @@ var Results = React.createClass({
     )
   }
 });
-    module.exports=QueueViewPage;
+    module.exports={"QueueViewPage":QueueViewPage,
+      "QueueItems":QueueItems,
+      "QueueItem":QueueItem
+    };

@@ -8,11 +8,20 @@ var Footer = require('./footer.jsx');
 
 var UserCreatedPartyCollection = require('../models/createdparties.js').UserPartyCollection;
 var JoinedPartyCollection = require('../models/joinedparties.js').JoinedPartyCollection;
+var QueueItems = require('./queueview.jsx').QueueItems;
+var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
 
 var userCreatedPartyCollection = new UserCreatedPartyCollection();
 var joinedPartyCollection = new JoinedPartyCollection();
+var queueItemCollection;
+var partyId;
 
 var ProfilePage = React.createClass({
+      componentWillMount:function(){
+        partyId = Number(localStorage.getItem('currentParty'));
+        queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+        queueItemCollection.fetch();
+      },
       render:function(){
         return(
           <div>
@@ -63,9 +72,11 @@ var ProfileNav = React.createClass({
               </a>
             </div>
             <div className="col-md-4">
-              <a href="#queue">
+              <a href="current-parties">
                 <div className="profile-button">
                   <h3> My Current Events </h3>
+                    <div className="arrow-down">
+                    </div>
                 </div>
               </a>
             </div>
@@ -84,7 +95,8 @@ var ProfileNav = React.createClass({
 var EventInfo = React.createClass({
       render:function(){
         return(
-          <div className="row">
+          <div className="row" >
+            <a name="current-parties"></a>
             <CreatedParties collection={userCreatedPartyCollection}/>
             <JoinedParties collection={joinedPartyCollection}/>
           </div>
@@ -138,9 +150,9 @@ var JoinedParties = React.createClass({
     mixins:[Backbone.React.Component.mixin],
       componentWillMount:function(){
         this.props.collection.fetch();
-
       },
       render:function(){
+        var that = this;
         var joinedParties = this.props.collection.map(function(model){
           console.log(model);
           return(
@@ -161,19 +173,44 @@ var JoinedParties = React.createClass({
       }
     });
 var JoinedParty = React.createClass({
-      showPartyQueue:function(){
-      console.log(this.props.model.get('id'));
-
+      getInitialState:function(){
+        return(
+          {'showPartyDetails':false}
+        )
+      },
+      togglePartyQueue:function(){
+        console.log('handleClick is working');
+        if(this.state.showPartyDetails===false){
+          partyId=this.props.model.get('id');
+          queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+          queueItemCollection.fetch();
+          this.setState({'showPartyDetails':true});
+        }
+        else{
+          this.setState({'showPartyDetails':false});
+        }
       },
       render:function(){
         return(
-          <div className="party-info" id='party' onClick={this.showPartyQueue}>
-            <h4>{this.props.model.get('party_name')}</h4>
-            <span className="event-date"><span className="title">Date: </span>{this.props.model.get('party_date')}</span>
-            <span className="event-time"><span className="title">Time: </span>{this.props.model.get('party_time')}</span>
-        </div>
+          <div>
+            <div className="party-info" id='party' onClick={this.togglePartyQueue}>
+              <h4>{this.props.model.get('party_name')}</h4>
+              <span className="event-date"><span className="title">Date: </span>{this.props.model.get('party_date')}</span>
+              <span className="event-time"><span className="title">Time: </span>{this.props.model.get('party_time')}</span>
+            </div>
+            <JoinedPartyDetails partyDetailState={this.state.showPartyDetails}/>
+          </div>
         )
       }
     });
-
+var JoinedPartyDetails = React.createClass({
+    render:function(){
+      console.log(this.props.partyDetailState);
+      return(
+        <div className="row">
+            {this.props.partyDetailState ? <QueueItems collection={queueItemCollection} /> : null}
+        </div>
+      );
+    }
+    });
 module.exports=ProfilePage;

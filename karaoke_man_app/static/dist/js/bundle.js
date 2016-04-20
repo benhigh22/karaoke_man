@@ -716,11 +716,20 @@ var Footer = require('./footer.jsx');
 
 var UserCreatedPartyCollection = require('../models/createdparties.js').UserPartyCollection;
 var JoinedPartyCollection = require('../models/joinedparties.js').JoinedPartyCollection;
+var QueueItems = require('./queueview.jsx').QueueItems;
+var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
 
 var userCreatedPartyCollection = new UserCreatedPartyCollection();
 var joinedPartyCollection = new JoinedPartyCollection();
+var queueItemCollection;
+var partyId;
 
 var ProfilePage = React.createClass({displayName: "ProfilePage",
+      componentWillMount:function(){
+        partyId = Number(localStorage.getItem('currentParty'));
+        queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+        queueItemCollection.fetch();
+      },
       render:function(){
         return(
           React.createElement("div", null, 
@@ -771,9 +780,11 @@ var ProfileNav = React.createClass({displayName: "ProfileNav",
               )
             ), 
             React.createElement("div", {className: "col-md-4"}, 
-              React.createElement("a", {href: "#queue"}, 
+              React.createElement("a", {href: "current-parties"}, 
                 React.createElement("div", {className: "profile-button"}, 
-                  React.createElement("h3", null, " My Current Events ")
+                  React.createElement("h3", null, " My Current Events "), 
+                    React.createElement("div", {className: "arrow-down"}
+                    )
                 )
               )
             ), 
@@ -793,6 +804,7 @@ var EventInfo = React.createClass({displayName: "EventInfo",
       render:function(){
         return(
           React.createElement("div", {className: "row"}, 
+            React.createElement("a", {name: "current-parties"}), 
             React.createElement(CreatedParties, {collection: userCreatedPartyCollection}), 
             React.createElement(JoinedParties, {collection: joinedPartyCollection})
           )
@@ -846,9 +858,9 @@ var JoinedParties = React.createClass({displayName: "JoinedParties",
     mixins:[Backbone.React.Component.mixin],
       componentWillMount:function(){
         this.props.collection.fetch();
-
       },
       render:function(){
+        var that = this;
         var joinedParties = this.props.collection.map(function(model){
           console.log(model);
           return(
@@ -869,24 +881,49 @@ var JoinedParties = React.createClass({displayName: "JoinedParties",
       }
     });
 var JoinedParty = React.createClass({displayName: "JoinedParty",
-      showPartyQueue:function(){
-      console.log(this.props.model.get('id'));
-
+      getInitialState:function(){
+        return(
+          {'showPartyDetails':false}
+        )
+      },
+      togglePartyQueue:function(){
+        console.log('handleClick is working');
+        if(this.state.showPartyDetails===false){
+          partyId=this.props.model.get('id');
+          queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+          queueItemCollection.fetch();
+          this.setState({'showPartyDetails':true});
+        }
+        else{
+          this.setState({'showPartyDetails':false});
+        }
       },
       render:function(){
         return(
-          React.createElement("div", {className: "party-info", id: "party", onClick: this.showPartyQueue}, 
-            React.createElement("h4", null, this.props.model.get('party_name')), 
-            React.createElement("span", {className: "event-date"}, React.createElement("span", {className: "title"}, "Date: "), this.props.model.get('party_date')), 
-            React.createElement("span", {className: "event-time"}, React.createElement("span", {className: "title"}, "Time: "), this.props.model.get('party_time'))
-        )
+          React.createElement("div", null, 
+            React.createElement("div", {className: "party-info", id: "party", onClick: this.togglePartyQueue}, 
+              React.createElement("h4", null, this.props.model.get('party_name')), 
+              React.createElement("span", {className: "event-date"}, React.createElement("span", {className: "title"}, "Date: "), this.props.model.get('party_date')), 
+              React.createElement("span", {className: "event-time"}, React.createElement("span", {className: "title"}, "Time: "), this.props.model.get('party_time'))
+            ), 
+            React.createElement(JoinedPartyDetails, {partyDetailState: this.state.showPartyDetails})
+          )
         )
       }
     });
-
+var JoinedPartyDetails = React.createClass({displayName: "JoinedPartyDetails",
+    render:function(){
+      console.log(this.props.partyDetailState);
+      return(
+        React.createElement("div", {className: "row"}, 
+            this.props.partyDetailState ? React.createElement(QueueItems, {collection: queueItemCollection}) : null
+        )
+      );
+    }
+    });
 module.exports=ProfilePage;
 
-},{"../models/createdparties.js":14,"../models/joinedparties.js":16,"./footer.jsx":1,"./header.jsx":2,"backbone":23,"backbone-react-component":22,"react":184,"react-dom":55}],8:[function(require,module,exports){
+},{"../models/createdparties.js":14,"../models/joinedparties.js":16,"../models/queuemodel.js":19,"./footer.jsx":1,"./header.jsx":2,"./queueview.jsx":8,"backbone":23,"backbone-react-component":22,"react":184,"react-dom":55}],8:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var ReactDom = require('react-dom');
@@ -896,18 +933,18 @@ var Header = require('./header.jsx');
 var backboneMixin = require('backbone-react-component');
 
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
-
+var AttendeeCollection = require('../models/attendee.js').AttendeeCollection;
 var queueItemCollection;
 var query;
 var chosenResult;
-
+var partyId;
 //////////////////////////////////////////////////////////
 ////Top Level Component Governing State
 //////////////////////////////////////////////////////////
 
 var QueueViewPage = React.createClass({displayName: "QueueViewPage",
     componentWillMount:function(){
-      var partyId = Number(localStorage.getItem('currentParty'));
+      partyId = Number(localStorage.getItem('currentParty'));
       queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
       queueItemCollection.fetch();
     },
@@ -954,8 +991,6 @@ var QueueItems = React.createClass({displayName: "QueueItems",
       render:function(){
         var that = this;
         var queueitems = this.props.collection.map(function(model){
-          console.log(model);
-          console.log(model.get('id'));
           if(model.get('complete')===false){
             return(
               React.createElement(QueueItem, {key: model.get('id'), model: model, showVideo: that.props.showVideo})
@@ -975,7 +1010,7 @@ var QueueItems = React.createClass({displayName: "QueueItems",
                 queueitems
               )
             ), 
-            React.createElement(SongAdditionModule, null)
+            React.createElement(SongAdditionModule, {collection: this.props.collection})
           )
         );
       }
@@ -1000,8 +1035,24 @@ var QueueItem = React.createClass({displayName: "QueueItem",
       }
     });
 var SongAdditionModule = React.createClass({displayName: "SongAdditionModule",
-      addSong:function(){
 
+      addSong:function(){
+        var that = this;
+        var attendeeCollection = new AttendeeCollection({'partyId':partyId});
+        var attendee = attendeeCollection.create({
+              'user':Number(localStorage.getItem('user')),
+              'party':partyId
+            },{
+              success:function(response){
+                console.log(response);
+                var hostAttendeeId = response.get('id');
+                that.props.collection.create({
+                  "singer_name":$("#singer").val(),
+                  "song_name":$("#song").val(),
+                  "attendees":hostAttendeeId
+                });
+              }
+            });
       },
       render:function(){
         return(
@@ -1013,7 +1064,7 @@ var SongAdditionModule = React.createClass({displayName: "SongAdditionModule",
                   React.createElement("input", {type: "text", id: "singer", className: "form-control", placeholder: "Singer Name"}), 
                   React.createElement("input", {type: "text", id: "song", className: "form-control", placeholder: "Song Name"})
                 ), 
-                React.createElement("button", {type: "button"}, " Add to the que ")
+                React.createElement("button", {onClick: this.addSong, type: "button"}, " Add to the que ")
               )
             )
           )
@@ -1086,9 +1137,12 @@ var Results = React.createClass({displayName: "Results",
     )
   }
 });
-    module.exports=QueueViewPage;
+    module.exports={"QueueViewPage":QueueViewPage,
+      "QueueItems":QueueItems,
+      "QueueItem":QueueItem
+    };
 
-},{"../models/queuemodel.js":19,"./header.jsx":2,"backbone":23,"backbone-react-component":22,"jquery":52,"react":184,"react-dom":55}],9:[function(require,module,exports){
+},{"../models/attendee.js":11,"../models/queuemodel.js":19,"./header.jsx":2,"backbone":23,"backbone-react-component":22,"jquery":52,"react":184,"react-dom":55}],9:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var ReactDom = require('react-dom');
@@ -1472,7 +1526,7 @@ var Home = require('./components/homepage.jsx');
 var RegistrationFormPage = require('./components/userReg.jsx');
 var ProfilePage = require('./components/profilepage.jsx');
 var PartyFinder = require('./components/partyfinder.jsx');
-var QueueViewPage = require('./components/queueview.jsx');
+var QueueViewPage = require('./components/queueview.jsx').QueueViewPage;
 var PartyCreator = require('./components/partycreator.jsx');
 var Login = require('./components/login.jsx');
 
@@ -1502,7 +1556,6 @@ renderUserRegistration:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(RegistrationFormPage),
   document.getElementById('app'));
-  this.validateLogin();
 },
 renderProfilePage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
