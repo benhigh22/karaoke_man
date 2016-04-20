@@ -4,11 +4,16 @@ var Backbone = require('backbone');
 var $ = require('jquery');
 var Header = require('./header.jsx');
 var backboneMixin = require('backbone-react-component');
+
+var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
+
 var queueItemCollection;
 var query;
 var chosenResult;
 
-var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
+//////////////////////////////////////////////////////////
+////Top Level Component Governing State
+//////////////////////////////////////////////////////////
 
 var QueueViewPage = React.createClass({
     componentWillMount:function(){
@@ -17,7 +22,8 @@ var QueueViewPage = React.createClass({
       queueItemCollection.fetch();
     },
     getInitialState(){
-      return {"sourceUrl":"",
+      return {
+              "sourceUrl":"",
               "searchResults":[]
               }
     },
@@ -27,10 +33,8 @@ var QueueViewPage = React.createClass({
     showVideo:function(){
       var that = this;
       var sourceUrl = $.getJSON('/api/songlookup/?song_name='+ query, function(response){
-        console.log(response);
         that.setState({"searchResults":response.body})
         var firstResult = response.body[0];
-        console.log(firstResult.url);
         that.setState({"sourceUrl":firstResult.url})
       });
     },
@@ -49,6 +53,10 @@ var QueueViewPage = React.createClass({
         );
       }
     });
+
+//////////////////////////////////////////////////////////
+////Components For the Song Queue
+//////////////////////////////////////////////////////////
 
 var QueueItems = React.createClass({
     mixins:[Backbone.React.Component.mixin],
@@ -77,6 +85,7 @@ var QueueItems = React.createClass({
                 {queueitems}
               </div>
             </div>
+            < SongAdditionModule />
           </div>
         );
       }
@@ -100,9 +109,31 @@ var QueueItem = React.createClass({
         );
       }
     });
+var SongAdditionModule = React.createClass({
+      addSong:function(){
 
+      },
+      render:function(){
+        return(
+          <div className="queueform-wrapper">
+            <h4>Add A New Song</h4>
+            <div>
+              <form>
+                <div className="form-group">
+                  <input type="text" id="singer" className="form-control" placeholder="Singer Name"/>
+                  <input type="text" id="song" className="form-control"  placeholder="Song Name"/>
+                </div>
+                <button type="button"> Add to the que </button>
+              </form>
+            </div>
+          </div>
+        );
+      }
+    });
+//////////////////////////////////////////////////////////
+////Components For the Video Player and Results
+//////////////////////////////////////////////////////////
 var PlayerView = React.createClass({
-
       render:function(){
         var that = this;
         var frameStyles = {
