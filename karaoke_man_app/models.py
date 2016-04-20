@@ -42,6 +42,7 @@ class Party(models.Model):
 class Attendee(models.Model):
     user = models.ForeignKey(User)
     party = models.ForeignKey(Party)
+    party_creator = models.BooleanField(default=False)
 
 
 class SongQueue(models.Model):
