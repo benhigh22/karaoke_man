@@ -919,7 +919,7 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
       var sourceUrl = $.getJSON('/api/songlookup/?song_name='+ query, function(response){
         console.log(response);
         that.setState({"searchResults":response.body})
-        var firstResult = response.body[1];
+        var firstResult = response.body[0];
         console.log(firstResult.url);
         that.setState({"sourceUrl":firstResult.url})
       });
@@ -1046,7 +1046,7 @@ var Results = React.createClass({displayName: "Results",
   render:function(){
     return(
       React.createElement("div", {key: this.props.result.url}, 
-        React.createElement("div", {className: "ytube-results"}, 
+        React.createElement("div", null, 
           React.createElement("div", {onClick: this.selectResult}, 
             React.createElement("h5", null, this.props.result.title)
           )

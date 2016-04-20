@@ -334,6 +334,22 @@ header{
       border:none;
     }
 }
+.ytube-results{
+  border:solid 1px black;
+  border-radius: 10px;
+  margin:5px 0;
+  padding: 15px;
+    h5{
+      border:solid 1px #cc66ff;
+      border-radius: 5px;
+      padding: 5px;
+      margin:5px 0;
+      cursor: pointer;
+    }
+    h5:hover{
+      transform: scale(1.03,1.03);
+    }
+}
 .ui-datepicker{
   background-color: white;
   border-radius: 5px;
@@ -346,22 +362,6 @@ header{
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .about_us{
