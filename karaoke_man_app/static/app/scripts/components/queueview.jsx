@@ -6,6 +6,7 @@ var Header = require('./header.jsx');
 var backboneMixin = require('backbone-react-component');
 var queueItemCollection;
 var query;
+var chosenResult;
 
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
 
@@ -16,12 +17,21 @@ var QueueViewPage = React.createClass({
       queueItemCollection.fetch();
     },
     getInitialState(){
-      return {"sourceUrl": ""}
+      return {"sourceUrl":"",
+              "searchResults":[]
+              }
+    },
+    setUrl:function(){
+      this.setState({sourceUrl:chosenResult})
     },
     showVideo:function(){
       var that = this;
       var sourceUrl = $.getJSON('/api/songlookup/?song_name='+ query, function(response){
-        that.setState({"sourceUrl":response})
+        console.log(response);
+        that.setState({"searchResults":response.body})
+        var firstResult = response.body[1];
+        console.log(firstResult.url);
+        that.setState({"sourceUrl":firstResult.url})
       });
     },
     refreshQueue:function(){
@@ -33,7 +43,7 @@ var QueueViewPage = React.createClass({
             <Header/>
               <div className="row">
                 <QueueItems collection={queueItemCollection} showVideo={this.showVideo} refresh={this.refreshQueue()} />
-                <PlayerView sourceUrl={this.state.sourceUrl}/>
+                <PlayerView setUrl={this.setUrl} sourceUrl={this.state.sourceUrl} searchResults={this.state.searchResults}/>
               </div>
           </div>
         );
@@ -94,12 +104,25 @@ var QueueItem = React.createClass({
 var PlayerView = React.createClass({
 
       render:function(){
+        var that = this;
         var frameStyles = {
             overflow: 'hidden',
             height:'100%',
             width:'100%'
         };
         var sourceUrl = this.props.sourceUrl;
+        var youTubeUrl
+          if(sourceUrl===undefined){
+            youTubeUrl = null;
+          }
+          else{
+            youTubeUrl = "https://www.youtube.com/embed/" + sourceUrl + "?autoplay=1";
+          }
+        var searchResults = this.props.searchResults.map(function(result){
+            return(
+              <Results setUrl={that.props.setUrl} result={result}/>
+            )
+        });
         return(
           <div className="col-md-9">
             <div className="row">
@@ -109,7 +132,7 @@ var PlayerView = React.createClass({
                     <iframe style={frameStyles}
                             width="100%"
                             height="100%"
-                            src={sourceUrl.body}
+                            src={youTubeUrl}
                             frameBorder="0"
                             allowFullScreen>
                     </iframe>
@@ -117,10 +140,7 @@ var PlayerView = React.createClass({
                 </div>
                 <h3>Results From You-Tube</h3>
                 <div className="ytube-results">
-                  <div>
-                    <h5>Result #1</h5>
-                    <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
-                  </div>
+                  {searchResults}
                 </div>
               </div>
             </div>
@@ -128,5 +148,21 @@ var PlayerView = React.createClass({
         );
       }
     });
-
+var Results = React.createClass({
+  selectResult:function(){
+    chosenResult=this.props.result.url;
+    this.props.setUrl()
+  },
+  render:function(){
+    return(
+      <div key={this.props.result.url}>
+        <div className="ytube-results">
+          <div onClick={this.selectResult}>
+            <h5>{this.props.result.title}</h5>
+          </div>
+        </div>
+    </div>
+    )
+  }
+});
     module.exports=QueueViewPage;

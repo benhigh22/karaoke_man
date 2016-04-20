@@ -5909,7 +5909,8 @@ button:hover {
   color: white;
   border: solid 1px #CC66FF;
   border-radius: 10px;
-  background: #CC66FF; }
+  background: #CC66FF;
+  cursor: pointer; }
 
 #infograph {
   margin: 45px auto;

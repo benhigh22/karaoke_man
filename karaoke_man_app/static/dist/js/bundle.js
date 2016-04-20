@@ -896,6 +896,7 @@ var Header = require('./header.jsx');
 var backboneMixin = require('backbone-react-component');
 var queueItemCollection;
 var query;
+var chosenResult;
 
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
 
@@ -906,12 +907,21 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
       queueItemCollection.fetch();
     },
     getInitialState(){
-      return {"sourceUrl": ""}
+      return {"sourceUrl":"",
+              "searchResults":[]
+              }
+    },
+    setUrl:function(){
+      this.setState({sourceUrl:chosenResult})
     },
     showVideo:function(){
       var that = this;
       var sourceUrl = $.getJSON('/api/songlookup/?song_name='+ query, function(response){
-        that.setState({"sourceUrl":response})
+        console.log(response);
+        that.setState({"searchResults":response.body})
+        var firstResult = response.body[1];
+        console.log(firstResult.url);
+        that.setState({"sourceUrl":firstResult.url})
       });
     },
     refreshQueue:function(){
@@ -923,7 +933,7 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
             React.createElement(Header, null), 
               React.createElement("div", {className: "row"}, 
                 React.createElement(QueueItems, {collection: queueItemCollection, showVideo: this.showVideo, refresh: this.refreshQueue()}), 
-                React.createElement(PlayerView, {sourceUrl: this.state.sourceUrl})
+                React.createElement(PlayerView, {setUrl: this.setUrl, sourceUrl: this.state.sourceUrl, searchResults: this.state.searchResults})
               )
           )
         );
@@ -984,12 +994,25 @@ var QueueItem = React.createClass({displayName: "QueueItem",
 var PlayerView = React.createClass({displayName: "PlayerView",
 
       render:function(){
+        var that = this;
         var frameStyles = {
             overflow: 'hidden',
             height:'100%',
             width:'100%'
         };
         var sourceUrl = this.props.sourceUrl;
+        var youTubeUrl
+          if(sourceUrl===undefined){
+            youTubeUrl = null;
+          }
+          else{
+            youTubeUrl = "https://www.youtube.com/embed/" + sourceUrl + "?autoplay=1";
+          }
+        var searchResults = this.props.searchResults.map(function(result){
+            return(
+              React.createElement(Results, {setUrl: that.props.setUrl, result: result})
+            )
+        });
         return(
           React.createElement("div", {className: "col-md-9"}, 
             React.createElement("div", {className: "row"}, 
@@ -999,7 +1022,7 @@ var PlayerView = React.createClass({displayName: "PlayerView",
                     React.createElement("iframe", {style: frameStyles, 
                             width: "100%", 
                             height: "100%", 
-                            src: sourceUrl.body, 
+                            src: youTubeUrl, 
                             frameBorder: "0", 
                             allowFullScreen: true}
                     )
@@ -1007,10 +1030,7 @@ var PlayerView = React.createClass({displayName: "PlayerView",
                 ), 
                 React.createElement("h3", null, "Results From You-Tube"), 
                 React.createElement("div", {className: "ytube-results"}, 
-                  React.createElement("div", null, 
-                    React.createElement("h5", null, "Result #1"), 
-                    React.createElement("span", null, "Lorem ipsum dolor sit amet, consectetur adipisicing elit.")
-                  )
+                  searchResults
                 )
               )
             )
@@ -1018,7 +1038,23 @@ var PlayerView = React.createClass({displayName: "PlayerView",
         );
       }
     });
-
+var Results = React.createClass({displayName: "Results",
+  selectResult:function(){
+    chosenResult=this.props.result.url;
+    this.props.setUrl()
+  },
+  render:function(){
+    return(
+      React.createElement("div", {key: this.props.result.url}, 
+        React.createElement("div", {className: "ytube-results"}, 
+          React.createElement("div", {onClick: this.selectResult}, 
+            React.createElement("h5", null, this.props.result.title)
+          )
+        )
+    )
+    )
+  }
+});
     module.exports=QueueViewPage;
 
 },{"../models/queuemodel.js":19,"./header.jsx":2,"backbone":23,"backbone-react-component":22,"jquery":52,"react":184,"react-dom":55}],9:[function(require,module,exports){
