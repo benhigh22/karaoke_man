@@ -54,11 +54,11 @@ var CitySelect = React.createClass({
         );
       });
       return(
-        <div className="selection-wrapper">
+        <div className="selection-wrapper search-bar">
           <select name="cities" id="cities">
             {cities}
           </select>
-          <button onClick={this.renderResults}>Search</button>
+          <button className="search-button" onClick={this.renderResults}>Search</button>
         </div>
         );
       }
@@ -120,9 +120,9 @@ var Party = React.createClass({
           <div>
             <div key={model.get('id')}>
               <h4>{model.get('location_name')}</h4>
+              <span className="event-date"><span className="title">Date: </span>{model.get('date_of_party')}</span>
+              <span className="event-time"><span className="title">Time: </span>{model.get('time_of_party')}</span>
               <button type="button" onClick={this.handleClick}> See Details </button>
-              <span className="event-date">{model.get('date_of_party')}</span>
-              <span className="event-time">{model.get('time_of_party')}</span>
             </div>
             { this.state.showPartyDetails ? <PartyDetails showQueue={this.props.showQueue} PartyModel={model}/> : null}
           </div>
@@ -151,7 +151,7 @@ var PartyDetails = React.createClass({
           <div>
             <h5>{PartyModel.get('party_name')}</h5>
             <p> {PartyModel.get('description')}</p>
-            <button className="btn btn-primary" onClick={this.addAttendee}>Join This Party</button>
+            <button onClick={this.addAttendee}>Join This Party</button>
           </div>
         )
       }
@@ -217,11 +217,11 @@ var PartyFinder = React.createClass({
           <div className="container">
             <Header />
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-md-8 party-finder">
                 <h1> Party Finder </h1>
-              </div>
-              <div className="col-md-6">
                 <CitySelect collection={cityCollection} />
+              </div>
+              <div className="col-md-4">
               </div>
             </div>
             <div className="row">

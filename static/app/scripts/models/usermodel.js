@@ -16,8 +16,13 @@ var LoggedInUser =Backbone.Model.extend({
   urlRoot:'/api/login/'
 
 });
+var LoggedOutUser =Backbone.Model.extend({
+  urlRoot:'/api/logout/'
+
+});
 module.exports={
   'User':User,
   'LoggedInUser':LoggedInUser,
-  'UserCollection':UserCollection
+  'UserCollection':UserCollection,
+  'LoggedOutUser':LoggedOutUser
 };

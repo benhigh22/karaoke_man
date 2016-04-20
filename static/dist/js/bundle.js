@@ -23,10 +23,15 @@ module.exports=Footer;
 var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
+var LoggedOutUser = require('../models/usermodel').LoggedOutUser;
+var loggedOutUser = new LoggedOutUser();
 
 var Header = React.createClass({displayName: "Header",
-
-
+logoutUser:function(){
+  loggedOutUser.fetch();
+  localStorage.removeItem('user');
+  Backbone.history.navigate('',{trigger:true, replace: true});
+},
 render:function(){
   return(
   React.createElement("header", {className: "row header-comp"}, 
@@ -39,6 +44,11 @@ render:function(){
         React.createElement("li", null, "About Us"), 
         React.createElement("a", {href: "#user"}, React.createElement("li", null, "Profile"))
       )
+    ), 
+    React.createElement("div", {className: "col-md-2 col-md-offset-3"}, 
+      React.createElement("div", {className: "logout", onClick: this.logoutUser}, 
+        React.createElement("span", null, "Logout")
+      )
     )
   )
 )
@@ -48,7 +58,7 @@ render:function(){
 
 module.exports=Header;
 
-},{"backbone":23,"react":184,"react-dom":55}],3:[function(require,module,exports){
+},{"../models/usermodel":20,"backbone":23,"react":184,"react-dom":55}],3:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var ReactDom = require('react-dom');
@@ -507,11 +517,11 @@ var CitySelect = React.createClass({displayName: "CitySelect",
         );
       });
       return(
-        React.createElement("div", {className: "selection-wrapper"}, 
+        React.createElement("div", {className: "selection-wrapper search-bar"}, 
           React.createElement("select", {name: "cities", id: "cities"}, 
             cities
           ), 
-          React.createElement("button", {onClick: this.renderResults}, "Search")
+          React.createElement("button", {className: "search-button", onClick: this.renderResults}, "Search")
         )
         );
       }
@@ -573,9 +583,9 @@ var Party = React.createClass({displayName: "Party",
           React.createElement("div", null, 
             React.createElement("div", {key: model.get('id')}, 
               React.createElement("h4", null, model.get('location_name')), 
-              React.createElement("button", {type: "button", onClick: this.handleClick}, " See Details "), 
-              React.createElement("span", {className: "event-date"}, model.get('date_of_party')), 
-              React.createElement("span", {className: "event-time"}, model.get('time_of_party'))
+              React.createElement("span", {className: "event-date"}, React.createElement("span", {className: "title"}, "Date: "), model.get('date_of_party')), 
+              React.createElement("span", {className: "event-time"}, React.createElement("span", {className: "title"}, "Time: "), model.get('time_of_party')), 
+              React.createElement("button", {type: "button", onClick: this.handleClick}, " See Details ")
             ), 
              this.state.showPartyDetails ? React.createElement(PartyDetails, {showQueue: this.props.showQueue, PartyModel: model}) : null
           )
@@ -604,7 +614,7 @@ var PartyDetails = React.createClass({displayName: "PartyDetails",
           React.createElement("div", null, 
             React.createElement("h5", null, PartyModel.get('party_name')), 
             React.createElement("p", null, " ", PartyModel.get('description')), 
-            React.createElement("button", {className: "btn btn-primary", onClick: this.addAttendee}, "Join This Party")
+            React.createElement("button", {onClick: this.addAttendee}, "Join This Party")
           )
         )
       }
@@ -670,11 +680,11 @@ var PartyFinder = React.createClass({displayName: "PartyFinder",
           React.createElement("div", {className: "container"}, 
             React.createElement(Header, null), 
             React.createElement("div", {className: "row"}, 
-              React.createElement("div", {className: "col-md-6"}, 
-                React.createElement("h1", null, " Party Finder ")
-              ), 
-              React.createElement("div", {className: "col-md-6"}, 
+              React.createElement("div", {className: "col-md-8 party-finder"}, 
+                React.createElement("h1", null, " Party Finder "), 
                 React.createElement(CitySelect, {collection: cityCollection})
+              ), 
+              React.createElement("div", {className: "col-md-4"}
               )
             ), 
             React.createElement("div", {className: "row"}, 
@@ -825,8 +835,8 @@ var CreatedParty = React.createClass({displayName: "CreatedParty",
         return(
           React.createElement("div", {className: "party-info", id: "party", onClick: this.showPartyQueue}, 
             React.createElement("h4", null, this.props.model.get('party_name')), 
-            React.createElement("span", null, this.props.model.get('date_of_party')), 
-            React.createElement("span", null, this.props.model.get('time_of_party'))
+              React.createElement("span", {className: "event-date"}, React.createElement("span", {className: "title"}, "Date: "), this.props.model.get('date_of_party')), 
+              React.createElement("span", {className: "event-time"}, React.createElement("span", {className: "title"}, "Time: "), this.props.model.get('time_of_party'))
           )
         );
       }
@@ -867,9 +877,9 @@ var JoinedParty = React.createClass({displayName: "JoinedParty",
         return(
           React.createElement("div", {className: "party-info", id: "party", onClick: this.showPartyQueue}, 
             React.createElement("h4", null, this.props.model.get('party_name')), 
-            React.createElement("span", null, this.props.model.get('party_date')), 
-            React.createElement("span", null, this.props.model.get('party_time'))
-          )
+            React.createElement("span", {className: "event-date"}, React.createElement("span", {className: "title"}, "Date: "), this.props.model.get('party_date')), 
+            React.createElement("span", {className: "event-time"}, React.createElement("span", {className: "title"}, "Time: "), this.props.model.get('party_time'))
+        )
         )
       }
     });
@@ -886,6 +896,7 @@ var Header = require('./header.jsx');
 var backboneMixin = require('backbone-react-component');
 var queueItemCollection;
 var query;
+var chosenResult;
 
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
 
@@ -896,12 +907,21 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
       queueItemCollection.fetch();
     },
     getInitialState(){
-      return {"sourceUrl": ""}
+      return {"sourceUrl":"",
+              "searchResults":[]
+              }
+    },
+    setUrl:function(){
+      this.setState({sourceUrl:chosenResult})
     },
     showVideo:function(){
       var that = this;
       var sourceUrl = $.getJSON('/api/songlookup/?song_name='+ query, function(response){
-        that.setState({"sourceUrl":response})
+        console.log(response);
+        that.setState({"searchResults":response.body})
+        var firstResult = response.body[0];
+        console.log(firstResult.url);
+        that.setState({"sourceUrl":firstResult.url})
       });
     },
     refreshQueue:function(){
@@ -913,7 +933,7 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
             React.createElement(Header, null), 
               React.createElement("div", {className: "row"}, 
                 React.createElement(QueueItems, {collection: queueItemCollection, showVideo: this.showVideo, refresh: this.refreshQueue()}), 
-                React.createElement(PlayerView, {sourceUrl: this.state.sourceUrl})
+                React.createElement(PlayerView, {setUrl: this.setUrl, sourceUrl: this.state.sourceUrl, searchResults: this.state.searchResults})
               )
           )
         );
@@ -974,12 +994,25 @@ var QueueItem = React.createClass({displayName: "QueueItem",
 var PlayerView = React.createClass({displayName: "PlayerView",
 
       render:function(){
+        var that = this;
         var frameStyles = {
             overflow: 'hidden',
             height:'100%',
             width:'100%'
         };
         var sourceUrl = this.props.sourceUrl;
+        var youTubeUrl
+          if(sourceUrl===undefined){
+            youTubeUrl = null;
+          }
+          else{
+            youTubeUrl = "https://www.youtube.com/embed/" + sourceUrl + "?autoplay=1";
+          }
+        var searchResults = this.props.searchResults.map(function(result){
+            return(
+              React.createElement(Results, {setUrl: that.props.setUrl, result: result})
+            )
+        });
         return(
           React.createElement("div", {className: "col-md-9"}, 
             React.createElement("div", {className: "row"}, 
@@ -989,7 +1022,7 @@ var PlayerView = React.createClass({displayName: "PlayerView",
                     React.createElement("iframe", {style: frameStyles, 
                             width: "100%", 
                             height: "100%", 
-                            src: sourceUrl.body, 
+                            src: youTubeUrl, 
                             frameBorder: "0", 
                             allowFullScreen: true}
                     )
@@ -997,10 +1030,7 @@ var PlayerView = React.createClass({displayName: "PlayerView",
                 ), 
                 React.createElement("h3", null, "Results From You-Tube"), 
                 React.createElement("div", {className: "ytube-results"}, 
-                  React.createElement("div", null, 
-                    React.createElement("h5", null, "Result #1"), 
-                    React.createElement("span", null, "Lorem ipsum dolor sit amet, consectetur adipisicing elit.")
-                  )
+                  searchResults
                 )
               )
             )
@@ -1008,7 +1038,23 @@ var PlayerView = React.createClass({displayName: "PlayerView",
         );
       }
     });
-
+var Results = React.createClass({displayName: "Results",
+  selectResult:function(){
+    chosenResult=this.props.result.url;
+    this.props.setUrl()
+  },
+  render:function(){
+    return(
+      React.createElement("div", {key: this.props.result.url}, 
+        React.createElement("div", null, 
+          React.createElement("div", {onClick: this.selectResult}, 
+            React.createElement("h5", null, this.props.result.title)
+          )
+        )
+    )
+    )
+  }
+});
     module.exports=QueueViewPage;
 
 },{"../models/queuemodel.js":19,"./header.jsx":2,"backbone":23,"backbone-react-component":22,"jquery":52,"react":184,"react-dom":55}],9:[function(require,module,exports){
@@ -1374,10 +1420,15 @@ var LoggedInUser =Backbone.Model.extend({
   urlRoot:'/api/login/'
 
 });
+var LoggedOutUser =Backbone.Model.extend({
+  urlRoot:'/api/logout/'
+
+});
 module.exports={
   'User':User,
   'LoggedInUser':LoggedInUser,
-  'UserCollection':UserCollection
+  'UserCollection':UserCollection,
+  'LoggedOutUser':LoggedOutUser
 };
 
 },{"backbone":23}],21:[function(require,module,exports){
@@ -1405,7 +1456,12 @@ routes:{
 'queue':'renderQueueViewPage',
 'create':'renderCreatePage'
 },
-
+validateLogin:function(){
+  if(localStorage.getItem('user')===null){
+    alert('You are currently not logged in as a user please log in to your account to use this feature');
+    Backbone.history.navigate('',{trigger:true, replace: true});
+  }
+},
 renderHome:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(Home),
@@ -1415,26 +1471,31 @@ renderUserRegistration:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(RegistrationFormPage),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderProfilePage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(ProfilePage),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderPartyFinder:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(PartyFinder),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderQueueViewPage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(QueueViewPage),
   document.getElementById('app'));
+  this.validateLogin();
 },
 renderCreatePage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(PartyCreator),
   document.getElementById('app'));
+  this.validateLogin();
 }
 });
 

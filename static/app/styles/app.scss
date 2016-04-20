@@ -24,6 +24,13 @@ h3{
   font-family: "Avenir Next";
   font-weight: bold;
 }
+h4{
+  font-family: "Avenir Next";
+}
+h1{
+  font-family: "Avenir Next";
+  font-weight: bold;
+}
 footer{
   height:100px;
   background-color: #CC66FF;
@@ -33,7 +40,17 @@ a:hover, a::selection, a:visited, a:focus, a:active{
   text-decoration: none;
   outline: none;
 }
-
+button{
+  font-family: "Avenir Next";
+  background-color: #CC66FF;
+  border:solid 1px #CC66FF;
+  color:white;
+}
+button:hover{
+  border:solid 1px #CC66FF;
+  background-color: white;
+  color:#331940;
+}
 .headline{
   h1{
     font-family: "Avenir Next";
@@ -50,7 +67,8 @@ a:hover, a::selection, a:visited, a:focus, a:active{
   background-color: #CC66FF;
   border:solid 1px #CC66FF;
 }
-.modal-button:hover{
+.modal-button:hover, .modal-button:focus,.modal-button:active:focus{
+  outline:none;
   color:black;
   background-color: white;
   border:solid 1px #331940;
@@ -67,7 +85,8 @@ a:hover, a::selection, a:visited, a:focus, a:active{
   text-decoration: none;
   list-style: none;
   float:left;
-  padding-top: 50px;
+  padding-top: 30px;
+
   li{
     font-family: "Avenir Next";
     padding:5px 10px;
@@ -83,6 +102,19 @@ a:hover, a::selection, a:visited, a:focus, a:active{
     background-color: white;
     border:solid 1px #331940;
   }
+}
+.logout{
+  font-family: "Avenir Next";
+  float: right;
+  position: relative;
+  top:25px;
+  padding:5px 10px;
+  margin:10px;
+  color:white;
+  border:solid 1px #CC66FF;
+  border-radius: 10px;
+  background:#CC66FF;
+  cursor:pointer;
 }
 #logo{
 }
@@ -179,6 +211,9 @@ header{
 #k-man{
   height:150px;
 }
+#logo{
+  margin:15px;
+}
 .prof-headline{
   padding-top: 10px;
   h1{
@@ -195,8 +230,13 @@ header{
   height:500px;
   .panel{
     color:black;
-    height:200px;
+    height:400px;
     overflow: scroll;
+  }
+  button{
+    display:block;
+    border-radius:5px;
+    margin-top:3px;
   }
 }
 .events-panel{
@@ -218,6 +258,34 @@ header{
       color:black;
       border:solid 1px black;
     }
+}
+.search-bar{
+  float:right;
+  margin-top: 30px;
+    select{
+      width:200px;
+      line-height:25px;
+      font-family: "Avenir Next";
+    }
+}
+.search-button{
+  width:100px;
+  margin-left: 2px;
+  border-radius: 5px;
+}
+.party-finder  h1{
+  float:left;
+}
+.event-date{
+  font-family: "Avenir Next";
+  margin-left: 5px;
+}
+.event-time{
+  font-family: "Avenir Next";
+  margin-left: 10px;
+}
+.title{
+  font-weight: bold;
 }
 .videoplayer{
   background-color: white;
@@ -266,6 +334,22 @@ header{
       border:none;
     }
 }
+.ytube-results{
+  border:solid 1px black;
+  border-radius: 10px;
+  margin:5px 0;
+  padding: 15px;
+    h5{
+      border:solid 1px #cc66ff;
+      border-radius: 5px;
+      padding: 5px;
+      margin:5px 0;
+      cursor: pointer;
+    }
+    h5:hover{
+      transform: scale(1.03,1.03);
+    }
+}
 .ui-datepicker{
   background-color: white;
   border-radius: 5px;
@@ -277,4 +361,16 @@ header{
     padding:0 2px;
   }
 
+}
+
+
+.about_us{
+  margin:10px auto 30px auto;
+  text-align: center;
+}
+
+
+.our_names{
+  margin:10px auto;
+  text-align: center;
 }
