@@ -326,15 +326,15 @@ var NewLocationForm = React.createClass({displayName: "NewLocationForm",
           user:Number(localStorage.getItem('user'))
         }
       );
-      this.props.showForm();
       locationCollection.fetch();
+      this.props.showForm();
     },
     render:function(){
       return(
         React.createElement("form", {action: "", onSubmit: this.addLocation}, 
           React.createElement(CitySelect, {collection: cityCollection}), 
           React.createElement("div", {className: "form-group"}, 
-            React.createElement("label", {htmlFor: ""}, "Address of Location"), 
+            React.createElement("label", {htmlFor: ""}, "Street Address of Location"), 
             React.createElement("input", {type: "text", className: "form-control", id: "address"})
           ), 
           React.createElement("div", {className: "form-group"}, 
@@ -375,13 +375,13 @@ var CreatePartyForm = React.createClass({displayName: "CreatePartyForm",
           "city": splitValues[1],
           "creator": Number(localStorage.getItem('user'))
         },function(){
-          alert('successfully posted');
           Backbone.history.navigate('user',{trigger:true, replace: true});
           },"json");
       },
       render:function(){
         return(
           React.createElement("div", {className: "col-md-8"}, 
+            React.createElement("h3", null, "Next Add Your Party Details "), 
             React.createElement("form", {onSubmit: this.handleSubmit}, 
               React.createElement("div", {className: "form-group"}, 
                 React.createElement("label", {htmlFor: ""}, "Date of Party"), 
@@ -389,14 +389,16 @@ var CreatePartyForm = React.createClass({displayName: "CreatePartyForm",
               ), 
               React.createElement("label", {htmlFor: ""}, "Time of Party"), 
               React.createElement("div", {className: "form-group row"}, 
-                React.createElement("div", {className: "col-md-2"}, 
-                  React.createElement("input", {type: "number", name: "hours", id: "hours", max: "12", min: "0", className: "form-control"}), "  ", React.createElement("span", null, ":")
-
+                React.createElement("div", {className: "col-md-2 col-sm-4 col-xs-3"}, 
+                  React.createElement("input", {type: "number", name: "hours", id: "hours", max: "12", min: "0", className: "form-control"})
                 ), 
-                React.createElement("div", {className: "col-md-2"}, 
+                React.createElement("div", {className: "col-md-1 col-sm-1 col-xs-1"}, 
+                  React.createElement("span", {id: "colon"}, ":")
+                ), 
+                React.createElement("div", {className: "col-md-2 col-sm-4 col-xs-3"}, 
                   React.createElement("input", {type: "number", name: "minutes", id: "minutes", max: "59", min: "0", className: "form-control"})
                 ), 
-                React.createElement("div", {className: "col-md-2"}, 
+                React.createElement("div", {className: "col-md-2 col-sm-3 col-xs-3"}, 
                   React.createElement("select", {type: "text", name: "AoP", id: "AoP", className: "form-control col-md-1"}, 
                     React.createElement("option", null, "AM"), 
                     React.createElement("option", null, "PM")
@@ -411,7 +413,7 @@ var CreatePartyForm = React.createClass({displayName: "CreatePartyForm",
                 React.createElement("label", {htmlFor: ""}, "Description"), 
                 React.createElement("input", {type: "text", name: "description", className: "form-control", id: "description"})
               ), 
-              React.createElement("button", {type: "submit"}, " Create Your Party ")
+              React.createElement("button", {type: "submit", className: "btn"}, " Create Your Party ")
             )
           )
         )
@@ -443,14 +445,15 @@ var PartyCreatePage = React.createClass({displayName: "PartyCreatePage",
             React.createElement("div", {className: "row"}, 
               React.createElement("div", {className: "col-md-12"}, 
                 React.createElement("div", {className: "row"}, 
-                  React.createElement(CreatePartyForm, {collection: userPartyCollection}), 
                   React.createElement("div", {className: "col-md-4"}, 
+                    React.createElement("h3", null, "First Select Your Location "), 
                     React.createElement("h4", null, "Choose From an existing Location"), 
                     React.createElement(LocationSelect, {collection: locationCollection}), 
                     React.createElement("h4", null, "Create New Location"), 
-                    React.createElement("button", {className: "btn btn-primary", onClick: this.showLocationForm}, "NEW"), 
+                    React.createElement("button", {className: "btn", onClick: this.showLocationForm}, "New"), 
                     this.state.showLocationForm ? React.createElement(NewLocationForm, {collection: createdLocationCollection, showForm: this.showLocationForm}) : null
-                  )
+                  ), 
+                  React.createElement(CreatePartyForm, {collection: userPartyCollection})
                 )
               )
             )
@@ -774,6 +777,11 @@ var ProfilePage = React.createClass({displayName: "ProfilePage",
     });
 
 var ProfileNav = React.createClass({displayName: "ProfileNav",
+      scrollPage:function(){
+          $('html, body').animate({
+          scrollTop: $("#current-parties").offset().top
+        }, 1000);
+      },
       render:function(){
         return(
           React.createElement("div", {className: "row"}, 
@@ -785,13 +793,11 @@ var ProfileNav = React.createClass({displayName: "ProfileNav",
               )
             ), 
             React.createElement("div", {className: "col-md-4"}, 
-              React.createElement("a", {href: "current-parties"}, 
-                React.createElement("div", {className: "profile-button"}, 
+                React.createElement("div", {className: "profile-button", id: "current-event-scroll", onClick: this.scrollPage}, 
                   React.createElement("h3", null, " My Current Events "), 
                     React.createElement("div", {className: "arrow-down"}
                     )
                 )
-              )
             ), 
             React.createElement("div", {className: "col-md-4"}, 
               React.createElement("a", {href: "#find"}, 
@@ -809,7 +815,7 @@ var EventInfo = React.createClass({displayName: "EventInfo",
       render:function(){
         return(
           React.createElement("div", {className: "row"}, 
-            React.createElement("a", {name: "current-parties"}), 
+            React.createElement("a", {id: "current-parties"}), 
             React.createElement(CreatedParties, {collection: userCreatedPartyCollection}), 
             React.createElement(JoinedParties, {collection: joinedPartyCollection})
           )
@@ -969,24 +975,15 @@ var DetailView = React.createClass({displayName: "DetailView",
     }
     });
 var SongAdditionModule = React.createClass({displayName: "SongAdditionModule",
-      addSong:function(){
-        var that = this;
-        var attendeeCollection = new AttendeeCollection({'partyId':partyId});
-        var attendee = attendeeCollection.create({
-              'user':Number(localStorage.getItem('user')),
-              'party':partyId
-            },{
-              success:function(response){
-                console.log(response);
-                var hostAttendeeId = response.get('id');
-                that.props.collection.create({
-                  "singer_name":$("#singer").val(),
-                  "song_name":$("#song").val(),
-                  "attendees":hostAttendeeId
-                });
-              }
-            });
-      },
+    addSong:function(){
+      var that = this;
+      var hostAttendeeId = response.get('id');
+      that.props.collection.create({
+        "singer_name":$("#singer").val(),
+        "song_name":$("#song").val(),
+        "attendees":hostAttendeeId
+        });
+        },
       render:function(){
         return(
           React.createElement("div", {className: "queueform-wrapper"}, 
@@ -1055,7 +1052,7 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
         return(
           React.createElement("div", {className: "container"}, 
             React.createElement(Header, null), 
-              React.createElement("div", {className: "row"}, 
+              React.createElement("div", {className: "row playerPage"}, 
                 React.createElement(QueueItems, {collection: queueItemCollection, showVideo: this.showVideo, refresh: this.refreshQueue()}), 
                 React.createElement(PlayerView, {setUrl: this.setUrl, sourceUrl: this.state.sourceUrl, searchResults: this.state.searchResults})
               )
@@ -1088,7 +1085,7 @@ var QueueItems = React.createClass({displayName: "QueueItems",
         });
         return(
           React.createElement("div", {className: "col-md-3"}, 
-            React.createElement("div", {className: "panel-wrapper"}, 
+            React.createElement("div", {className: "player-view-queue-wrapper"}, 
               React.createElement("div", {className: "queue-panel"}, 
                 queueitems
               )
@@ -1121,21 +1118,12 @@ var SongAdditionModule = React.createClass({displayName: "SongAdditionModule",
 
       addSong:function(){
         var that = this;
-        var attendeeCollection = new AttendeeCollection({'partyId':partyId});
-        var attendee = attendeeCollection.create({
-              'user':Number(localStorage.getItem('user')),
-              'party':partyId
-            },{
-              success:function(response){
-                console.log(response);
-                var hostAttendeeId = response.get('id');
-                that.props.collection.create({
-                  "singer_name":$("#singer").val(),
-                  "song_name":$("#song").val(),
-                  "attendees":hostAttendeeId
-                });
-              }
-            });
+        var hostAttendeeId = response.get('id');
+        that.props.collection.create({
+          "singer_name":$("#singer").val(),
+          "song_name":$("#song").val(),
+          "attendees":hostAttendeeId
+        });
       },
       render:function(){
         return(
@@ -1296,33 +1284,32 @@ var UserRegForm = React.createClass({displayName: "UserRegForm",
           React.createElement("div", {className: "col-md-10"}, 
             React.createElement("div", {className: "user-formwrapper"}, 
               React.createElement("div", {className: "row"}, 
-                React.createElement("div", {className: "col-md-4 test"}, 
-                  React.createElement("div", {className: "prof-pic-upload"}, 
+                React.createElement("div", {className: "col-md-4 col-md-offset-2 test hidden"}, 
+                  React.createElement("div", {className: "prof-pic-upload hidden"}, 
                     React.createElement("img", {src: "static/dist/images/UPLOADPLACEHOLDER.svg", alt: ""})
                   )
                 ), 
-                React.createElement("div", {className: "col-md-8"}, 
-                  React.createElement("form", {action: "", id: "user-form", onSubmit: this.addUser}, 
-                    React.createElement("input", {type: "text", placeholder: "username", name: "username", id: "username"}), 
-                    React.createElement("input", {type: "text", placeholder: "password", name: "password", id: "password"}), 
+                React.createElement("div", {className: "col-md-6 col-md-offset-2"}, 
+                  React.createElement("h3", null, "Create Your Account"), 
+                  React.createElement("form", {className: "form-group", id: "user-form", onSubmit: this.addUser}, 
+                    React.createElement("input", {className: "form-control", type: "text", placeholder: "username", name: "username", id: "username"}), 
+                    React.createElement("input", {className: "form-control", type: "text", placeholder: "password", name: "password", id: "password"}), 
+                    React.createElement("input", {className: "form-control", type: "email", placeholder: "email", name: "email"}), 
                     React.createElement("button", {className: "signup_button", type: "submit"}, " Sign Up!")
                   )
-                )
-              ), 
-
-              React.createElement(UserProfForm, null)
-
-            )
-          ), 
-          React.createElement("div", {className: "col-md-2"}, 
-            React.createElement("div", {className: "sidebar"}, 
-              React.createElement("h3", null, "Your Profile"), 
-              React.createElement("p", null, "Thanks for joining The Karaoke Man! After completing this step, you will be ready to see parties" + ' ' +
-              "in your City, or start your own! You can also use your profile to keep up with your upcoming" + ' ' +
-              "parties and see past ones you've thrown or attended!")
+              )
             )
           )
+        ), 
+        React.createElement("div", {className: "col-md-2"}, 
+          React.createElement("div", {className: "sidebar"}, 
+            React.createElement("h3", null, "Your Profile"), 
+            React.createElement("p", null, "Thanks for joining The Karaoke Man! After completing this step, you will be ready to see parties" + ' ' +
+            "in your City, or start your own! You can also use your profile to keep up with your upcoming" + ' ' +
+            "parties and see past ones you've thrown or attended!")
+          )
         )
+      )
         )
       }
     });

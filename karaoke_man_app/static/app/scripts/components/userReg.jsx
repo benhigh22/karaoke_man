@@ -67,33 +67,32 @@ var UserRegForm = React.createClass({
           <div className="col-md-10">
             <div className="user-formwrapper">
               <div className="row">
-                <div className="col-md-4 test">
-                  <div className="prof-pic-upload">
+                <div className="col-md-4 col-md-offset-2 test hidden">
+                  <div className="prof-pic-upload hidden">
                     <img src="static/dist/images/UPLOADPLACEHOLDER.svg" alt=""/>
                   </div>
                 </div>
-                <div className="col-md-8">
-                  <form action="" id="user-form" onSubmit={this.addUser}>
-                    <input type="text" placeholder="username" name="username" id="username"/>
-                    <input type="text" placeholder="password" name="password" id="password"/>
+                <div className="col-md-6 col-md-offset-2">
+                  <h3>Create Your Account</h3>
+                  <form className="form-group" id="user-form" onSubmit={this.addUser}>
+                    <input className="form-control" type="text" placeholder="username" name="username" id="username"/>
+                    <input className="form-control" type="text" placeholder="password" name="password" id="password"/>
+                    <input className="form-control" type="email" placeholder="email" name="email"/>
                     <button className="signup_button" type="submit"> Sign Up!</button>
                   </form>
-                </div>
               </div>
-
-              <UserProfForm/>
-
-            </div>
-          </div>
-          <div className="col-md-2">
-            <div className="sidebar">
-              <h3>Your Profile</h3>
-              <p>Thanks for joining The Karaoke Man! After completing this step, you will be ready to see parties
-              in your City, or start your own! You can also use your profile to keep up with your upcoming
-              parties and see past ones you've thrown or attended!</p>
             </div>
           </div>
         </div>
+        <div className="col-md-2">
+          <div className="sidebar">
+            <h3>Your Profile</h3>
+            <p>Thanks for joining The Karaoke Man! After completing this step, you will be ready to see parties
+            in your City, or start your own! You can also use your profile to keep up with your upcoming
+            parties and see past ones you've thrown or attended!</p>
+          </div>
+        </div>
+      </div>
         )
       }
     });

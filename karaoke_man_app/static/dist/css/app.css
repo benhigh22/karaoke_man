@@ -6081,6 +6081,13 @@ header {
   border: solid 1px black;
   border-radius: 10px; }
 
+.player-view-queue-wrapper {
+  background-color: black;
+  color: white;
+  padding: 15px;
+  margin-top: 20px;
+  height: 450px; }
+
 .queue-panel {
   color: black;
   background-color: white;
@@ -6118,6 +6125,9 @@ header {
     cursor: pointer; }
   .ytube-results h5:hover {
     transform: scale(1.03, 1.03); }
+
+.playerPage {
+  margin-bottom: 35px; }
 
 .ui-datepicker {
   background-color: white;
@@ -6158,5 +6168,10 @@ header {
 .queue-wrapper {
   height: 300px;
   overflow-y: scroll; }
+
+#colon {
+  text-align: center;
+  margin: 0 auto;
+  display: block; }
 
 /*# sourceMappingURL=app.css.map */

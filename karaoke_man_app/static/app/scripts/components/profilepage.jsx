@@ -62,6 +62,11 @@ var ProfilePage = React.createClass({
     });
 
 var ProfileNav = React.createClass({
+      scrollPage:function(){
+          $('html, body').animate({
+          scrollTop: $("#current-parties").offset().top
+        }, 1000);
+      },
       render:function(){
         return(
           <div className="row">
@@ -73,13 +78,11 @@ var ProfileNav = React.createClass({
               </a>
             </div>
             <div className="col-md-4">
-              <a href="current-parties">
-                <div className="profile-button">
+                <div className="profile-button" id="current-event-scroll" onClick={this.scrollPage}>
                   <h3> My Current Events </h3>
                     <div className="arrow-down">
                     </div>
                 </div>
-              </a>
             </div>
             <div className="col-md-4">
               <a href="#find">
@@ -97,7 +100,7 @@ var EventInfo = React.createClass({
       render:function(){
         return(
           <div className="row" >
-            <a name="current-parties"></a>
+            <a id="current-parties"></a>
             <CreatedParties collection={userCreatedPartyCollection}/>
             <JoinedParties collection={joinedPartyCollection}/>
           </div>
@@ -257,24 +260,15 @@ var DetailView = React.createClass({
     }
     });
 var SongAdditionModule = React.createClass({
-      addSong:function(){
-        var that = this;
-        var attendeeCollection = new AttendeeCollection({'partyId':partyId});
-        var attendee = attendeeCollection.create({
-              'user':Number(localStorage.getItem('user')),
-              'party':partyId
-            },{
-              success:function(response){
-                console.log(response);
-                var hostAttendeeId = response.get('id');
-                that.props.collection.create({
-                  "singer_name":$("#singer").val(),
-                  "song_name":$("#song").val(),
-                  "attendees":hostAttendeeId
-                });
-              }
-            });
-      },
+    addSong:function(){
+      var that = this;
+      var hostAttendeeId = response.get('id');
+      that.props.collection.create({
+        "singer_name":$("#singer").val(),
+        "song_name":$("#song").val(),
+        "attendees":hostAttendeeId
+        });
+        },
       render:function(){
         return(
           <div className="queueform-wrapper">

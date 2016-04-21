@@ -45,7 +45,7 @@ var QueueViewPage = React.createClass({
         return(
           <div className="container">
             <Header/>
-              <div className="row">
+              <div className="row playerPage">
                 <QueueItems collection={queueItemCollection} showVideo={this.showVideo} refresh={this.refreshQueue()} />
                 <PlayerView setUrl={this.setUrl} sourceUrl={this.state.sourceUrl} searchResults={this.state.searchResults}/>
               </div>
@@ -78,7 +78,7 @@ var QueueItems = React.createClass({
         });
         return(
           <div className="col-md-3">
-            <div className="panel-wrapper">
+            <div className="player-view-queue-wrapper">
               <div className="queue-panel">
                 {queueitems}
               </div>
@@ -111,21 +111,12 @@ var SongAdditionModule = React.createClass({
 
       addSong:function(){
         var that = this;
-        var attendeeCollection = new AttendeeCollection({'partyId':partyId});
-        var attendee = attendeeCollection.create({
-              'user':Number(localStorage.getItem('user')),
-              'party':partyId
-            },{
-              success:function(response){
-                console.log(response);
-                var hostAttendeeId = response.get('id');
-                that.props.collection.create({
-                  "singer_name":$("#singer").val(),
-                  "song_name":$("#song").val(),
-                  "attendees":hostAttendeeId
-                });
-              }
-            });
+        var hostAttendeeId = response.get('id');
+        that.props.collection.create({
+          "singer_name":$("#singer").val(),
+          "song_name":$("#song").val(),
+          "attendees":hostAttendeeId
+        });
       },
       render:function(){
         return(
