@@ -399,12 +399,17 @@ header{
 .about_us{
   margin:10px auto 30px auto;
   text-align: center;
+  padding-bottom: 20px;
+  border-bottom:solid 1px black;
 }
-
+.pics{
+  width: 300px;
+}
 
 .our_names{
   margin:10px auto;
   text-align: center;
+  padding-top: 30px;
 }
 .arrow-down {
 	width: 0;
