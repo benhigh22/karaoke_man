@@ -38,16 +38,16 @@ render:function(){
     React.createElement("div", {className: "col-md-2"}, 
       React.createElement("img", {id: "logo", src: "/static/dist/images/logo.png", alt: ""})
     ), 
-    React.createElement("div", {className: "col-md-5"}, 
-      React.createElement("ul", {className: "nav"}, 
-        React.createElement("a", {href: ""}, React.createElement("li", null, "Home")), 
-        React.createElement("li", null, "About Us"), 
-        React.createElement("a", {href: "#user"}, React.createElement("li", null, "Profile"))
-      )
-    ), 
-    React.createElement("div", {className: "col-md-2 col-md-offset-3"}, 
-      React.createElement("div", {className: "logout", onClick: this.logoutUser}, 
-        React.createElement("span", null, "Logout")
+    React.createElement("div", {className: "col-md-9"}, 
+      React.createElement("div", {className: "row"}, 
+        React.createElement("ul", {className: "myNav"}, 
+          React.createElement("a", {href: ""}, React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-2"}, "Home")), 
+          React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-2"}, "About Us"), 
+          React.createElement("a", {href: "#user"}, React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-2"}, "Profile")), 
+          React.createElement("li", {onClick: this.logoutUser, className: "col-xs-12 col-sm-12 col-md-2"}, 
+              React.createElement("span", null, "Logout")
+          )
+        )
       )
     )
   )
@@ -81,11 +81,13 @@ var Home = React.createClass({displayName: "Home",
               React.createElement("div", {className: "col-md-3"}, 
                 React.createElement("img", {id: "logo", src: "/static/dist/images/logo.png", alt: ""})
               ), 
-              React.createElement("div", {className: "col-md-6"}, 
-                React.createElement("ul", {className: "nav"}, 
-                  React.createElement("li", null, "Home"), 
-                  React.createElement("li", null, "About Us"), 
-                  React.createElement("a", {href: "#user"}, React.createElement("li", null, "Profile"))
+              React.createElement("div", {className: "col-md-9"}, 
+                React.createElement("ul", null, 
+                  React.createElement("div", {className: "row myNav"}, 
+                    React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-3"}, "Home"), 
+                    React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-3"}, "About Us"), 
+                    localStorage.getItem('user') ? React.createElement("a", {href: "#user"}, React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-3"}, "Profile")) : null
+                  )
                 )
               )
             ), 
@@ -104,14 +106,14 @@ var Home = React.createClass({displayName: "Home",
             React.createElement("div", {className: "row bottom-btns"}, 
               React.createElement("div", {className: "col-md-6"}, 
                 React.createElement("div", {className: "row"}, 
-                  React.createElement("div", {className: "col-md-6"}, 
+                  React.createElement("div", {className: "col-sm-6 col-md-6"}, 
                     React.createElement("a", {href: "", onClick: this.openModal, "data-toggle": "modal", "data-target": "#myModal"}, 
                       React.createElement("div", {className: "homepage-btn"}, 
                         "Login To Your Account"
                       )
                     )
                   ), 
-                  React.createElement("div", {className: "col-md-6"}, 
+                  React.createElement("div", {className: "col-sm-6 col-md-6"}, 
                     React.createElement("a", {href: "#register"}, 
                       React.createElement("div", {className: "homepage-btn"}, 
                         "SignUp For A New Account!"
@@ -624,19 +626,23 @@ var PartyDetails = React.createClass({displayName: "PartyDetails",
 /////Components for Containing Page Elements
 /////////////////////////////////////////
 var SongSelect = React.createClass({displayName: "SongSelect",
+      returnToProfile:function(){
+        Backbone.history.navigate('user',{trigger:true, replace: true});
+      },
       render:function(){
         return(
           React.createElement("div", {className: "panel-wrapper"}, 
-            React.createElement("div", null, React.createElement("span", null, "X")), 
-            React.createElement("h4", null, "You Have Selected Bens Bar"), 
+            React.createElement("h3", null, "Add Your First Song to The Queue!"), 
             React.createElement("div", null, 
               React.createElement("form", null, 
                 React.createElement("div", {className: "form-group"}, 
                   React.createElement("input", {type: "text", id: "singer", className: "form-control", placeholder: "Singer's Name"}), 
                   React.createElement("input", {type: "text", id: "song", className: "form-control", placeholder: "Song Name"})
                 ), 
-                React.createElement("button", {type: "button", className: "btn btn-primary", onClick: this.props.addToQueue}, " Add to the que ")
-              )
+                React.createElement("button", {type: "button", className: "btn", onClick: this.props.addToQueue}, " Add New Song ")
+              ), 
+              React.createElement("h3", null, "Or"), 
+              React.createElement("button", {onClick: this.returnToProfile}, " Return to Your Profile")
             )
           )
         );
@@ -656,7 +662,6 @@ var PartyFinder = React.createClass({displayName: "PartyFinder",
       }
   },
   addToQueue:function(){
-
     var setAttendeeId = function(){
           console.log(attendee);
           attendeeId = attendee.get('id');
@@ -671,8 +676,7 @@ var PartyFinder = React.createClass({displayName: "PartyFinder",
            'party':partyId,
            'attendees':attendeeId,
          });
-
-
+         Backbone.history.navigate('user',{trigger:true, replace: true});
   },
   render:function(){
       return(
@@ -710,14 +714,15 @@ var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
 var backboneMixin = require('backbone-react-component');
+var $ = require('jquery');
 
 var Header = require('./header.jsx');
 var Footer = require('./footer.jsx');
 
 var UserCreatedPartyCollection = require('../models/createdparties.js').UserPartyCollection;
 var JoinedPartyCollection = require('../models/joinedparties.js').JoinedPartyCollection;
-var QueueItems = require('./queueview.jsx').QueueItems;
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
+var AttendeeCollection = require('../models/attendee.js').AttendeeCollection;
 
 var userCreatedPartyCollection = new UserCreatedPartyCollection();
 var joinedPartyCollection = new JoinedPartyCollection();
@@ -825,8 +830,8 @@ var CreatedParties = React.createClass({displayName: "CreatedParties",
           );
         });
         return(
-          React.createElement("div", {className: "col-md-6"}, 
-            React.createElement("div", {className: "panel-wrapper"}, 
+          React.createElement("div", {className: "col-md-12"}, 
+            React.createElement("div", {className: ""}, 
               React.createElement("h3", null, "Created Parties"), 
               React.createElement("div", {className: "joined-panel"}, 
                   userParties
@@ -869,8 +874,8 @@ var JoinedParties = React.createClass({displayName: "JoinedParties",
         });
 
         return(
-          React.createElement("div", {className: "col-md-6"}, 
-            React.createElement("div", {className: "panel-wrapper"}, 
+          React.createElement("div", {className: "col-md-12"}, 
+            React.createElement("div", {className: ""}, 
               React.createElement("h3", null, "Joined Parties"), 
               React.createElement("div", {className: "joined-panel"}, 
                 joinedParties
@@ -883,7 +888,8 @@ var JoinedParties = React.createClass({displayName: "JoinedParties",
 var JoinedParty = React.createClass({displayName: "JoinedParty",
       getInitialState:function(){
         return(
-          {'showPartyDetails':false}
+          {'showPartyDetails':false,
+          }
         )
       },
       togglePartyQueue:function(){
@@ -891,6 +897,9 @@ var JoinedParty = React.createClass({displayName: "JoinedParty",
         if(this.state.showPartyDetails===false){
           partyId=this.props.model.get('id');
           queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+          queueItemCollection.comparator = function(model) {
+            return -model.get("id"); // Note the minus!
+          };
           queueItemCollection.fetch();
           this.setState({'showPartyDetails':true});
         }
@@ -915,15 +924,89 @@ var JoinedPartyDetails = React.createClass({displayName: "JoinedPartyDetails",
     render:function(){
       console.log(this.props.partyDetailState);
       return(
-        React.createElement("div", {className: "row"}, 
-            this.props.partyDetailState ? React.createElement(QueueItems, {collection: queueItemCollection}) : null
+        React.createElement("div", {className: "joined-party-details row"}, 
+            this.props.partyDetailState ? React.createElement(DetailView, {collection: queueItemCollection}) : null
         )
       );
     }
     });
+var DetailView = React.createClass({displayName: "DetailView",
+  mixins:[Backbone.React.Component.mixin],
+
+    render:function(){
+      var that = this;
+      var queueItems;
+      console.log(this.props.collection);
+      if(this.props.collection.length==0){
+          queueItems = function(){
+          return(
+            React.createElement("h1", null, " No Songs Are Currently In This Queue ")
+          );
+        }()
+      }
+      else{
+        queueItems = this.props.collection.map(function(model){
+          return(
+              React.createElement("div", {className: "detail-view", key: model.get('id')}, 
+                React.createElement("h4", null, model.get('song_name')), 
+                React.createElement("span", null, model.get('singer_name'))
+              )
+          );
+        });
+      }
+        return(
+        React.createElement("div", null, 
+          React.createElement("div", {className: "col-md-6 queue-wrapper"}, 
+            React.createElement("h3", null, "Currently Queued Songs"), 
+            React.createElement("span", null, "**Songs Shown By Most Recently Added First"), 
+            queueItems
+          ), 
+          React.createElement("div", {className: "col-md-6"}, 
+            React.createElement(SongAdditionModule, {collection: this.props.collection})
+          )
+        )
+        )
+    }
+    });
+var SongAdditionModule = React.createClass({displayName: "SongAdditionModule",
+      addSong:function(){
+        var that = this;
+        var attendeeCollection = new AttendeeCollection({'partyId':partyId});
+        var attendee = attendeeCollection.create({
+              'user':Number(localStorage.getItem('user')),
+              'party':partyId
+            },{
+              success:function(response){
+                console.log(response);
+                var hostAttendeeId = response.get('id');
+                that.props.collection.create({
+                  "singer_name":$("#singer").val(),
+                  "song_name":$("#song").val(),
+                  "attendees":hostAttendeeId
+                });
+              }
+            });
+      },
+      render:function(){
+        return(
+          React.createElement("div", {className: "queueform-wrapper"}, 
+            React.createElement("h4", null, "Add A New Song"), 
+            React.createElement("div", null, 
+              React.createElement("form", null, 
+                React.createElement("div", {className: "form-group"}, 
+                  React.createElement("input", {type: "text", id: "singer", className: "form-control", placeholder: "Singer Name"}), 
+                  React.createElement("input", {type: "text", id: "song", className: "form-control", placeholder: "Song Name"})
+                ), 
+                React.createElement("button", {onClick: this.addSong, type: "button"}, " Add to the que ")
+              )
+            )
+          )
+        );
+      }
+    });
 module.exports=ProfilePage;
 
-},{"../models/createdparties.js":14,"../models/joinedparties.js":16,"../models/queuemodel.js":19,"./footer.jsx":1,"./header.jsx":2,"./queueview.jsx":8,"backbone":23,"backbone-react-component":22,"react":184,"react-dom":55}],8:[function(require,module,exports){
+},{"../models/attendee.js":11,"../models/createdparties.js":14,"../models/joinedparties.js":16,"../models/queuemodel.js":19,"./footer.jsx":1,"./header.jsx":2,"backbone":23,"backbone-react-component":22,"jquery":52,"react":184,"react-dom":55}],8:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var ReactDom = require('react-dom');
@@ -1195,6 +1278,7 @@ var UserRegForm = React.createClass({displayName: "UserRegForm",
       users.create(userData, {
         success: function(userData){
           console.log(userData)
+          Backbone.history.navigate('',{trigger:true, replace: true});
         }
       });
     },
@@ -1543,8 +1627,9 @@ routes:{
 },
 validateLogin:function(){
   if(localStorage.getItem('user')===null){
-    alert('You are currently not logged in as a user please log in to your account to use this feature');
     Backbone.history.navigate('',{trigger:true, replace: true});
+    ReactDom.render(React.createElement(Login),
+    document.getElementById('login'));
   }
 },
 renderHome:function(){
@@ -1999,7 +2084,7 @@ module.exports = new Router();
 
 },{"backbone":23,"react":184,"react-dom":55,"underscore":185}],23:[function(require,module,exports){
 (function (global){
-//     Backbone.js 1.3.3
+//     Backbone.js 1.3.2
 
 //     (c) 2010-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Backbone may be freely distributed under the MIT license.
@@ -2045,7 +2130,7 @@ module.exports = new Router();
   var slice = Array.prototype.slice;
 
   // Current version of the library. Keep in sync with `package.json`.
-  Backbone.VERSION = '1.3.3';
+  Backbone.VERSION = '1.3.2';
 
   // For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
   // the `$` variable.
@@ -20197,7 +20282,7 @@ $.widget( "ui.tooltip", {
 
 },{"jquery":52}],52:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.3
+ * jQuery JavaScript Library v2.2.2
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -20207,7 +20292,7 @@ $.widget( "ui.tooltip", {
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-04-05T19:26Z
+ * Date: 2016-03-17T17:51Z
  */
 
 (function( global, factory ) {
@@ -20263,7 +20348,7 @@ var support = {};
 
 
 var
-	version = "2.2.3",
+	version = "2.2.2",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -29673,7 +29758,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		// If it fails, this function gets "jqXHR", "status", "error"
 		} ).always( callback && function( jqXHR, status ) {
 			self.each( function() {
-				callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
+				callback.apply( self, response || [ jqXHR.responseText, status, jqXHR ] );
 			} );
 		} );
 	}

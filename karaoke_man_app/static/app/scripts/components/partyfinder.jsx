@@ -161,19 +161,23 @@ var PartyDetails = React.createClass({
 /////Components for Containing Page Elements
 /////////////////////////////////////////
 var SongSelect = React.createClass({
+      returnToProfile:function(){
+        Backbone.history.navigate('user',{trigger:true, replace: true});
+      },
       render:function(){
         return(
           <div className="panel-wrapper">
-            <div><span>X</span></div>
-            <h4>You Have Selected Bens Bar</h4>
+            <h3>Add Your First Song to The Queue!</h3>
             <div>
               <form>
                 <div className="form-group">
                   <input type="text" id="singer" className="form-control" placeholder="Singer's Name"/>
                   <input type="text" id="song" className="form-control"  placeholder="Song Name"/>
                 </div>
-                <button type="button" className="btn btn-primary" onClick={this.props.addToQueue}> Add to the que </button>
+                <button type="button" className="btn" onClick={this.props.addToQueue}> Add New Song </button>
               </form>
+              <h3>Or</h3>
+              <button onClick={this.returnToProfile}> Return to Your Profile</button>
             </div>
           </div>
         );
@@ -193,7 +197,6 @@ var PartyFinder = React.createClass({
       }
   },
   addToQueue:function(){
-
     var setAttendeeId = function(){
           console.log(attendee);
           attendeeId = attendee.get('id');
@@ -208,8 +211,7 @@ var PartyFinder = React.createClass({
            'party':partyId,
            'attendees':attendeeId,
          });
-
-
+         Backbone.history.navigate('user',{trigger:true, replace: true});
   },
   render:function(){
       return(

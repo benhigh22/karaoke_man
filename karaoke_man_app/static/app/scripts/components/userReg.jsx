@@ -49,6 +49,7 @@ var UserRegForm = React.createClass({
       users.create(userData, {
         success: function(userData){
           console.log(userData)
+          Backbone.history.navigate('',{trigger:true, replace: true});
         }
       });
     },

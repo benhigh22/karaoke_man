@@ -23,8 +23,9 @@ routes:{
 },
 validateLogin:function(){
   if(localStorage.getItem('user')===null){
-    alert('You are currently not logged in as a user please log in to your account to use this feature');
     Backbone.history.navigate('',{trigger:true, replace: true});
+    ReactDom.render(React.createElement(Login),
+    document.getElementById('login'));
   }
 },
 renderHome:function(){

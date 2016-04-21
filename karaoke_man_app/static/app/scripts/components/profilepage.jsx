@@ -2,14 +2,15 @@ var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
 var backboneMixin = require('backbone-react-component');
+var $ = require('jquery');
 
 var Header = require('./header.jsx');
 var Footer = require('./footer.jsx');
 
 var UserCreatedPartyCollection = require('../models/createdparties.js').UserPartyCollection;
 var JoinedPartyCollection = require('../models/joinedparties.js').JoinedPartyCollection;
-var QueueItems = require('./queueview.jsx').QueueItems;
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
+var AttendeeCollection = require('../models/attendee.js').AttendeeCollection;
 
 var userCreatedPartyCollection = new UserCreatedPartyCollection();
 var joinedPartyCollection = new JoinedPartyCollection();
@@ -117,8 +118,8 @@ var CreatedParties = React.createClass({
           );
         });
         return(
-          <div className="col-md-6">
-            <div className="panel-wrapper">
+          <div className="col-md-12">
+            <div className="">
               <h3>Created Parties</h3>
               <div className="joined-panel">
                   {userParties}
@@ -161,8 +162,8 @@ var JoinedParties = React.createClass({
         });
 
         return(
-          <div className="col-md-6">
-            <div className="panel-wrapper">
+          <div className="col-md-12">
+            <div className="">
               <h3>Joined Parties</h3>
               <div className="joined-panel">
                 {joinedParties}
@@ -175,7 +176,8 @@ var JoinedParties = React.createClass({
 var JoinedParty = React.createClass({
       getInitialState:function(){
         return(
-          {'showPartyDetails':false}
+          {'showPartyDetails':false,
+          }
         )
       },
       togglePartyQueue:function(){
@@ -183,6 +185,9 @@ var JoinedParty = React.createClass({
         if(this.state.showPartyDetails===false){
           partyId=this.props.model.get('id');
           queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+          queueItemCollection.comparator = function(model) {
+            return -model.get("id"); // Note the minus!
+          };
           queueItemCollection.fetch();
           this.setState({'showPartyDetails':true});
         }
@@ -207,10 +212,84 @@ var JoinedPartyDetails = React.createClass({
     render:function(){
       console.log(this.props.partyDetailState);
       return(
-        <div className="row">
-            {this.props.partyDetailState ? <QueueItems collection={queueItemCollection} /> : null}
+        <div className="joined-party-details row">
+            {this.props.partyDetailState ? <DetailView collection={queueItemCollection} /> : null}
         </div>
       );
     }
+    });
+var DetailView = React.createClass({
+  mixins:[Backbone.React.Component.mixin],
+
+    render:function(){
+      var that = this;
+      var queueItems;
+      console.log(this.props.collection);
+      if(this.props.collection.length==0){
+          queueItems = function(){
+          return(
+            <h1> No Songs Are Currently In This Queue </h1>
+          );
+        }()
+      }
+      else{
+        queueItems = this.props.collection.map(function(model){
+          return(
+              <div className="detail-view" key={model.get('id')}>
+                <h4>{model.get('song_name')}</h4>
+                <span>{model.get('singer_name')}</span>
+              </div>
+          );
+        });
+      }
+        return(
+        <div>
+          <div className="col-md-6 queue-wrapper">
+            <h3>Currently Queued Songs</h3>
+            <span>**Songs Shown By Most Recently Added First</span>
+            {queueItems}
+          </div>
+          <div className="col-md-6">
+            <SongAdditionModule collection={this.props.collection} />
+          </div>
+        </div>
+        )
+    }
+    });
+var SongAdditionModule = React.createClass({
+      addSong:function(){
+        var that = this;
+        var attendeeCollection = new AttendeeCollection({'partyId':partyId});
+        var attendee = attendeeCollection.create({
+              'user':Number(localStorage.getItem('user')),
+              'party':partyId
+            },{
+              success:function(response){
+                console.log(response);
+                var hostAttendeeId = response.get('id');
+                that.props.collection.create({
+                  "singer_name":$("#singer").val(),
+                  "song_name":$("#song").val(),
+                  "attendees":hostAttendeeId
+                });
+              }
+            });
+      },
+      render:function(){
+        return(
+          <div className="queueform-wrapper">
+            <h4>Add A New Song</h4>
+            <div>
+              <form>
+                <div className="form-group">
+                  <input type="text" id="singer" className="form-control" placeholder="Singer Name"/>
+                  <input type="text" id="song" className="form-control"  placeholder="Song Name"/>
+                </div>
+                <button onClick={this.addSong} type="button"> Add to the que </button>
+              </form>
+            </div>
+          </div>
+        );
+      }
     });
 module.exports=ProfilePage;
