@@ -23,7 +23,7 @@ var Home = React.createClass({
                 <ul>
                   <div className="row myNav">
                     <li className="col-xs-12 col-sm-12 col-md-3">Home</li>
-                    <li className="col-xs-12 col-sm-12 col-md-3">About Us</li>
+                  <a href="#about"><li className="col-xs-12 col-sm-12 col-md-3">About Us</li></a>
                     {localStorage.getItem('user') ? <a href="#user"><li className="col-xs-12 col-sm-12 col-md-3">Profile</li></a> : null}
                   </div>
                 </ul>

@@ -6038,10 +6038,13 @@ header {
   padding-top: 10px;
   background-color: white; }
   .joined-panel .party-info {
+    cursor: pointer;
     padding: 5px;
     margin: 5px;
     color: black;
     border: solid 1px black; }
+  .joined-panel .party-info:hover {
+    transform: scale(1.03, 1.03); }
 
 .search-bar {
   float: right;

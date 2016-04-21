@@ -261,10 +261,14 @@ header{
   padding-top: 10px;
   background-color: white;
     .party-info{
+      cursor: pointer;
       padding: 5px;
       margin:5px;
       color:black;
       border:solid 1px black;
+    }
+    .party-info:hover{
+      transform: scale(1.03,1.03);
     }
 }
 .search-bar{

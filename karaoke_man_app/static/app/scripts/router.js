@@ -9,7 +9,7 @@ var PartyFinder = require('./components/partyfinder.jsx');
 var QueueViewPage = require('./components/queueview.jsx').QueueViewPage;
 var PartyCreator = require('./components/partycreator.jsx');
 var Login = require('./components/login.jsx');
-
+var AboutPage = require('./components/aboutpage.jsx');
 
 var Router = Backbone.Router.extend({
 
@@ -19,7 +19,8 @@ routes:{
 'user':'renderProfilePage',
 'find':'renderPartyFinder',
 'queue':'renderQueueViewPage',
-'create':'renderCreatePage'
+'create':'renderCreatePage',
+'about':'renderAboutUs'
 },
 validateLogin:function(){
   if(localStorage.getItem('user')===null){
@@ -61,6 +62,11 @@ renderCreatePage:function(){
   ReactDOM.render(React.createElement(PartyCreator),
   document.getElementById('app'));
   this.validateLogin();
+},
+renderAboutUs:function(){
+  ReactDOM.unmountComponentAtNode(document.getElementById('app'));
+  ReactDOM.render(React.createElement(AboutPage),
+  document.getElementById('app'));
 }
 });
 
