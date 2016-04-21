@@ -20,7 +20,7 @@ render:function(){
       <div className="row">
         <ul className="myNav">
           <a href=""><li className="col-xs-12 col-sm-12 col-md-2">Home</li></a>
-          <li className="col-xs-12 col-sm-12 col-md-2">About Us</li>
+          <a href="#about"><li className="col-xs-12 col-sm-12 col-md-2">About Us</li></a>
           <a href="#user"><li className="col-xs-12 col-sm-12 col-md-2">Profile</li></a>
           <li onClick={this.logoutUser} className="col-xs-12 col-sm-12 col-md-2">
               <span>Logout</span>

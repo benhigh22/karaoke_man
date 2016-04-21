@@ -124,6 +124,7 @@ var SongAdditionModule = React.createClass({
               "song_name":$("#song").val(),
               "attendees":userAttendeeId
               });
+              document.getElementById("song-add").reset();
           }
         });
       },
@@ -132,10 +133,10 @@ var SongAdditionModule = React.createClass({
           <div className="queueform-wrapper">
             <h4>Add A New Song</h4>
             <div>
-              <form>
+              <form id="song-add">
                 <div className="form-group">
-                  <input type="text" id="singer" className="form-control" placeholder="Singer Name"/>
-                  <input type="text" id="song" className="form-control"  placeholder="Song Name"/>
+                    <input type="text" id="singer" className="form-control" placeholder="Singer Name"/>
+                    <input type="text" id="song" className="form-control"  placeholder="Song Name"/>
                 </div>
                 <button onClick={this.addSong} type="button"> Add to the que </button>
               </form>

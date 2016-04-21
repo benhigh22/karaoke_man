@@ -8,6 +8,8 @@ var $ = require('jquery');
 var Header = require('./header.jsx');
 /*GLOBAL VARIABLES*/
 var users = new UserCollection();
+var LoggedInUserModel = require('../models/usermodel').LoggedInUser;
+var loggedInUser = new LoggedInUserModel({username:'',password:''});
 var csrftoken = $("input[name='csrfmiddlewaretoken']").val();
 
 
@@ -31,6 +33,7 @@ $.ajaxSetup({
     }
 });
 /*COMPONENTS*/
+
 var RegistrationFormPage = React.createClass({
     render:function(){
       return(
@@ -45,15 +48,33 @@ var UserRegForm = React.createClass({
     addUser:function(e){
       e.preventDefault();
       var userData = $('#user-form').serializeObject();
-      console.log(userData);
       users.create(userData, {
-        success: function(userData){
-          console.log(userData)
-          Backbone.history.navigate('',{trigger:true, replace: true});
+        success: function(response){
+          loggedInUser.save({'username':userData.username,'password':userData.password}).then(function(response){
+            console.log(response);
+            console.log('sucessfully logged in')
+            localStorage.setItem('user',response.user.id);
+            Backbone.history.navigate('user',{trigger:true, replace: true});
+            location.reload();
+          });
         }
       });
     },
-
+    logInUser:function(){
+      loggedInUser.save({'username':$(),'password':$()}).then(function(response){
+        console.log(response);
+        if(response.success===true){
+          console.log('sucessfully logged in')
+          localStorage.setItem('user',response.user.id);
+          Backbone.history.navigate('user',{trigger:true, replace: true});
+          location.reload();
+          }
+        else{
+            $('#login-btn').html('<h4 className="error-message"> Incorrect Username or Password </h4>');
+          }
+        }
+      );
+    },
     addUserProfile:function(e){
       e.preventDefault();
       var userProfileData = $('profile-form').serializeObject();
@@ -76,7 +97,7 @@ var UserRegForm = React.createClass({
                   <h3>Create Your Account</h3>
                   <form className="form-group" id="user-form" onSubmit={this.addUser}>
                     <input className="form-control" type="text" placeholder="username" name="username" id="username"/>
-                    <input className="form-control" type="text" placeholder="password" name="password" id="password"/>
+                    <input className="form-control" type="password" placeholder="password" name="password" id="password"/>
                     <input className="form-control" type="email" placeholder="email" name="email"/>
                     <button className="signup_button" type="submit"> Sign Up!</button>
                   </form>

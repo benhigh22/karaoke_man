@@ -14,7 +14,7 @@ var Home = React.createClass({
     render:function(){
       return(
         <div>
-          <div className="container">
+          <div className="container home">
             <header className="row">
               <div className="col-md-3">
                 <img id="logo" src="/static/dist/images/logo.png" alt=""/>
@@ -23,7 +23,7 @@ var Home = React.createClass({
                 <ul>
                   <div className="row myNav">
                     <li className="col-xs-12 col-sm-12 col-md-3">Home</li>
-                    <li className="col-xs-12 col-sm-12 col-md-3">About Us</li>
+                  <a href="#about"><li className="col-xs-12 col-sm-12 col-md-3">About Us</li></a>
                     {localStorage.getItem('user') ? <a href="#user"><li className="col-xs-12 col-sm-12 col-md-3">Profile</li></a> : null}
                   </div>
                 </ul>
@@ -44,19 +44,21 @@ var Home = React.createClass({
             <div className="row bottom-btns">
               <div className="col-md-6">
                 <div className="row">
-                  <div className="col-sm-6 col-md-6">
+                  <div className="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-0">
                     <a href="" onClick={this.openModal} data-toggle="modal" data-target="#myModal">
                       <div className="homepage-btn">
                         Login To Your Account
                       </div>
                     </a>
                   </div>
-                  <div className="col-sm-6 col-md-6">
+                  <div className="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-0">
                     <a href="#register">
                       <div className="homepage-btn">
                         SignUp For A New Account!
                       </div>
                     </a>
+                  </div>
+                  <div id="login-btn">
                   </div>
                 </div>
               </div>

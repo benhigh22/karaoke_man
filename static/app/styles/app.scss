@@ -37,7 +37,7 @@ ul{
 footer{
   height:100px;
   background-color: #CC66FF;
-  margin-top: 20px;
+  margin-top: 50px;
 }
 a:hover, a::selection, a:visited, a:focus, a:active{
   text-decoration: none;
@@ -132,7 +132,7 @@ button:hover{
 .homepage-btn{
   height:125px;
   padding: 30px 20px 20px 20px;
-  margin: 10px 0px;
+  margin: 20px 0px;
   border:solid 3px #CC66FF;
   border-radius: 10px;
   color:#331940;
@@ -144,7 +144,11 @@ button:hover{
 .homepage-btn:hover{
   transform: scale(1.1,1.1);
 }
-
+.home{
+  h3{
+    margin-top: 30px;
+  }
+}
 header{
   margin-top: 20px;
 }
@@ -229,10 +233,14 @@ header{
 }
 .panel-wrapper{
   background-color: black;
+  border-radius: 5px;
   color:white;
   padding:15px;
   margin-top:20px;
   height:300px;
+  h3{
+    margin-top: 10px;
+  }
   .panel{
     color:black;
     height:200px;
@@ -253,10 +261,14 @@ header{
   padding-top: 10px;
   background-color: white;
     .party-info{
+      cursor: pointer;
       padding: 5px;
       margin:5px;
       color:black;
       border:solid 1px black;
+    }
+    .party-info:hover{
+      transform: scale(1.03,1.03);
     }
 }
 .search-bar{
@@ -293,6 +305,7 @@ header{
 }
 .player-wrapper{
   margin-top: 20px;
+  border-radius: 5px;
   padding:10px;
   background-color: black;
   height:500px;
@@ -306,6 +319,7 @@ header{
 }
 .player-view-queue-wrapper{
   background-color: black;
+  border-radius: 5px;
   color:white;
   padding:15px;
   margin-top:20px;
@@ -373,16 +387,33 @@ header{
 
 }
 
+.new-location-form{
+  padding:15px;
+  border-radius: 5px;
+  margin-top: 15px;
 
+}
+.login-btn{
+  text-align:center;
+}
+.error-message{
+  height:50px;
+  color:red;
+}
 .about_us{
   margin:10px auto 30px auto;
   text-align: center;
+  padding-bottom: 20px;
+  border-bottom:solid 1px black;
 }
-
+.pics{
+  width: 300px;
+}
 
 .our_names{
   margin:10px auto;
   text-align: center;
+  padding-top: 30px;
 }
 .arrow-down {
 	width: 0;

@@ -19,7 +19,7 @@ var Login = React.createClass({
             location.reload();
             }
           else{
-            alert('Incorrect Username and Password')
+              $('#login-btn').html('<h4 className="error-message"> Incorrect Username or Password </h4>');
             }
           }
         );
@@ -27,7 +27,7 @@ var Login = React.createClass({
       render:function(){
         return(
           <div className="row">
-            <div className="col-md-4">
+            <div className="col-md-4 col-xs-12">
               <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div className="modal-dialog" role="document">
                   <div className="modal-content">
