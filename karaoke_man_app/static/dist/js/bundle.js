@@ -873,7 +873,6 @@ var JoinedParties = React.createClass({displayName: "JoinedParties",
       render:function(){
         var that = this;
         var joinedParties = this.props.collection.map(function(model){
-          console.log(model);
           return(
             React.createElement(JoinedParty, {key: model.get('id'), model: model})
           )
@@ -892,6 +891,8 @@ var JoinedParties = React.createClass({displayName: "JoinedParties",
       }
     });
 var JoinedParty = React.createClass({displayName: "JoinedParty",
+  mixins:[Backbone.React.Component.mixin],
+
       getInitialState:function(){
         return(
           {'showPartyDetails':false,
@@ -899,19 +900,22 @@ var JoinedParty = React.createClass({displayName: "JoinedParty",
         )
       },
       togglePartyQueue:function(){
-        console.log('handleClick is working');
         if(this.state.showPartyDetails===false){
-          partyId=this.props.model.get('id');
+          this.setState({'showPartyDetails':true});
+          partyId=this.props.model.get('party');
+          console.log(this.props.model);
+          console.log(partyId);
           queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
           queueItemCollection.comparator = function(model) {
             return -model.get("id"); // Note the minus!
-          };
+          }
           queueItemCollection.fetch();
-          this.setState({'showPartyDetails':true});
+          console.log(queueItemCollection);
         }
         else{
           this.setState({'showPartyDetails':false});
         }
+
       },
       render:function(){
         return(
@@ -927,8 +931,9 @@ var JoinedParty = React.createClass({displayName: "JoinedParty",
       }
     });
 var JoinedPartyDetails = React.createClass({displayName: "JoinedPartyDetails",
+  mixins:[Backbone.React.Component.mixin],
+
     render:function(){
-      console.log(this.props.partyDetailState);
       return(
         React.createElement("div", {className: "joined-party-details row"}, 
             this.props.partyDetailState ? React.createElement(DetailView, {collection: queueItemCollection}) : null
@@ -942,7 +947,6 @@ var DetailView = React.createClass({displayName: "DetailView",
     render:function(){
       var that = this;
       var queueItems;
-      console.log(this.props.collection);
       if(this.props.collection.length==0){
           queueItems = function(){
           return(
@@ -2071,7 +2075,7 @@ module.exports = new Router();
 
 },{"backbone":23,"react":184,"react-dom":55,"underscore":185}],23:[function(require,module,exports){
 (function (global){
-//     Backbone.js 1.3.3
+//     Backbone.js 1.3.2
 
 //     (c) 2010-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Backbone may be freely distributed under the MIT license.
@@ -2117,7 +2121,7 @@ module.exports = new Router();
   var slice = Array.prototype.slice;
 
   // Current version of the library. Keep in sync with `package.json`.
-  Backbone.VERSION = '1.3.3';
+  Backbone.VERSION = '1.3.2';
 
   // For Backbone's purposes, jQuery, Zepto, Ender, or My Library (kidding) owns
   // the `$` variable.
@@ -20269,7 +20273,7 @@ $.widget( "ui.tooltip", {
 
 },{"jquery":52}],52:[function(require,module,exports){
 /*!
- * jQuery JavaScript Library v2.2.3
+ * jQuery JavaScript Library v2.2.2
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -20279,7 +20283,7 @@ $.widget( "ui.tooltip", {
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-04-05T19:26Z
+ * Date: 2016-03-17T17:51Z
  */
 
 (function( global, factory ) {
@@ -20335,7 +20339,7 @@ var support = {};
 
 
 var
-	version = "2.2.3",
+	version = "2.2.2",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -29745,7 +29749,7 @@ jQuery.fn.load = function( url, params, callback ) {
 		// If it fails, this function gets "jqXHR", "status", "error"
 		} ).always( callback && function( jqXHR, status ) {
 			self.each( function() {
-				callback.apply( this, response || [ jqXHR.responseText, status, jqXHR ] );
+				callback.apply( self, response || [ jqXHR.responseText, status, jqXHR ] );
 			} );
 		} );
 	}

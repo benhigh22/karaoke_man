@@ -158,7 +158,6 @@ var JoinedParties = React.createClass({
       render:function(){
         var that = this;
         var joinedParties = this.props.collection.map(function(model){
-          console.log(model);
           return(
             <JoinedParty key={model.get('id')} model={model} />
           )
@@ -177,6 +176,8 @@ var JoinedParties = React.createClass({
       }
     });
 var JoinedParty = React.createClass({
+  mixins:[Backbone.React.Component.mixin],
+
       getInitialState:function(){
         return(
           {'showPartyDetails':false,
@@ -184,19 +185,22 @@ var JoinedParty = React.createClass({
         )
       },
       togglePartyQueue:function(){
-        console.log('handleClick is working');
         if(this.state.showPartyDetails===false){
-          partyId=this.props.model.get('id');
+          this.setState({'showPartyDetails':true});
+          partyId=this.props.model.get('party');
+          console.log(this.props.model);
+          console.log(partyId);
           queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
           queueItemCollection.comparator = function(model) {
             return -model.get("id"); // Note the minus!
-          };
+          }
           queueItemCollection.fetch();
-          this.setState({'showPartyDetails':true});
+          console.log(queueItemCollection);
         }
         else{
           this.setState({'showPartyDetails':false});
         }
+
       },
       render:function(){
         return(
@@ -212,8 +216,9 @@ var JoinedParty = React.createClass({
       }
     });
 var JoinedPartyDetails = React.createClass({
+  mixins:[Backbone.React.Component.mixin],
+
     render:function(){
-      console.log(this.props.partyDetailState);
       return(
         <div className="joined-party-details row">
             {this.props.partyDetailState ? <DetailView collection={queueItemCollection} /> : null}
@@ -227,7 +232,6 @@ var DetailView = React.createClass({
     render:function(){
       var that = this;
       var queueItems;
-      console.log(this.props.collection);
       if(this.props.collection.length==0){
           queueItems = function(){
           return(
