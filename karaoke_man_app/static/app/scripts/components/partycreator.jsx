@@ -12,6 +12,8 @@ var CityCollection = require('../models/citymodel').CityCollection;
 var LocationCollection = require('../models/locations').LocationCollection;
 var CreatedLocationCollection = require('../models/createlocations').CreatedLocationCollection;
 var UserPartyCollection = require('../models/createdParties').UserPartyCollection;
+var AttendeeCollection = require('../models/attendee').AttendeeCollection;
+
 var Header = require('./header.jsx');
 var Footer = require('./footer.jsx');
 
@@ -23,7 +25,9 @@ var cityCollection = new CityCollection();
 var locationCollection = new LocationCollection();
 var createdLocationCollection = new CreatedLocationCollection();
 var userPartyCollection = new UserPartyCollection();
+
 var cityId;
+var partyId;
 
 var csrftoken = $("input[name='csrfmiddlewaretoken']").val();
 function csrfSafeMethod(method) {
@@ -104,6 +108,8 @@ mixins:[Backbone.React.Component.mixin],
       }
     });
 var LocationItem = React.createClass({
+  mixins:[Backbone.React.Component.mixin],
+
       render:function(){
         return(
           <option value={this.props.model.get('id').toString() + ' ' + this.props.model.get('city').toString()}>{this.props.model.get('name')}</option>
@@ -111,6 +117,8 @@ var LocationItem = React.createClass({
       }
     });
 var NewLocationForm = React.createClass({
+  mixins:[Backbone.React.Component.mixin],
+
     addLocation:function(e){
       e.preventDefault();
       this.props.collection.create(
@@ -126,7 +134,7 @@ var NewLocationForm = React.createClass({
     },
     render:function(){
       return(
-        <form action="" onSubmit={this.addLocation}>
+        <form action="" onSubmit={this.addLocation} className="new-location-form">
           <CitySelect collection={cityCollection}/>
           <div className="form-group">
             <label htmlFor="">Street Address of Location</label>
@@ -158,7 +166,6 @@ var CreatePartyForm = React.createClass({
         var time = $("#hours").val() + ":" + $("#minutes").val() + " " + $("#AoP").val();
         console.log($("#locations").val());
         var splitValues= $('#locations').val().split(' ');
-        console.log(splitValues);
 
         var createUrl = '/api/locations/'+splitValues[0]+'/parties/';
         $.post(createUrl,{
@@ -169,14 +176,21 @@ var CreatePartyForm = React.createClass({
           "location": splitValues[0],
           "city": splitValues[1],
           "creator": Number(localStorage.getItem('user'))
-        },function(){
+        },function(response){
+          console.log(response);
+          partyId = response.id;
+          var attendeeCollection = new AttendeeCollection({'partyId':partyId});
+          attendeeCollection.create({
+            'user':Number(localStorage.getItem('user')),
+            'party':partyId
+          });
           Backbone.history.navigate('user',{trigger:true, replace: true});
           },"json");
       },
       render:function(){
         return(
           <div className="col-md-8">
-            <h3>Next Add Your Party Details </h3>
+            <h3>Next Add Your Party Details: </h3>
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="">Date of Party</label>
@@ -241,7 +255,7 @@ var PartyCreatePage = React.createClass({
               <div className="col-md-12">
                 <div className="row">
                   <div className="col-md-4">
-                    <h3>First Select Your Location </h3>
+                    <h3>First Select Your Location: </h3>
                     <h4>Choose From an existing Location</h4>
                     <LocationSelect collection={locationCollection}/>
                     <h4>Create New Location</h4>

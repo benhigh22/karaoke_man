@@ -5840,7 +5840,7 @@ ul {
 footer {
   height: 100px;
   background-color: #CC66FF;
-  margin-top: 20px; }
+  margin-top: 50px; }
 
 a:hover, a::selection, a:visited, a:focus, a:active {
   text-decoration: none;
@@ -5924,7 +5924,7 @@ button:hover {
 .homepage-btn {
   height: 125px;
   padding: 30px 20px 20px 20px;
-  margin: 10px 0px;
+  margin: 20px 0px;
   border: solid 3px #CC66FF;
   border-radius: 10px;
   color: #331940;
@@ -5935,6 +5935,9 @@ button:hover {
 
 .homepage-btn:hover {
   transform: scale(1.1, 1.1); }
+
+.home h3 {
+  margin-top: 30px; }
 
 header {
   margin-top: 20px; }
@@ -6010,10 +6013,13 @@ header {
 
 .panel-wrapper {
   background-color: black;
+  border-radius: 5px;
   color: white;
   padding: 15px;
   margin-top: 20px;
   height: 300px; }
+  .panel-wrapper h3 {
+    margin-top: 10px; }
   .panel-wrapper .panel {
     color: black;
     height: 200px;
@@ -6070,6 +6076,7 @@ header {
 
 .player-wrapper {
   margin-top: 20px;
+  border-radius: 5px;
   padding: 10px;
   background-color: black;
   height: 500px; }
@@ -6083,6 +6090,7 @@ header {
 
 .player-view-queue-wrapper {
   background-color: black;
+  border-radius: 5px;
   color: white;
   padding: 15px;
   margin-top: 20px;
@@ -6138,6 +6146,18 @@ header {
   display: none; }
   .ui-datepicker td {
     padding: 0 2px; }
+
+.new-location-form {
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 15px; }
+
+.login-btn {
+  text-align: center; }
+
+.error-message {
+  height: 50px;
+  color: red; }
 
 .about_us {
   margin: 10px auto 30px auto;
