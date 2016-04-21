@@ -11,6 +11,7 @@ var UserCreatedPartyCollection = require('../models/createdparties.js').UserPart
 var JoinedPartyCollection = require('../models/joinedparties.js').JoinedPartyCollection;
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
 var AttendeeCollection = require('../models/attendee.js').AttendeeCollection;
+var UserAttendeeCollection = require('../models/user_attendee_id');
 
 var userCreatedPartyCollection = new UserCreatedPartyCollection();
 var joinedPartyCollection = new JoinedPartyCollection();
@@ -266,13 +267,20 @@ var DetailView = React.createClass({
 var SongAdditionModule = React.createClass({
     addSong:function(){
       var that = this;
-      var hostAttendeeId = response.get('id');
-      that.props.collection.create({
-        "singer_name":$("#singer").val(),
-        "song_name":$("#song").val(),
-        "attendees":hostAttendeeId
+      var userAttendeeId;
+      var userAttendeeCollection = new UserAttendeeCollection({'partyId':partyId,id:0});
+        userAttendeeCollection.fetch({
+          success:function(){
+            userAttendeeId = userAttendeeCollection.pluck('id')[0];
+            console.log(userAttendeeId);
+            that.props.collection.create({
+              "singer_name":$("#singer").val(),
+              "song_name":$("#song").val(),
+              "attendees":userAttendeeId
+              });
+          }
         });
-        },
+      },
       render:function(){
         return(
           <div className="queueform-wrapper">

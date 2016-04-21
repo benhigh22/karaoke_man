@@ -7,6 +7,8 @@ var backboneMixin = require('backbone-react-component');
 
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
 var AttendeeCollection = require('../models/attendee.js').AttendeeCollection;
+var UserAttendeeCollection = require('../models/user_attendee_id');
+
 var queueItemCollection;
 var query;
 var chosenResult;
@@ -109,13 +111,20 @@ var QueueItem = React.createClass({
     });
 var SongAdditionModule = React.createClass({
 
-      addSong:function(){
-        var that = this;
-        var hostAttendeeId = response.get('id');
-        that.props.collection.create({
-          "singer_name":$("#singer").val(),
-          "song_name":$("#song").val(),
-          "attendees":hostAttendeeId
+    addSong:function(){
+      var that = this;
+      var userAttendeeId;
+      var userAttendeeCollection = new UserAttendeeCollection({'partyId':partyId,id:0});
+        userAttendeeCollection.fetch({
+          success:function(){
+            userAttendeeId = userAttendeeCollection.pluck('id')[0];
+            console.log(userAttendeeId);
+            that.props.collection.create({
+              "singer_name":$("#singer").val(),
+              "song_name":$("#song").val(),
+              "attendees":userAttendeeId
+              });
+          }
         });
       },
       render:function(){
