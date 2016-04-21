@@ -28,7 +28,7 @@ var AboutUs = React.createClass({
                     <h4 className="our_names">Benjamin High</h4>
                     <p>Ben is a BackEnd Software Developer and Karaoke connoisseur. However, due to the outrageous price of
                     Karaoke software, parties he hosted often ended up with a sticky note queue and youtube searches.
-                    unorganization of that process left Ben thinking there had to be a better way, and The Karaoke Man was
+                    Unorganization of that process left Ben thinking there had to be a better way, and The Karaoke Man was
                     born.</p>
                   </div>
                   <div className="col-md-4 pics">
