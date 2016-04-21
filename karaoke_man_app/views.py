@@ -237,8 +237,8 @@ class AllCitiesPartiesListAPIView(generics.ListCreateAPIView):
         return super().create(request, *args, **kwargs)
 
 
-"""class AttendeeIdRetrieveView(generics.RetrieveAPIView):
+class AttendeeIdRetrieveView(generics.RetrieveAPIView):
     serializer_class = AttendeeSerializer
 
-    def get_object(self):
-        return Attendee.objects.get(user_id=self.kwargs.get('user'), party_id=self.kwargs.get('party'), id=self.kwargs.get('pk'))"""
+    def get_queryset(self):
+        return Attendee.objects.get(user_id=self.kwargs.get('user'), party_id=self.kwargs.get('party'), id=self.kwargs.get('pk'))
