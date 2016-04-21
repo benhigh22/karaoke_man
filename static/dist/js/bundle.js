@@ -38,16 +38,16 @@ render:function(){
     React.createElement("div", {className: "col-md-2"}, 
       React.createElement("img", {id: "logo", src: "/static/dist/images/logo.png", alt: ""})
     ), 
-    React.createElement("div", {className: "col-md-5"}, 
-      React.createElement("ul", {className: "nav"}, 
-        React.createElement("a", {href: ""}, React.createElement("li", null, "Home")), 
-        React.createElement("li", null, "About Us"), 
-        React.createElement("a", {href: "#user"}, React.createElement("li", null, "Profile"))
-      )
-    ), 
-    React.createElement("div", {className: "col-md-2 col-md-offset-3"}, 
-      React.createElement("div", {className: "logout", onClick: this.logoutUser}, 
-        React.createElement("span", null, "Logout")
+    React.createElement("div", {className: "col-md-9"}, 
+      React.createElement("div", {className: "row"}, 
+        React.createElement("ul", {className: "myNav"}, 
+          React.createElement("a", {href: ""}, React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-2"}, "Home")), 
+          React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-2"}, "About Us"), 
+          React.createElement("a", {href: "#user"}, React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-2"}, "Profile")), 
+          React.createElement("li", {onClick: this.logoutUser, className: "col-xs-12 col-sm-12 col-md-2"}, 
+              React.createElement("span", null, "Logout")
+          )
+        )
       )
     )
   )
@@ -81,11 +81,13 @@ var Home = React.createClass({displayName: "Home",
               React.createElement("div", {className: "col-md-3"}, 
                 React.createElement("img", {id: "logo", src: "/static/dist/images/logo.png", alt: ""})
               ), 
-              React.createElement("div", {className: "col-md-6"}, 
-                React.createElement("ul", {className: "nav"}, 
-                  React.createElement("li", null, "Home"), 
-                  React.createElement("li", null, "About Us"), 
-                  React.createElement("a", {href: "#user"}, React.createElement("li", null, "Profile"))
+              React.createElement("div", {className: "col-md-9"}, 
+                React.createElement("ul", null, 
+                  React.createElement("div", {className: "row myNav"}, 
+                    React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-3"}, "Home"), 
+                    React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-3"}, "About Us"), 
+                    localStorage.getItem('user') ? React.createElement("a", {href: "#user"}, React.createElement("li", {className: "col-xs-12 col-sm-12 col-md-3"}, "Profile")) : null
+                  )
                 )
               )
             ), 
@@ -104,14 +106,14 @@ var Home = React.createClass({displayName: "Home",
             React.createElement("div", {className: "row bottom-btns"}, 
               React.createElement("div", {className: "col-md-6"}, 
                 React.createElement("div", {className: "row"}, 
-                  React.createElement("div", {className: "col-md-6"}, 
+                  React.createElement("div", {className: "col-sm-6 col-md-6"}, 
                     React.createElement("a", {href: "", onClick: this.openModal, "data-toggle": "modal", "data-target": "#myModal"}, 
                       React.createElement("div", {className: "homepage-btn"}, 
                         "Login To Your Account"
                       )
                     )
                   ), 
-                  React.createElement("div", {className: "col-md-6"}, 
+                  React.createElement("div", {className: "col-sm-6 col-md-6"}, 
                     React.createElement("a", {href: "#register"}, 
                       React.createElement("div", {className: "homepage-btn"}, 
                         "SignUp For A New Account!"
@@ -324,15 +326,15 @@ var NewLocationForm = React.createClass({displayName: "NewLocationForm",
           user:Number(localStorage.getItem('user'))
         }
       );
-      this.props.showForm();
       locationCollection.fetch();
+      this.props.showForm();
     },
     render:function(){
       return(
         React.createElement("form", {action: "", onSubmit: this.addLocation}, 
           React.createElement(CitySelect, {collection: cityCollection}), 
           React.createElement("div", {className: "form-group"}, 
-            React.createElement("label", {htmlFor: ""}, "Address of Location"), 
+            React.createElement("label", {htmlFor: ""}, "Street Address of Location"), 
             React.createElement("input", {type: "text", className: "form-control", id: "address"})
           ), 
           React.createElement("div", {className: "form-group"}, 
@@ -373,13 +375,13 @@ var CreatePartyForm = React.createClass({displayName: "CreatePartyForm",
           "city": splitValues[1],
           "creator": Number(localStorage.getItem('user'))
         },function(){
-          alert('successfully posted');
           Backbone.history.navigate('user',{trigger:true, replace: true});
           },"json");
       },
       render:function(){
         return(
           React.createElement("div", {className: "col-md-8"}, 
+            React.createElement("h3", null, "Next Add Your Party Details "), 
             React.createElement("form", {onSubmit: this.handleSubmit}, 
               React.createElement("div", {className: "form-group"}, 
                 React.createElement("label", {htmlFor: ""}, "Date of Party"), 
@@ -387,14 +389,16 @@ var CreatePartyForm = React.createClass({displayName: "CreatePartyForm",
               ), 
               React.createElement("label", {htmlFor: ""}, "Time of Party"), 
               React.createElement("div", {className: "form-group row"}, 
-                React.createElement("div", {className: "col-md-2"}, 
-                  React.createElement("input", {type: "number", name: "hours", id: "hours", max: "12", min: "0", className: "form-control"}), "  ", React.createElement("span", null, ":")
-
+                React.createElement("div", {className: "col-md-2 col-sm-4 col-xs-3"}, 
+                  React.createElement("input", {type: "number", name: "hours", id: "hours", max: "12", min: "0", className: "form-control"})
                 ), 
-                React.createElement("div", {className: "col-md-2"}, 
+                React.createElement("div", {className: "col-md-1 col-sm-1 col-xs-1"}, 
+                  React.createElement("span", {id: "colon"}, ":")
+                ), 
+                React.createElement("div", {className: "col-md-2 col-sm-4 col-xs-3"}, 
                   React.createElement("input", {type: "number", name: "minutes", id: "minutes", max: "59", min: "0", className: "form-control"})
                 ), 
-                React.createElement("div", {className: "col-md-2"}, 
+                React.createElement("div", {className: "col-md-2 col-sm-3 col-xs-3"}, 
                   React.createElement("select", {type: "text", name: "AoP", id: "AoP", className: "form-control col-md-1"}, 
                     React.createElement("option", null, "AM"), 
                     React.createElement("option", null, "PM")
@@ -409,7 +413,7 @@ var CreatePartyForm = React.createClass({displayName: "CreatePartyForm",
                 React.createElement("label", {htmlFor: ""}, "Description"), 
                 React.createElement("input", {type: "text", name: "description", className: "form-control", id: "description"})
               ), 
-              React.createElement("button", {type: "submit"}, " Create Your Party ")
+              React.createElement("button", {type: "submit", className: "btn"}, " Create Your Party ")
             )
           )
         )
@@ -441,14 +445,15 @@ var PartyCreatePage = React.createClass({displayName: "PartyCreatePage",
             React.createElement("div", {className: "row"}, 
               React.createElement("div", {className: "col-md-12"}, 
                 React.createElement("div", {className: "row"}, 
-                  React.createElement(CreatePartyForm, {collection: userPartyCollection}), 
                   React.createElement("div", {className: "col-md-4"}, 
+                    React.createElement("h3", null, "First Select Your Location "), 
                     React.createElement("h4", null, "Choose From an existing Location"), 
                     React.createElement(LocationSelect, {collection: locationCollection}), 
                     React.createElement("h4", null, "Create New Location"), 
-                    React.createElement("button", {className: "btn btn-primary", onClick: this.showLocationForm}, "NEW"), 
+                    React.createElement("button", {className: "btn", onClick: this.showLocationForm}, "New"), 
                     this.state.showLocationForm ? React.createElement(NewLocationForm, {collection: createdLocationCollection, showForm: this.showLocationForm}) : null
-                  )
+                  ), 
+                  React.createElement(CreatePartyForm, {collection: userPartyCollection})
                 )
               )
             )
@@ -624,19 +629,23 @@ var PartyDetails = React.createClass({displayName: "PartyDetails",
 /////Components for Containing Page Elements
 /////////////////////////////////////////
 var SongSelect = React.createClass({displayName: "SongSelect",
+      returnToProfile:function(){
+        Backbone.history.navigate('user',{trigger:true, replace: true});
+      },
       render:function(){
         return(
           React.createElement("div", {className: "panel-wrapper"}, 
-            React.createElement("div", null, React.createElement("span", null, "X")), 
-            React.createElement("h4", null, "You Have Selected Bens Bar"), 
+            React.createElement("h3", null, "Add Your First Song to The Queue!"), 
             React.createElement("div", null, 
               React.createElement("form", null, 
                 React.createElement("div", {className: "form-group"}, 
                   React.createElement("input", {type: "text", id: "singer", className: "form-control", placeholder: "Singer's Name"}), 
                   React.createElement("input", {type: "text", id: "song", className: "form-control", placeholder: "Song Name"})
                 ), 
-                React.createElement("button", {type: "button", className: "btn btn-primary", onClick: this.props.addToQueue}, " Add to the que ")
-              )
+                React.createElement("button", {type: "button", className: "btn", onClick: this.props.addToQueue}, " Add New Song ")
+              ), 
+              React.createElement("h3", null, "Or"), 
+              React.createElement("button", {onClick: this.returnToProfile}, " Return to Your Profile")
             )
           )
         );
@@ -656,7 +665,6 @@ var PartyFinder = React.createClass({displayName: "PartyFinder",
       }
   },
   addToQueue:function(){
-
     var setAttendeeId = function(){
           console.log(attendee);
           attendeeId = attendee.get('id');
@@ -671,8 +679,7 @@ var PartyFinder = React.createClass({displayName: "PartyFinder",
            'party':partyId,
            'attendees':attendeeId,
          });
-
-
+         Backbone.history.navigate('user',{trigger:true, replace: true});
   },
   render:function(){
       return(
@@ -710,17 +717,27 @@ var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
 var backboneMixin = require('backbone-react-component');
+var $ = require('jquery');
 
 var Header = require('./header.jsx');
 var Footer = require('./footer.jsx');
 
 var UserCreatedPartyCollection = require('../models/createdparties.js').UserPartyCollection;
 var JoinedPartyCollection = require('../models/joinedparties.js').JoinedPartyCollection;
+var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
+var AttendeeCollection = require('../models/attendee.js').AttendeeCollection;
 
 var userCreatedPartyCollection = new UserCreatedPartyCollection();
 var joinedPartyCollection = new JoinedPartyCollection();
+var queueItemCollection;
+var partyId;
 
 var ProfilePage = React.createClass({displayName: "ProfilePage",
+      componentWillMount:function(){
+        partyId = Number(localStorage.getItem('currentParty'));
+        queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+        queueItemCollection.fetch();
+      },
       render:function(){
         return(
           React.createElement("div", null, 
@@ -760,6 +777,11 @@ var ProfilePage = React.createClass({displayName: "ProfilePage",
     });
 
 var ProfileNav = React.createClass({displayName: "ProfileNav",
+      scrollPage:function(){
+          $('html, body').animate({
+          scrollTop: $("#current-parties").offset().top
+        }, 1000);
+      },
       render:function(){
         return(
           React.createElement("div", {className: "row"}, 
@@ -771,11 +793,11 @@ var ProfileNav = React.createClass({displayName: "ProfileNav",
               )
             ), 
             React.createElement("div", {className: "col-md-4"}, 
-              React.createElement("a", {href: "#queue"}, 
-                React.createElement("div", {className: "profile-button"}, 
-                  React.createElement("h3", null, " My Current Events ")
+                React.createElement("div", {className: "profile-button", id: "current-event-scroll", onClick: this.scrollPage}, 
+                  React.createElement("h3", null, " My Current Events "), 
+                    React.createElement("div", {className: "arrow-down"}
+                    )
                 )
-              )
             ), 
             React.createElement("div", {className: "col-md-4"}, 
               React.createElement("a", {href: "#find"}, 
@@ -793,6 +815,7 @@ var EventInfo = React.createClass({displayName: "EventInfo",
       render:function(){
         return(
           React.createElement("div", {className: "row"}, 
+            React.createElement("a", {id: "current-parties"}), 
             React.createElement(CreatedParties, {collection: userCreatedPartyCollection}), 
             React.createElement(JoinedParties, {collection: joinedPartyCollection})
           )
@@ -813,8 +836,8 @@ var CreatedParties = React.createClass({displayName: "CreatedParties",
           );
         });
         return(
-          React.createElement("div", {className: "col-md-6"}, 
-            React.createElement("div", {className: "panel-wrapper"}, 
+          React.createElement("div", {className: "col-md-12"}, 
+            React.createElement("div", {className: ""}, 
               React.createElement("h3", null, "Created Parties"), 
               React.createElement("div", {className: "joined-panel"}, 
                   userParties
@@ -846,19 +869,18 @@ var JoinedParties = React.createClass({displayName: "JoinedParties",
     mixins:[Backbone.React.Component.mixin],
       componentWillMount:function(){
         this.props.collection.fetch();
-
       },
       render:function(){
+        var that = this;
         var joinedParties = this.props.collection.map(function(model){
-          console.log(model);
           return(
             React.createElement(JoinedParty, {key: model.get('id'), model: model})
           )
         });
 
         return(
-          React.createElement("div", {className: "col-md-6"}, 
-            React.createElement("div", {className: "panel-wrapper"}, 
+          React.createElement("div", {className: "col-md-12"}, 
+            React.createElement("div", {className: ""}, 
               React.createElement("h3", null, "Joined Parties"), 
               React.createElement("div", {className: "joined-panel"}, 
                 joinedParties
@@ -869,24 +891,123 @@ var JoinedParties = React.createClass({displayName: "JoinedParties",
       }
     });
 var JoinedParty = React.createClass({displayName: "JoinedParty",
-      showPartyQueue:function(){
-      console.log(this.props.model.get('id'));
+  mixins:[Backbone.React.Component.mixin],
+
+      getInitialState:function(){
+        return(
+          {'showPartyDetails':false,
+          }
+        )
+      },
+      togglePartyQueue:function(){
+        if(this.state.showPartyDetails===false){
+          this.setState({'showPartyDetails':true});
+          partyId=this.props.model.get('party');
+          console.log(this.props.model);
+          console.log(partyId);
+          queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+          queueItemCollection.comparator = function(model) {
+            return -model.get("id"); // Note the minus!
+          }
+          queueItemCollection.fetch();
+          console.log(queueItemCollection);
+        }
+        else{
+          this.setState({'showPartyDetails':false});
+        }
 
       },
       render:function(){
         return(
-          React.createElement("div", {className: "party-info", id: "party", onClick: this.showPartyQueue}, 
-            React.createElement("h4", null, this.props.model.get('party_name')), 
-            React.createElement("span", {className: "event-date"}, React.createElement("span", {className: "title"}, "Date: "), this.props.model.get('party_date')), 
-            React.createElement("span", {className: "event-time"}, React.createElement("span", {className: "title"}, "Time: "), this.props.model.get('party_time'))
-        )
+          React.createElement("div", null, 
+            React.createElement("div", {className: "party-info", id: "party", onClick: this.togglePartyQueue}, 
+              React.createElement("h4", null, this.props.model.get('party_name')), 
+              React.createElement("span", {className: "event-date"}, React.createElement("span", {className: "title"}, "Date: "), this.props.model.get('party_date')), 
+              React.createElement("span", {className: "event-time"}, React.createElement("span", {className: "title"}, "Time: "), this.props.model.get('party_time'))
+            ), 
+            React.createElement(JoinedPartyDetails, {partyDetailState: this.state.showPartyDetails})
+          )
         )
       }
     });
+var JoinedPartyDetails = React.createClass({displayName: "JoinedPartyDetails",
+  mixins:[Backbone.React.Component.mixin],
 
+    render:function(){
+      return(
+        React.createElement("div", {className: "joined-party-details row"}, 
+            this.props.partyDetailState ? React.createElement(DetailView, {collection: queueItemCollection}) : null
+        )
+      );
+    }
+    });
+var DetailView = React.createClass({displayName: "DetailView",
+  mixins:[Backbone.React.Component.mixin],
+
+    render:function(){
+      var that = this;
+      var queueItems;
+      if(this.props.collection.length==0){
+          queueItems = function(){
+          return(
+            React.createElement("h1", null, " No Songs Are Currently In This Queue ")
+          );
+        }()
+      }
+      else{
+        queueItems = this.props.collection.map(function(model){
+          return(
+              React.createElement("div", {className: "detail-view", key: model.get('id')}, 
+                React.createElement("h4", null, model.get('song_name')), 
+                React.createElement("span", null, model.get('singer_name'))
+              )
+          );
+        });
+      }
+        return(
+        React.createElement("div", null, 
+          React.createElement("div", {className: "col-md-6 queue-wrapper"}, 
+            React.createElement("h3", null, "Currently Queued Songs"), 
+            React.createElement("span", null, "**Songs Shown By Most Recently Added First"), 
+            queueItems
+          ), 
+          React.createElement("div", {className: "col-md-6"}, 
+            React.createElement(SongAdditionModule, {collection: this.props.collection})
+          )
+        )
+        )
+    }
+    });
+var SongAdditionModule = React.createClass({displayName: "SongAdditionModule",
+    addSong:function(){
+      var that = this;
+      var hostAttendeeId = response.get('id');
+      that.props.collection.create({
+        "singer_name":$("#singer").val(),
+        "song_name":$("#song").val(),
+        "attendees":hostAttendeeId
+        });
+        },
+      render:function(){
+        return(
+          React.createElement("div", {className: "queueform-wrapper"}, 
+            React.createElement("h4", null, "Add A New Song"), 
+            React.createElement("div", null, 
+              React.createElement("form", null, 
+                React.createElement("div", {className: "form-group"}, 
+                  React.createElement("input", {type: "text", id: "singer", className: "form-control", placeholder: "Singer Name"}), 
+                  React.createElement("input", {type: "text", id: "song", className: "form-control", placeholder: "Song Name"})
+                ), 
+                React.createElement("button", {onClick: this.addSong, type: "button"}, " Add to the que ")
+              )
+            )
+          )
+        );
+      }
+    });
 module.exports=ProfilePage;
 
-},{"../models/createdparties.js":14,"../models/joinedparties.js":16,"./footer.jsx":1,"./header.jsx":2,"backbone":23,"backbone-react-component":22,"react":184,"react-dom":55}],8:[function(require,module,exports){
+},{"../models/attendee.js":11,"../models/createdparties.js":14,"../models/joinedparties.js":16,"../models/queuemodel.js":19,"./footer.jsx":1,"./header.jsx":2,"backbone":23,"backbone-react-component":22,"jquery":52,"react":184,"react-dom":55}],8:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var ReactDom = require('react-dom');
@@ -896,18 +1017,18 @@ var Header = require('./header.jsx');
 var backboneMixin = require('backbone-react-component');
 
 var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
-
+var AttendeeCollection = require('../models/attendee.js').AttendeeCollection;
 var queueItemCollection;
 var query;
 var chosenResult;
-
+var partyId;
 //////////////////////////////////////////////////////////
 ////Top Level Component Governing State
 //////////////////////////////////////////////////////////
 
 var QueueViewPage = React.createClass({displayName: "QueueViewPage",
     componentWillMount:function(){
-      var partyId = Number(localStorage.getItem('currentParty'));
+      partyId = Number(localStorage.getItem('currentParty'));
       queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
       queueItemCollection.fetch();
     },
@@ -935,7 +1056,7 @@ var QueueViewPage = React.createClass({displayName: "QueueViewPage",
         return(
           React.createElement("div", {className: "container"}, 
             React.createElement(Header, null), 
-              React.createElement("div", {className: "row"}, 
+              React.createElement("div", {className: "row playerPage"}, 
                 React.createElement(QueueItems, {collection: queueItemCollection, showVideo: this.showVideo, refresh: this.refreshQueue()}), 
                 React.createElement(PlayerView, {setUrl: this.setUrl, sourceUrl: this.state.sourceUrl, searchResults: this.state.searchResults})
               )
@@ -954,8 +1075,6 @@ var QueueItems = React.createClass({displayName: "QueueItems",
       render:function(){
         var that = this;
         var queueitems = this.props.collection.map(function(model){
-          console.log(model);
-          console.log(model.get('id'));
           if(model.get('complete')===false){
             return(
               React.createElement(QueueItem, {key: model.get('id'), model: model, showVideo: that.props.showVideo})
@@ -970,12 +1089,12 @@ var QueueItems = React.createClass({displayName: "QueueItems",
         });
         return(
           React.createElement("div", {className: "col-md-3"}, 
-            React.createElement("div", {className: "panel-wrapper"}, 
+            React.createElement("div", {className: "player-view-queue-wrapper"}, 
               React.createElement("div", {className: "queue-panel"}, 
                 queueitems
               )
             ), 
-            React.createElement(SongAdditionModule, null)
+            React.createElement(SongAdditionModule, {collection: this.props.collection})
           )
         );
       }
@@ -1000,8 +1119,15 @@ var QueueItem = React.createClass({displayName: "QueueItem",
       }
     });
 var SongAdditionModule = React.createClass({displayName: "SongAdditionModule",
-      addSong:function(){
 
+      addSong:function(){
+        var that = this;
+        var hostAttendeeId = response.get('id');
+        that.props.collection.create({
+          "singer_name":$("#singer").val(),
+          "song_name":$("#song").val(),
+          "attendees":hostAttendeeId
+        });
       },
       render:function(){
         return(
@@ -1013,7 +1139,7 @@ var SongAdditionModule = React.createClass({displayName: "SongAdditionModule",
                   React.createElement("input", {type: "text", id: "singer", className: "form-control", placeholder: "Singer Name"}), 
                   React.createElement("input", {type: "text", id: "song", className: "form-control", placeholder: "Song Name"})
                 ), 
-                React.createElement("button", {type: "button"}, " Add to the que ")
+                React.createElement("button", {onClick: this.addSong, type: "button"}, " Add to the que ")
               )
             )
           )
@@ -1086,9 +1212,12 @@ var Results = React.createClass({displayName: "Results",
     )
   }
 });
-    module.exports=QueueViewPage;
+    module.exports={"QueueViewPage":QueueViewPage,
+      "QueueItems":QueueItems,
+      "QueueItem":QueueItem
+    };
 
-},{"../models/queuemodel.js":19,"./header.jsx":2,"backbone":23,"backbone-react-component":22,"jquery":52,"react":184,"react-dom":55}],9:[function(require,module,exports){
+},{"../models/attendee.js":11,"../models/queuemodel.js":19,"./header.jsx":2,"backbone":23,"backbone-react-component":22,"jquery":52,"react":184,"react-dom":55}],9:[function(require,module,exports){
 "use strict";
 var React = require('react');
 var ReactDom = require('react-dom');
@@ -1141,6 +1270,7 @@ var UserRegForm = React.createClass({displayName: "UserRegForm",
       users.create(userData, {
         success: function(userData){
           console.log(userData)
+          Backbone.history.navigate('',{trigger:true, replace: true});
         }
       });
     },
@@ -1158,33 +1288,32 @@ var UserRegForm = React.createClass({displayName: "UserRegForm",
           React.createElement("div", {className: "col-md-10"}, 
             React.createElement("div", {className: "user-formwrapper"}, 
               React.createElement("div", {className: "row"}, 
-                React.createElement("div", {className: "col-md-4 test"}, 
-                  React.createElement("div", {className: "prof-pic-upload"}, 
+                React.createElement("div", {className: "col-md-4 col-md-offset-2 test hidden"}, 
+                  React.createElement("div", {className: "prof-pic-upload hidden"}, 
                     React.createElement("img", {src: "static/dist/images/UPLOADPLACEHOLDER.svg", alt: ""})
                   )
                 ), 
-                React.createElement("div", {className: "col-md-8"}, 
-                  React.createElement("form", {action: "", id: "user-form", onSubmit: this.addUser}, 
-                    React.createElement("input", {type: "text", placeholder: "username", name: "username", id: "username"}), 
-                    React.createElement("input", {type: "text", placeholder: "password", name: "password", id: "password"}), 
+                React.createElement("div", {className: "col-md-6 col-md-offset-2"}, 
+                  React.createElement("h3", null, "Create Your Account"), 
+                  React.createElement("form", {className: "form-group", id: "user-form", onSubmit: this.addUser}, 
+                    React.createElement("input", {className: "form-control", type: "text", placeholder: "username", name: "username", id: "username"}), 
+                    React.createElement("input", {className: "form-control", type: "text", placeholder: "password", name: "password", id: "password"}), 
+                    React.createElement("input", {className: "form-control", type: "email", placeholder: "email", name: "email"}), 
                     React.createElement("button", {className: "signup_button", type: "submit"}, " Sign Up!")
                   )
-                )
-              ), 
-
-              React.createElement(UserProfForm, null)
-
-            )
-          ), 
-          React.createElement("div", {className: "col-md-2"}, 
-            React.createElement("div", {className: "sidebar"}, 
-              React.createElement("h3", null, "Your Profile"), 
-              React.createElement("p", null, "Thanks for joining The Karaoke Man! After completing this step, you will be ready to see parties" + ' ' +
-              "in your City, or start your own! You can also use your profile to keep up with your upcoming" + ' ' +
-              "parties and see past ones you've thrown or attended!")
+              )
             )
           )
+        ), 
+        React.createElement("div", {className: "col-md-2"}, 
+          React.createElement("div", {className: "sidebar"}, 
+            React.createElement("h3", null, "Your Profile"), 
+            React.createElement("p", null, "Thanks for joining The Karaoke Man! After completing this step, you will be ready to see parties" + ' ' +
+            "in your City, or start your own! You can also use your profile to keep up with your upcoming" + ' ' +
+            "parties and see past ones you've thrown or attended!")
+          )
         )
+      )
         )
       }
     });
@@ -1472,7 +1601,7 @@ var Home = require('./components/homepage.jsx');
 var RegistrationFormPage = require('./components/userReg.jsx');
 var ProfilePage = require('./components/profilepage.jsx');
 var PartyFinder = require('./components/partyfinder.jsx');
-var QueueViewPage = require('./components/queueview.jsx');
+var QueueViewPage = require('./components/queueview.jsx').QueueViewPage;
 var PartyCreator = require('./components/partycreator.jsx');
 var Login = require('./components/login.jsx');
 
@@ -1489,8 +1618,9 @@ routes:{
 },
 validateLogin:function(){
   if(localStorage.getItem('user')===null){
-    alert('You are currently not logged in as a user please log in to your account to use this feature');
     Backbone.history.navigate('',{trigger:true, replace: true});
+    ReactDom.render(React.createElement(Login),
+    document.getElementById('login'));
   }
 },
 renderHome:function(){
@@ -1502,7 +1632,6 @@ renderUserRegistration:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(RegistrationFormPage),
   document.getElementById('app'));
-  this.validateLogin();
 },
 renderProfilePage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));

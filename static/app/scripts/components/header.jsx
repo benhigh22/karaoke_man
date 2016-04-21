@@ -16,16 +16,16 @@ render:function(){
     <div className="col-md-2">
       <img id="logo" src="/static/dist/images/logo.png" alt=""/>
     </div>
-    <div className="col-md-5">
-      <ul className="nav">
-        <a href=""><li>Home</li></a>
-        <li>About Us</li>
-        <a href="#user"><li>Profile</li></a>
-      </ul>
-    </div>
-    <div className="col-md-2 col-md-offset-3">
-      <div className="logout" onClick={this.logoutUser}>
-        <span>Logout</span>
+    <div className="col-md-9">
+      <div className="row">
+        <ul className="myNav">
+          <a href=""><li className="col-xs-12 col-sm-12 col-md-2">Home</li></a>
+          <li className="col-xs-12 col-sm-12 col-md-2">About Us</li>
+          <a href="#user"><li className="col-xs-12 col-sm-12 col-md-2">Profile</li></a>
+          <li onClick={this.logoutUser} className="col-xs-12 col-sm-12 col-md-2">
+              <span>Logout</span>
+          </li>
+        </ul>
       </div>
     </div>
   </header>

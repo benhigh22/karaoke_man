@@ -6,7 +6,7 @@ var Home = require('./components/homepage.jsx');
 var RegistrationFormPage = require('./components/userReg.jsx');
 var ProfilePage = require('./components/profilepage.jsx');
 var PartyFinder = require('./components/partyfinder.jsx');
-var QueueViewPage = require('./components/queueview.jsx');
+var QueueViewPage = require('./components/queueview.jsx').QueueViewPage;
 var PartyCreator = require('./components/partycreator.jsx');
 var Login = require('./components/login.jsx');
 
@@ -23,8 +23,9 @@ routes:{
 },
 validateLogin:function(){
   if(localStorage.getItem('user')===null){
-    alert('You are currently not logged in as a user please log in to your account to use this feature');
     Backbone.history.navigate('',{trigger:true, replace: true});
+    ReactDom.render(React.createElement(Login),
+    document.getElementById('login'));
   }
 },
 renderHome:function(){
@@ -36,7 +37,6 @@ renderUserRegistration:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));
   ReactDOM.render(React.createElement(RegistrationFormPage),
   document.getElementById('app'));
-  this.validateLogin();
 },
 renderProfilePage:function(){
   ReactDOM.unmountComponentAtNode(document.getElementById('app'));

@@ -121,15 +121,15 @@ var NewLocationForm = React.createClass({
           user:Number(localStorage.getItem('user'))
         }
       );
-      this.props.showForm();
       locationCollection.fetch();
+      this.props.showForm();
     },
     render:function(){
       return(
         <form action="" onSubmit={this.addLocation}>
           <CitySelect collection={cityCollection}/>
           <div className="form-group">
-            <label htmlFor="">Address of Location</label>
+            <label htmlFor="">Street Address of Location</label>
             <input type="text" className="form-control" id='address'/>
           </div>
           <div className="form-group">
@@ -170,13 +170,13 @@ var CreatePartyForm = React.createClass({
           "city": splitValues[1],
           "creator": Number(localStorage.getItem('user'))
         },function(){
-          alert('successfully posted');
           Backbone.history.navigate('user',{trigger:true, replace: true});
           },"json");
       },
       render:function(){
         return(
           <div className="col-md-8">
+            <h3>Next Add Your Party Details </h3>
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="">Date of Party</label>
@@ -184,14 +184,16 @@ var CreatePartyForm = React.createClass({
               </div>
               <label htmlFor="">Time of Party</label>
               <div className="form-group row">
-                <div className="col-md-2">
-                  <input type="number" name="hours" id="hours" max="12" min="0" className="form-control"/>  <span>:</span>
-
+                <div className="col-md-2 col-sm-4 col-xs-3">
+                  <input type="number" name="hours" id="hours" max="12" min="0" className="form-control"/>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-1 col-sm-1 col-xs-1">
+                  <span id="colon">:</span>
+                </div>
+                <div className="col-md-2 col-sm-4 col-xs-3">
                   <input type="number" name="minutes" id="minutes" max="59" min="0" className="form-control"/>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-2 col-sm-3 col-xs-3">
                   <select type="text" name="AoP" id="AoP" className="form-control col-md-1">
                     <option>AM</option>
                     <option>PM</option>
@@ -206,7 +208,7 @@ var CreatePartyForm = React.createClass({
                 <label htmlFor="">Description</label>
                 <input type="text" name="description" className="form-control" id="description"/>
               </div>
-              <button type="submit"> Create Your Party </button>
+              <button type="submit" className="btn"> Create Your Party </button>
             </form>
           </div>
         )
@@ -238,14 +240,15 @@ var PartyCreatePage = React.createClass({
             <div className="row">
               <div className="col-md-12">
                 <div className="row">
-                  <CreatePartyForm collection={userPartyCollection}/>
                   <div className="col-md-4">
+                    <h3>First Select Your Location </h3>
                     <h4>Choose From an existing Location</h4>
                     <LocationSelect collection={locationCollection}/>
                     <h4>Create New Location</h4>
-                    <button className="btn btn-primary" onClick={this.showLocationForm}>NEW</button>
+                    <button className="btn" onClick={this.showLocationForm}>New</button>
                     {this.state.showLocationForm ? <NewLocationForm collection={createdLocationCollection} showForm={this.showLocationForm}/> : null}
                   </div>
+                  <CreatePartyForm collection={userPartyCollection}/>
                 </div>
               </div>
             </div>

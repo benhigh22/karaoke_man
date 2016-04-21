@@ -2,17 +2,27 @@ var React = require('react');
 var ReactDom = require('react-dom');
 var Backbone = require('backbone');
 var backboneMixin = require('backbone-react-component');
+var $ = require('jquery');
 
 var Header = require('./header.jsx');
 var Footer = require('./footer.jsx');
 
 var UserCreatedPartyCollection = require('../models/createdparties.js').UserPartyCollection;
 var JoinedPartyCollection = require('../models/joinedparties.js').JoinedPartyCollection;
+var QueueItemCollection = require('../models/queuemodel.js').QueueItemCollection;
+var AttendeeCollection = require('../models/attendee.js').AttendeeCollection;
 
 var userCreatedPartyCollection = new UserCreatedPartyCollection();
 var joinedPartyCollection = new JoinedPartyCollection();
+var queueItemCollection;
+var partyId;
 
 var ProfilePage = React.createClass({
+      componentWillMount:function(){
+        partyId = Number(localStorage.getItem('currentParty'));
+        queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+        queueItemCollection.fetch();
+      },
       render:function(){
         return(
           <div>
@@ -52,6 +62,11 @@ var ProfilePage = React.createClass({
     });
 
 var ProfileNav = React.createClass({
+      scrollPage:function(){
+          $('html, body').animate({
+          scrollTop: $("#current-parties").offset().top
+        }, 1000);
+      },
       render:function(){
         return(
           <div className="row">
@@ -63,11 +78,11 @@ var ProfileNav = React.createClass({
               </a>
             </div>
             <div className="col-md-4">
-              <a href="#queue">
-                <div className="profile-button">
+                <div className="profile-button" id="current-event-scroll" onClick={this.scrollPage}>
                   <h3> My Current Events </h3>
+                    <div className="arrow-down">
+                    </div>
                 </div>
-              </a>
             </div>
             <div className="col-md-4">
               <a href="#find">
@@ -84,7 +99,8 @@ var ProfileNav = React.createClass({
 var EventInfo = React.createClass({
       render:function(){
         return(
-          <div className="row">
+          <div className="row" >
+            <a id="current-parties"></a>
             <CreatedParties collection={userCreatedPartyCollection}/>
             <JoinedParties collection={joinedPartyCollection}/>
           </div>
@@ -105,8 +121,8 @@ var CreatedParties = React.createClass({
           );
         });
         return(
-          <div className="col-md-6">
-            <div className="panel-wrapper">
+          <div className="col-md-12">
+            <div className="">
               <h3>Created Parties</h3>
               <div className="joined-panel">
                   {userParties}
@@ -138,19 +154,18 @@ var JoinedParties = React.createClass({
     mixins:[Backbone.React.Component.mixin],
       componentWillMount:function(){
         this.props.collection.fetch();
-
       },
       render:function(){
+        var that = this;
         var joinedParties = this.props.collection.map(function(model){
-          console.log(model);
           return(
             <JoinedParty key={model.get('id')} model={model} />
           )
         });
 
         return(
-          <div className="col-md-6">
-            <div className="panel-wrapper">
+          <div className="col-md-12">
+            <div className="">
               <h3>Joined Parties</h3>
               <div className="joined-panel">
                 {joinedParties}
@@ -161,19 +176,118 @@ var JoinedParties = React.createClass({
       }
     });
 var JoinedParty = React.createClass({
-      showPartyQueue:function(){
-      console.log(this.props.model.get('id'));
+  mixins:[Backbone.React.Component.mixin],
+
+      getInitialState:function(){
+        return(
+          {'showPartyDetails':false,
+          }
+        )
+      },
+      togglePartyQueue:function(){
+        if(this.state.showPartyDetails===false){
+          this.setState({'showPartyDetails':true});
+          partyId=this.props.model.get('party');
+          console.log(this.props.model);
+          console.log(partyId);
+          queueItemCollection = new QueueItemCollection({'partyId':partyId,id:0});
+          queueItemCollection.comparator = function(model) {
+            return -model.get("id"); // Note the minus!
+          }
+          queueItemCollection.fetch();
+          console.log(queueItemCollection);
+        }
+        else{
+          this.setState({'showPartyDetails':false});
+        }
 
       },
       render:function(){
         return(
-          <div className="party-info" id='party' onClick={this.showPartyQueue}>
-            <h4>{this.props.model.get('party_name')}</h4>
-            <span className="event-date"><span className="title">Date: </span>{this.props.model.get('party_date')}</span>
-            <span className="event-time"><span className="title">Time: </span>{this.props.model.get('party_time')}</span>
-        </div>
+          <div>
+            <div className="party-info" id='party' onClick={this.togglePartyQueue}>
+              <h4>{this.props.model.get('party_name')}</h4>
+              <span className="event-date"><span className="title">Date: </span>{this.props.model.get('party_date')}</span>
+              <span className="event-time"><span className="title">Time: </span>{this.props.model.get('party_time')}</span>
+            </div>
+            <JoinedPartyDetails partyDetailState={this.state.showPartyDetails}/>
+          </div>
         )
       }
     });
+var JoinedPartyDetails = React.createClass({
+  mixins:[Backbone.React.Component.mixin],
 
+    render:function(){
+      return(
+        <div className="joined-party-details row">
+            {this.props.partyDetailState ? <DetailView collection={queueItemCollection} /> : null}
+        </div>
+      );
+    }
+    });
+var DetailView = React.createClass({
+  mixins:[Backbone.React.Component.mixin],
+
+    render:function(){
+      var that = this;
+      var queueItems;
+      if(this.props.collection.length==0){
+          queueItems = function(){
+          return(
+            <h1> No Songs Are Currently In This Queue </h1>
+          );
+        }()
+      }
+      else{
+        queueItems = this.props.collection.map(function(model){
+          return(
+              <div className="detail-view" key={model.get('id')}>
+                <h4>{model.get('song_name')}</h4>
+                <span>{model.get('singer_name')}</span>
+              </div>
+          );
+        });
+      }
+        return(
+        <div>
+          <div className="col-md-6 queue-wrapper">
+            <h3>Currently Queued Songs</h3>
+            <span>**Songs Shown By Most Recently Added First</span>
+            {queueItems}
+          </div>
+          <div className="col-md-6">
+            <SongAdditionModule collection={this.props.collection} />
+          </div>
+        </div>
+        )
+    }
+    });
+var SongAdditionModule = React.createClass({
+    addSong:function(){
+      var that = this;
+      var hostAttendeeId = response.get('id');
+      that.props.collection.create({
+        "singer_name":$("#singer").val(),
+        "song_name":$("#song").val(),
+        "attendees":hostAttendeeId
+        });
+        },
+      render:function(){
+        return(
+          <div className="queueform-wrapper">
+            <h4>Add A New Song</h4>
+            <div>
+              <form>
+                <div className="form-group">
+                  <input type="text" id="singer" className="form-control" placeholder="Singer Name"/>
+                  <input type="text" id="song" className="form-control"  placeholder="Song Name"/>
+                </div>
+                <button onClick={this.addSong} type="button"> Add to the que </button>
+              </form>
+            </div>
+          </div>
+        );
+      }
+    });
 module.exports=ProfilePage;

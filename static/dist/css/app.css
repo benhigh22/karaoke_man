@@ -5834,6 +5834,9 @@ h1 {
   font-family: "Avenir Next";
   font-weight: bold; }
 
+ul {
+  padding-left: 0px; }
+
 footer {
   height: 100px;
   background-color: #CC66FF;
@@ -5880,12 +5883,11 @@ button:hover {
     font-family: "Avenir Next";
     margin-top: 0px; }
 
-.nav {
+.myNav {
   text-decoration: none;
   list-style: none;
-  float: left;
   padding-top: 30px; }
-  .nav li {
+  .myNav li {
     font-family: "Avenir Next";
     padding: 5px 10px;
     margin: 10px;
@@ -5893,8 +5895,9 @@ button:hover {
     border: solid 1px #CC66FF;
     border-radius: 10px;
     display: inline-block;
-    background: #CC66FF; }
-  .nav li:hover {
+    background: #CC66FF;
+    text-align: center; }
+  .myNav li:hover {
     color: black;
     background-color: white;
     border: solid 1px #331940; }
@@ -5921,6 +5924,7 @@ button:hover {
 .homepage-btn {
   height: 125px;
   padding: 30px 20px 20px 20px;
+  margin: 10px 0px;
   border: solid 3px #CC66FF;
   border-radius: 10px;
   color: #331940;
@@ -6009,10 +6013,10 @@ header {
   color: white;
   padding: 15px;
   margin-top: 20px;
-  height: 500px; }
+  height: 300px; }
   .panel-wrapper .panel {
     color: black;
-    height: 400px;
+    height: 200px;
     overflow: scroll; }
   .panel-wrapper button {
     display: block;
@@ -6021,17 +6025,12 @@ header {
 
 .events-panel {
   margin: 0 auto;
-  background-color: white;
-  width: 90%;
-  height: 400px; }
+  width: 90%; }
 
 .joined-panel {
   margin: 0 auto;
   padding-top: 10px;
-  background-color: white;
-  width: 90%;
-  height: 400px;
-  overflow: scroll; }
+  background-color: white; }
   .joined-panel .party-info {
     padding: 5px;
     margin: 5px;
@@ -6082,6 +6081,13 @@ header {
   border: solid 1px black;
   border-radius: 10px; }
 
+.player-view-queue-wrapper {
+  background-color: black;
+  color: white;
+  padding: 15px;
+  margin-top: 20px;
+  height: 450px; }
+
 .queue-panel {
   color: black;
   background-color: white;
@@ -6120,6 +6126,9 @@ header {
   .ytube-results h5:hover {
     transform: scale(1.03, 1.03); }
 
+.playerPage {
+  margin-bottom: 35px; }
+
 .ui-datepicker {
   background-color: white;
   border-radius: 5px;
@@ -6137,5 +6146,32 @@ header {
 .our_names {
   margin: 10px auto;
   text-align: center; }
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  margin: 0 auto;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #C6A2FF; }
+
+.detail-view {
+  padding: 10px; }
+  .detail-view h4 {
+    color: black; }
+  .detail-view span {
+    color: black; }
+
+.joined-party-details {
+  margin: 10px 0px; }
+
+.queue-wrapper {
+  height: 300px;
+  overflow-y: scroll; }
+
+#colon {
+  text-align: center;
+  margin: 0 auto;
+  display: block; }
 
 /*# sourceMappingURL=app.css.map */
