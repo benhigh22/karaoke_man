@@ -237,8 +237,10 @@ class AllCitiesPartiesListAPIView(generics.ListCreateAPIView):
         return super().create(request, *args, **kwargs)
 
 
-class AddToQueue(generics.ListView):
+class AddToQueueListAPIView(generics.ListAPIView):
     serializer_class = AttendeeSerializer
 
     def get_queryset(self):
+        print(Party.objects.get(id=self.kwargs.get('party')))
+        print(Attendee.objects.filter(party_id=self.kwargs.get('party')))
         return Attendee.objects.filter(user=self.kwargs.get('user'), party=self.kwargs.get('party'))
