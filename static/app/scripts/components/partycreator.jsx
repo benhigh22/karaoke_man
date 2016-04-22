@@ -131,6 +131,7 @@ var NewLocationForm = React.createClass({
       );
       locationCollection.fetch();
       this.props.showForm();
+      location.reload();
     },
     render:function(){
       return(

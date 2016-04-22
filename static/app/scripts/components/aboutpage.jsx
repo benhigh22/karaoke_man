@@ -23,18 +23,18 @@ var AboutUs = React.createClass({
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-4 pics">
-                    <img src="/static/dist/images/Ben Headshot.jpg" className="img-rounded" alt="Responsive image"/>
+                  <div className="col-md-4">
+                    <img src="/static/dist/images/Ben Headshot.jpg" className="img-rounded pics" alt="Responsive image"/>
                     <h4 className="our_names">Benjamin High</h4>
                     <p>Ben is a BackEnd Software Developer and Karaoke connoisseur. However, due to the outrageous price of
                     Karaoke software, parties he hosted often ended up with a sticky note queue and youtube searches.
-                    unorganization of that process left Ben thinking there had to be a better way, and The Karaoke Man was
+                    Unorganization of that process left Ben thinking there had to be a better way, and The Karaoke Man was
                     born.</p>
                   </div>
-                  <div className="col-md-4 pics">
+                  <div className="col-md-4">
                       <img src="/static/dist/images/karaokeman.png" className="img-rounded" alt="Responsive image"/>
                   </div>
-                  <div className="col-md-4 pics">
+                  <div className="col-md-4">
                       <img src="/static/dist/images/austin.jpeg" className="img-rounded" alt="Responsive image"/>
                       <h4 className="our_names">Austin Williams</h4>
                       <p>Austin is a FrontEnd Software Developer and Graphic Designer. After hearing about the idea of The Karaoke Man,

@@ -25,18 +25,18 @@ var AboutUs = React.createClass({displayName: "AboutUs",
                   )
                 ), 
                 React.createElement("div", {className: "row"}, 
-                  React.createElement("div", {className: "col-md-4 pics"}, 
-                    React.createElement("img", {src: "/static/dist/images/Ben Headshot.jpg", className: "img-rounded", alt: "Responsive image"}), 
+                  React.createElement("div", {className: "col-md-4"}, 
+                    React.createElement("img", {src: "/static/dist/images/Ben Headshot.jpg", className: "img-rounded pics", alt: "Responsive image"}), 
                     React.createElement("h4", {className: "our_names"}, "Benjamin High"), 
                     React.createElement("p", null, "Ben is a BackEnd Software Developer and Karaoke connoisseur. However, due to the outrageous price of" + ' ' +
                     "Karaoke software, parties he hosted often ended up with a sticky note queue and youtube searches." + ' ' +
-                    "unorganization of that process left Ben thinking there had to be a better way, and The Karaoke Man was" + ' ' +
+                    "Unorganization of that process left Ben thinking there had to be a better way, and The Karaoke Man was" + ' ' +
                     "born.")
                   ), 
-                  React.createElement("div", {className: "col-md-4 pics"}, 
+                  React.createElement("div", {className: "col-md-4"}, 
                       React.createElement("img", {src: "/static/dist/images/karaokeman.png", className: "img-rounded", alt: "Responsive image"})
                   ), 
-                  React.createElement("div", {className: "col-md-4 pics"}, 
+                  React.createElement("div", {className: "col-md-4"}, 
                       React.createElement("img", {src: "/static/dist/images/austin.jpeg", className: "img-rounded", alt: "Responsive image"}), 
                       React.createElement("h4", {className: "our_names"}, "Austin Williams"), 
                       React.createElement("p", null, "Austin is a FrontEnd Software Developer and Graphic Designer. After hearing about the idea of The Karaoke Man," + ' ' +
@@ -392,6 +392,7 @@ var NewLocationForm = React.createClass({displayName: "NewLocationForm",
       );
       locationCollection.fetch();
       this.props.showForm();
+      location.reload();
     },
     render:function(){
       return(
